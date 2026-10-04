@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675">
+  <defs>
+    <linearGradient id="sky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e1b4b"/>
+      <stop offset="55%" stop-color="#312e81"/>
+      <stop offset="100%" stop-color="#f97316"/>
+    </linearGradient>
+    <linearGradient id="goldGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffedd5" stop-opacity="0.95"/>
+      <stop offset="50%" stop-color="#f97316" stop-opacity="0.75"/>
+      <stop offset="100%" stop-color="#312e81" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="lake" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#312e81" stop-opacity="0.88"/>
+      <stop offset="100%" stop-color="#1e1b4b" stop-opacity="0.98"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="675" fill="url(#sky)"/>
+  <circle cx="920" cy="170" r="88" fill="#ffedd5" opacity="0.22"/>
+  <circle cx="920" cy="170" r="46" fill="#ffedd5" opacity="0.55"/>
+  <!-- Distant sacred snow peaks -->
+  <polygon points="0,470 180,260 340,390 540,165 730,350 910,195 1090,340 1200,250 1200,500 0,500" fill="url(#goldGlow)"/>
+  <polygon points="540,165 615,280 485,310" fill="#ffffff" opacity="0.92"/>
+  <polygon points="910,195 975,290 855,315" fill="#ffffff" opacity="0.88"/>
+  <polygon points="180,260 235,340 130,355" fill="#ffffff" opacity="0.82"/>
+  <!-- Foreground alpine ridge -->
+  <polygon points="0,485 260,370 490,445 780,355 1040,435 1200,380 1200,520 0,520" fill="#1e1b4b" opacity="0.72"/>
+  <!-- Alpine glacial lake reflection -->
+  <rect x="0" y="485" width="1200" height="190" fill="url(#lake)"/>
+  <path d="M 120 530 Q 420 515 720 535 T 1120 525" stroke="#ffedd5" stroke-width="2" fill="none" opacity="0.35"/>
+  <path d="M 220 570 Q 520 558 840 575 T 1080 565" stroke="#ffedd5" stroke-width="1.5" fill="none" opacity="0.25"/>
+  <!-- Top badge -->
+  <rect x="44" y="38" width="420" height="44" rx="22" fill="#090d16" fill-opacity="0.68" stroke="#ffedd5" stroke-opacity="0.4"/>
+  <text x="68" y="66" fill="#ffedd5" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="20" font-weight="bold">🏔️ 滇西北·雪山秘境奢野环线 · 3,820m 老药山 → 1,980m 虎跳峡</text>
+  <!-- Bottom editorial overlay -->
+  <rect x="0" y="490" width="1200" height="185" fill="#090d16" fill-opacity="0.62"/>
+  <text x="48" y="548" fill="#ffffff" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="34" font-weight="900">老药山云海草甸轻徒步 & 虎跳峡新茶马雪景美宿</text>
+  <text x="48" y="590" fill="#ffedd5" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="22" font-weight="600">D3 · 10/06 · 日间 3,820m / 睡眠 1,980m · 黄金高爬低睡</text>
+  <text x="48" y="632" fill="#cbd5e1" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="19">📷 新茶马全景落地窗 / 老药山 3800m 高山杜鹃草甸</text>
+</svg>
