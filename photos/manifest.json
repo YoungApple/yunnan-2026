@@ -1,0 +1,110 @@
+{
+  "updatedAt": "2026-10-04T13:00:00Z",
+  "albumTitle": "2026 滇西北·雪山秘境奢野环线 · 摄影机位与旅途实拍集锦",
+  "photos": [
+    {
+      "id": "yn-photo-1",
+      "url": "./photos/d1_lijiang_ancient_town.svg",
+      "thumbUrl": "./photos/d1_lijiang_ancient_town.svg",
+      "title": "丽江大研古城与玉龙雪山远眺",
+      "caption": "从北京飞抵丽江三义机场，首晚入住海拔 2400m 的丽江古城。傍晚登狮子山俯瞰万家灯火与远方玉龙雪山剪影，开启「高爬低睡」科学阶梯适应。",
+      "spotTag": "📷 狮子山万古楼 / 大水车暮色蓝调时刻",
+      "day": "D1 · 10/04",
+      "layer": "lijiang",
+      "placeId": 2,
+      "city": "丽江古城 · 狮子山观景台",
+      "takenAt": "2026-10"
+    },
+    {
+      "id": "yn-photo-2",
+      "url": "./photos/d2_baisha_shambhala.svg",
+      "thumbUrl": "./photos/d2_baisha_shambhala.svg",
+      "title": "白沙古镇仰望玉龙十三峰 & 香巴拉牧场/云栖壹号院",
+      "caption": "上午漫步束河茶马古道与白沙古镇，无遮挡仰望玉龙雪山十三峰；下午在「香巴拉牧场」的雪山草甸荒野感与「云栖壹号院」的私享水景庭院间自由切换。",
+      "spotTag": "📷 白沙牌坊二楼咖啡露台 / 雪山草甸倒影机位",
+      "day": "D2 · 10/05",
+      "layer": "lijiang",
+      "placeId": 4,
+      "city": "白沙古镇 · 香巴拉牧场 / 云栖壹号院",
+      "takenAt": "2026-10"
+    },
+    {
+      "id": "yn-photo-3",
+      "url": "./photos/d3_laoyaoshan_hutiaoxia.svg",
+      "thumbUrl": "./photos/d3_laoyaoshan_hutiaoxia.svg",
+      "title": "老药山云海草甸轻徒步 & 虎跳峡新茶马雪景美宿",
+      "caption": "白天登顶老药山 3820m 开展首轮高海拔热身轻徒步，傍晚下撤至海拔仅 1980m 的虎跳峡入住「New Tea·horse新茶马·日照金山雪景美宿」，躺看玉龙与哈巴双雪山对峙。",
+      "spotTag": "📷 新茶马全景落地窗 / 老药山 3800m 高山杜鹃草甸",
+      "day": "D3 · 10/06",
+      "layer": "haba",
+      "placeId": 7,
+      "city": "虎跳峡 · New Tea·horse新茶马美宿",
+      "takenAt": "2026-10"
+    },
+    {
+      "id": "yn-photo-4",
+      "url": "./photos/d4_haba_black_lake.svg",
+      "thumbUrl": "./photos/d4_haba_black_lake.svg",
+      "title": "哈巴雪山黑海湖秘境徒步 · 原始冷杉松萝与玄冰湖",
+      "caption": "穿行哈巴雪山海拔 3200m–4100m 的千年冷杉林与垂挂松萝秘境，抵达深邃神秘的冰碛湖「黑海湖」，湖水墨黑如镜映照哈巴雪峰，夜宿哈巴村 2650m 满血恢复。",
+      "spotTag": "📷 黑海湖西岸枯木横枝倒影 / 松萝原始森林光束",
+      "day": "D4 · 10/07",
+      "layer": "haba",
+      "placeId": 9,
+      "city": "哈巴雪山 · 黑海湖 (4,100m)",
+      "takenAt": "2026-10"
+    },
+    {
+      "id": "yn-photo-5",
+      "url": "./photos/d6_wudihu_alpine_lake.svg",
+      "thumbUrl": "./photos/d6_wudihu_alpine_lake.svg",
+      "title": "香格里拉无底湖 · 雪山森林环抱的翡翠冰蚀湖",
+      "caption": "从独克宗古城「格雅·雪印梵境」轻装出发（连住3晚免搬行李），深入格咱乡海拔 3800m 的无底湖（沃迪错），环湖轻徒步拍摄冷杉、草甸与清澈湖水。",
+      "spotTag": "📷 无底湖木栈道北岸雪峰倒影 / 湖畔牧场木屋",
+      "day": "D6 · 10/09",
+      "layer": "shangrila",
+      "placeId": 14,
+      "city": "香格里拉 · 无底湖 (沃迪错)",
+      "takenAt": "2026-10"
+    },
+    {
+      "id": "yn-photo-6",
+      "url": "./photos/d7_balagezong_canyon.svg",
+      "thumbUrl": "./photos/d7_balagezong_canyon.svg",
+      "title": "巴拉格宗大峡谷 · 千年康巴藏寨与天然香巴拉佛塔",
+      "caption": "一天纵览海拔落差逾 2000 米的立体气候：从抚摸绝壁千年凤凰菩提树，到探访与世隔绝的千年巴拉村藏寨，再仰望海拔 4250m 天然形成的金字塔形香巴拉佛塔雪山。",
+      "spotTag": "📷 巴拉村观景台 / 回音壁高空栈道 / 香巴拉佛塔雪山",
+      "day": "D7 · 10/10",
+      "layer": "shangrila",
+      "placeId": 15,
+      "city": "香格里拉 · 巴拉格宗国家级风景名胜区",
+      "takenAt": "2026-10"
+    },
+    {
+      "id": "yn-photo-7",
+      "url": "./photos/d9_meili_sunrise_kongqueshan.svg",
+      "thumbUrl": "./photos/d9_meili_sunrise_kongqueshan.svg",
+      "title": "飞来寺梅里雪山「日照金山」 & 孔雀山垭口心形湖",
+      "caption": "10.11 下午 14:30 准时从香格里拉出发抵达德钦飞来寺；10.12 清晨在明珠拉卡酒店守候卡瓦格博 6740m 梅里十三峰「日照金山」，随后翻越 3890m 孔雀山垭口前往南极洛。",
+      "spotTag": "📷 明珠拉卡观景露台 07:05 日照金山 / 孔雀山 3890m 垭口",
+      "day": "D9 · 10/12",
+      "layer": "meili",
+      "placeId": 18,
+      "city": "德钦飞来寺 · 明珠拉卡雪山观景酒店 & 孔雀山",
+      "takenAt": "2026-10"
+    },
+    {
+      "id": "yn-photo-8",
+      "url": "./photos/d10_nanjiluo_nine_lakes.svg",
+      "thumbUrl": "./photos/d10_nanjiluo_nine_lakes.svg",
+      "title": "南极洛（阿尺打嘎）· 上帝遗落的眼泪 1–9号高山湖群",
+      "caption": "乘当地越野车深入碧罗雪山腹地，徒步海拔 3900m–4380m 的高山冰蚀湖群。翡翠色湖泊串联瀑布与高山杜鹃，当晚在德钦御景园民宿决策次日拼车或包车直返丽江。",
+      "spotTag": "📷 3号湖晨雾 / 4号湖俯瞰5号湖双湖同框 / 9号湖冰蚀崖壁",
+      "day": "D10 · 10/13",
+      "layer": "nanjiluo",
+      "placeId": 22,
+      "city": "维西巴迪 · 南极洛核心湖区 (1–5号湖 / 1–9号湖)",
+      "takenAt": "2026-10"
+    }
+  ]
+}
