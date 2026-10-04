@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#059669" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>2026 滇西北秘境巅峰穿越 11 日随行伴侣 | 2026 Yunnan Northwest Frontier 11-Day Expedition Companion</title>
+  
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23059669'/%3E%3Cpath d='M32 11c-9.4 0-17 7.6-17 17 0 12.8 17 25 17 25s17-12.2 17-25c0-9.4-7.6-17-17-17zm0 23.5a6.5 6.5 0 1 1 0-13 6.5 6.5 0 0 1 0 13z' fill='%23fff'/%3E%3C/svg%3E" />
+  
+  <!-- Fonts & CDN Fallbacks -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Noto+Sans+SC:wght@400;500;700;900&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+
+  <style>
+    :root {
+      color-scheme: light dark;
+      --font-sans: 'Plus Jakarta Sans', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --background: #f8fafc;
+      --foreground: #0f172a;
+      --card: #ffffff;
+      --card-foreground: #0f172a;
+      --content: #f1f5f9;
+      --border: #e2e8f0;
+      --primary: #059669;
+      --primary-dark: #047857;
+      --primary-foreground: #ffffff;
+      --muted: #f1f5f9;
+      --muted-foreground: #475569;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --background: #090d16;
+        --foreground: #f8fafc;
+        --card: #111827;
+        --card-foreground: #f8fafc;
+        --content: #1e293b;
+        --border: #283548;
+        --primary: #10b981;
+        --primary-dark: #059669;
+        --primary-foreground: #ffffff;
+        --muted: #1e293b;
+        --muted-foreground: #94a3b8;
+      }
+    }
+    * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--background);
+      color: var(--foreground);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    .custom-pin {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 800;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      border-radius: 9999px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.35);
+      border: 2px solid #fff;
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .custom-pin.active {
+      transform: scale(1.35);
+      z-index: 9999 !important;
+      border-color: #fef08a;
+      outline: 4px solid rgba(254, 240, 138, 0.5);
+    }
+    .leaflet-container {
+      background: var(--background);
+      font-family: inherit;
+    }
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="flex flex-col h-screen antialiased select-none md:select-text">
+
+  <!-- Offline Status Toast -->
+  <div id="offlineBanner" class="hidden fixed top-0 inset-x-0 z-50 bg-amber-500 text-stone-900 text-xs md:text-sm font-bold text-center py-1.5 px-4 shadow-md transition-all flex items-center justify-center gap-2">
+    <span>📡 离线模式已激活 · 无网状态下所有坐标、路线与应急卡均可离线使用</span>
+  </div>
+
+  <!-- Main Top Bar -->
+  <header class="bg-white/90 dark:bg-slate-900/90 backdrop-blur border-b border-slate-200 dark:border-slate-800 px-4 py-2.5 flex items-center justify-between z-40 shrink-0">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-xl flex items-center justify-center text-white font-black shadow-md" style="background-color: var(--primary)">
+        ✈️
+      </div>
+      <div>
+        <h1 class="text-sm md:text-base font-extrabold tracking-tight line-clamp-1">
+          2026 滇西北秘境巅峰穿越 11 日随行伴侣
+        </h1>
+        <p class="text-[11px] text-slate-500 dark:text-slate-400 font-medium line-clamp-1">
+          2026-10-04 ~ 2026-10-14 · 11 日高定随行
+        </p>
+      </div>
+    </div>
+    
+    <div class="flex items-center gap-2">
+      <!-- Search Trigger -->
+      <div class="relative">
+        <input id="searchInput" type="text" placeholder="搜索景点/酒店/餐厅..." 
+               class="text-xs bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1.5 w-32 md:w-56 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all text-slate-800 dark:text-slate-100" />
+      </div>
+
+      <!-- Emergency Card CTA -->
+      <button onclick="toggleModal('emergencyModal')" class="px-2.5 py-1.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-600 dark:text-rose-400 text-xs font-bold flex items-center gap-1 border border-rose-500/30 transition">
+        <span>🆘</span>
+        <span class="hidden sm:inline">救援急救</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Stage Navigation Bar (Horizontal Scroll) -->
+  <nav class="bg-slate-50 dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800 px-3 py-2 flex items-center gap-1.5 overflow-x-auto hide-scrollbar shrink-0 z-30">
+    <button onclick="filterLayer('all')" class="layer-pill active whitespace-nowrap px-3 py-1 rounded-full text-xs font-bold transition bg-slate-900 text-white dark:bg-white dark:text-slate-900 shadow-sm" data-layer="all">
+      全程总览 (17)
+    </button>
+    
+      
+    
+      
+      <button onclick="filterLayer('lijiang')" class="layer-pill whitespace-nowrap px-3 py-1 rounded-full text-xs font-semibold transition bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700" data-layer="lijiang">
+        🏮 丽江·古城与雪山前哨 (D1–D2)
+      </button>
+      
+    
+      
+      <button onclick="filterLayer('gorge_haba')" class="layer-pill whitespace-nowrap px-3 py-1 rounded-full text-xs font-semibold transition bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700" data-layer="gorge_haba">
+        🌊 虎跳峡与哈巴黑海 (D3–D4)
+      </button>
+      
+    
+      
+      <button onclick="filterLayer('shangrila')" class="layer-pill whitespace-nowrap px-3 py-1 rounded-full text-xs font-semibold transition bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700" data-layer="shangrila">
+        📿 香格里拉·圣境日月 (D4–D6)
+      </button>
+      
+    
+      
+      <button onclick="filterLayer('meili')" class="layer-pill whitespace-nowrap px-3 py-1 rounded-full text-xs font-semibold transition bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700" data-layer="meili">
+        🌄 德钦·梅里雪山日照金山 (D7–D8)
+      </button>
+      
+    
+      
+      <button onclick="filterLayer('nanjiluo')" class="layer-pill whitespace-nowrap px-3 py-1 rounded-full text-xs font-semibold transition bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700" data-layer="nanjiluo">
+        🌲 维西·南极洛阿海洛九湖 (D9–D11)
+      </button>
+      
+    
+  </nav>
+
+  <!-- Workspace Container: Responsive Split Pane -->
+  <div class="flex-1 flex flex-col md:flex-row overflow-hidden relative">
+    
+    <!-- Left Pane: Spatial Map Canvas -->
+    <div id="mapContainer" class="flex-1 relative h-64 md:h-full w-full">
+      <div id="map" class="absolute inset-0 z-0"></div>
+
+      <!-- Floating Map Layer Selector -->
+      <div class="absolute top-3 left-3 z-10 bg-white/95 dark:bg-slate-900/95 backdrop-blur rounded-xl shadow-lg border border-slate-200 dark:border-slate-800 p-1 flex gap-1 text-[11px] font-bold">
+        
+        <button onclick="switchTileLayer('amap')" id="tileBtn-amap" class="tile-btn px-2.5 py-1 rounded-lg transition bg-slate-900 text-white dark:bg-white dark:text-slate-900">
+          高德街道
+        </button>
+        
+        <button onclick="switchTileLayer('amap_sat')" id="tileBtn-amap_sat" class="tile-btn px-2.5 py-1 rounded-lg transition text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800">
+          高德卫星
+        </button>
+        
+        <button onclick="switchTileLayer('carto')" id="tileBtn-carto" class="tile-btn px-2.5 py-1 rounded-lg transition text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800">
+          浅色极简
+        </button>
+        
+      </div>
+
+      <!-- Quick Reset View Button -->
+      <button onclick="fitAllBounds()" class="absolute bottom-4 right-4 z-10 w-9 h-9 rounded-xl bg-white/95 dark:bg-slate-900/95 backdrop-blur shadow-lg border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-700 dark:text-slate-200 hover:scale-105 active:scale-95 transition" title="重置视角">
+        🎯
+      </button>
+    </div>
+
+    <!-- Right Pane: Tabs & Content Sheets -->
+    <div id="rightDrawer" class="w-full md:w-[480px] lg:w-[540px] flex flex-col bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 shadow-xl z-20 overflow-hidden h-1/2 md:h-full">
+      
+      <!-- Right Pane Sub-header / Tab Bar -->
+      <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 px-4 py-2 bg-slate-50/80 dark:bg-slate-950/80 shrink-0">
+        <div class="flex gap-2">
+          <button onclick="switchTab('itinerary')" id="tabBtn-itinerary" class="tab-btn active text-xs font-bold px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 shadow-sm text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700">
+            📍 行程名录 (<span id="placeCountBadge">17</span>)
+          </button>
+          
+          <button onclick="switchTab('altitude')" id="tabBtn-altitude" class="tab-btn text-xs font-semibold px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800">
+            🏔️ 海拔与高反
+          </button>
+          
+          <button onclick="switchTab('phrases')" id="tabBtn-phrases" class="tab-btn text-xs font-semibold px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800">
+            🗣️ 生存口语
+          </button>
+          
+        </div>
+      </div>
+
+      <!-- Tab Content Area -->
+      <div class="flex-1 overflow-y-auto p-4 space-y-4">
+        
+        <!-- Active Selected Place Card (Highlighted Hero Card) -->
+        <div id="activePlaceCard" class="hidden rounded-2xl bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800/60 dark:to-slate-900/60 border-2 border-primary/40 p-4 shadow-lg transition-all animate-fadeIn">
+          <div class="flex items-start justify-between gap-2 mb-2">
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <span id="activePlaceBadge" class="px-2 py-0.5 rounded-full text-[10px] font-black bg-slate-900 text-white dark:bg-white dark:text-slate-900">#0</span>
+                <span id="activePlaceDay" class="text-xs font-bold text-primary">D1</span>
+                <span id="activePlaceCat" class="text-[11px] font-semibold text-slate-500">景点</span>
+                <span id="activePlaceAltitude" class="hidden px-1.5 py-0.5 rounded text-[10px] font-black bg-amber-500/20 text-amber-600">⛰️ 0m</span>
+              </div>
+              <h2 id="activePlaceNameZh" class="text-lg font-black tracking-tight text-slate-900 dark:text-white leading-tight"></h2>
+              <p id="activePlaceNameEn" class="text-xs text-slate-500 dark:text-slate-400 font-medium"></p>
+            </div>
+            <button onclick="closeActivePlace()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1">
+              ✕
+            </button>
+          </div>
+
+          <!-- Tactile Audio Pronunciation Strip -->
+          <div id="activePlacePronounceStrip" class="my-3 bg-white dark:bg-slate-800 rounded-xl p-2.5 border border-slate-200 dark:border-slate-700 flex items-center justify-between gap-3 shadow-sm">
+            <div class="flex-1 min-w-0">
+              <div class="text-[10px] font-bold text-slate-400 flex items-center gap-1">
+                <span>🔊 当地语言发音示范</span>
+                <span id="activePlaceLangCode" class="uppercase px-1 py-0.2 rounded bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">LOCAL</span>
+              </div>
+              <p id="activePlaceLocalName" class="text-sm font-extrabold text-slate-800 dark:text-slate-100 truncate mt-0.5"></p>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+              <button onclick="speakCurrent(1.0)" class="px-2.5 py-1.5 rounded-lg bg-primary text-white text-xs font-bold hover:opacity-90 active:scale-95 transition flex items-center gap-1">
+                <span>🔊</span> 1.0x
+              </button>
+              <button onclick="speakCurrent(0.65)" class="px-2.5 py-1.5 rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200 text-xs font-bold hover:bg-slate-300 dark:hover:bg-slate-600 active:scale-95 transition flex items-center gap-1" title="慢速跟读">
+                <span>🐢</span> 0.65x
+              </button>
+            </div>
+          </div>
+
+          <!-- Story & High Altitude / Important Warning -->
+          <p id="activePlaceStory" class="text-xs leading-relaxed text-slate-700 dark:text-slate-300 mb-3"></p>
+          <div id="activePlaceWarningBox" class="hidden p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-800 dark:text-amber-300 text-xs mb-3 font-medium flex items-start gap-2">
+            <span>⚠️</span>
+            <span id="activePlaceWarningText"></span>
+          </div>
+
+          <!-- 3 Primary CTAs (44px min touch target) -->
+          <div class="grid grid-cols-3 gap-2 pt-2 border-t border-slate-200 dark:border-slate-700">
+            <a id="activeNavBtn" href="#" target="_blank" class="h-11 rounded-xl bg-primary text-white text-xs font-extrabold flex flex-col items-center justify-center shadow-md hover:opacity-90 active:scale-95 transition">
+              <span>📍 导航定位</span>
+              <span class="text-[9px] opacity-80">一键路线</span>
+            </a>
+            <a id="activeRideBtn" href="#" target="_blank" class="h-11 rounded-xl bg-slate-800 dark:bg-slate-700 text-white text-xs font-extrabold flex flex-col items-center justify-center shadow-md hover:opacity-90 active:scale-95 transition">
+              <span id="activeRideLabel">🚗 一键叫车</span>
+              <span class="text-[9px] opacity-80">直达坐标</span>
+            </a>
+            <button onclick="showDriverCard()" class="h-11 rounded-xl bg-amber-500 text-stone-900 text-xs font-extrabold flex flex-col items-center justify-center shadow-md hover:bg-amber-400 active:scale-95 transition">
+              <span>🗣️ 司机问路卡</span>
+              <span class="text-[9px] opacity-80">大字免沟通</span>
+            </button>
+          </div>
+
+          <!-- Knowledge & Review Chips (Dual-Network) -->
+          <div id="activePlaceKnowledgeStrip" class="flex flex-wrap gap-1.5 mt-3 pt-2">
+            <!-- Dynamically rendered knowledge chips (Baike, Xiaohongshu, Ctrip, Wikipedia) -->
+          </div>
+        </div>
+
+        <!-- Section 1: Itinerary List View -->
+        <div id="tab-itinerary" class="space-y-2.5">
+          <div id="placesList" class="space-y-2">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        
+        <!-- Section 2: Altitude & Oxygen Safety View -->
+        <div id="tab-altitude" class="hidden space-y-4">
+          <div class="rounded-2xl bg-slate-100 dark:bg-slate-800/80 p-4 border border-slate-200 dark:border-slate-700">
+            <h3 class="text-sm font-extrabold text-slate-900 dark:text-white flex items-center gap-2 mb-2">
+              <span>⛰️</span> 高度变化与高反适应阶梯
+            </h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mb-4">
+              本行程包含从平原河谷 (2000m) 至高原雪山垭口 (4292m) 的大幅海拔跨度。请严格遵循高原适应曲线，每日进行血氧点检。
+            </p>
+
+            <!-- Altitude Bars -->
+            <div class="space-y-2">
+              
+              <div class="flex items-center gap-3 text-xs">
+                <span class="w-8 font-black text-slate-400 font-mono">D1</span>
+                <div class="flex-1 min-w-0">
+                  <div class="flex justify-between items-center mb-1">
+                    <span class="font-bold text-slate-800 dark:text-slate-200 truncate">丽江机场/古城</span>
+                    <span class="font-black font-mono text-emerald-500">
+                      2400m
+                    </span>
+                  </div>
+                  <div class="w-full bg-slate-200 dark:bg-slate-700 h-2 rounded-full overflow-hidden">
+                    <div class="h-full rounded-full bg-emerald-500" style="width: 53.333333333333336%"></div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="flex items-center gap-3 text-xs">
+                <span class="w-8 font-black text-slate-400 font-mono">D2</span>
+                <div class="flex-1 min-w-0">
+                  <div class="flex justify-between items-center mb-1">
+                    <span class="font-bold text-slate-800 dark:text-slate-200 truncate">玉龙雪山云杉坪</span>
+                    <span class="font-black font-mono text-amber-500">
+                      3100m
+                    </span>
+                  </div>
+                  <div class="w-full bg-slate-200 dark:bg-slate-700 h-2 rounded-full overflow-hidden">
+                    <div class="h-full rounded-full bg-amber-500" style="width: 68.88888888888889%"></div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="flex items-center gap-3 text-xs">
+                <span class="w-8 font-black text-slate-400 font-mono">D3</span>
+                <div class="flex-1 min-w-0">
+                  <div class="flex justify-between items-center mb-1">
+                    <span class="font-bold text-slate-800 dark:text-slate-200 truncate">虎跳峡高路/哈巴村</span>
+                    <span class="font-black font-mono text-emerald-500">
+                      2700m
+                    </span>
+                  </div>
+                  <div class="w-full bg-slate-200 dark:bg-slate-700 h-2 rounded-full overflow-hidden">
+                    <div class="h-full rounded-full bg-emerald-500" style="width: 60.0%"></div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="flex items-center gap-3 text-xs">
+                <span class="w-8 font-black text-slate-400 font-mono">D4</span>
+                <div class="flex-1 min-w-0">
+                  <div class="flex justify-between items-center mb-1">
+                    <span class="font-bold text-slate-800 dark:text-slate-200 truncate">哈巴黑海湖</span>
+                    <span class="font-black font-mono text-rose-500">
+                      4100m
+                    </span>
+                  </div>
+                  <div class="w-full bg-slate-200 dark:bg-slate-700 h-2 rounded-full overflow-hidden">
+                    <div class="h-full rounded-full bg-rose-500" style="width: 91.11111111111111%"></div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="flex items-center gap-3 text-xs">
+                <span class="w-8 font-black text-slate-400 font-mono">D5</span>
+                <div class="flex-1 min-w-0">
+                  <div class="flex justify-between items-center mb-1">
+                    <span class="font-bold text-slate-800 dark:text-slate-200 truncate">香格里拉独克宗</span>
+                    <span class="font-black font-mono text-amber-500">
+                      3300m
+                    </span>
+                  </div>
+                  <div class="w-full bg-slate-200 dark:bg-slate-700 h-2 rounded-full overflow-hidden">
+                    <div class="h-full rounded-full bg-amber-500" style="width: 73.33333333333333%"></div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="flex items-center gap-3 text-xs">
+                <span class="w-8 font-black text-slate-400 font-mono">D6</span>
+                <div class="flex-1 min-w-0">
+                  <div class="flex justify-between items-center mb-1">
+                    <span class="font-bold text-slate-800 dark:text-slate-200 truncate">格咱乡无底湖</span>
+                    <span class="font-black font-mono text-amber-500">
+                      3800m
+                    </span>
+                  </div>
+                  <div class="w-full bg-slate-200 dark:bg-slate-700 h-2 rounded-full overflow-hidden">
+                    <div class="h-full rounded-full bg-amber-500" style="width: 84.44444444444444%"></div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="flex items-center gap-3 text-xs">
+                <span class="w-8 font-black text-slate-400 font-mono">D7</span>
+                <div class="flex-1 min-w-0">
+                  <div class="flex justify-between items-center mb-1">
+                    <span class="font-bold text-slate-800 dark:text-slate-200 truncate">白马雪山垭口/飞来寺</span>
+                    <span class="font-black font-mono text-rose-500">
+                      4292m
+                    </span>
+                  </div>
+                  <div class="w-full bg-slate-200 dark:bg-slate-700 h-2 rounded-full overflow-hidden">
+                    <div class="h-full rounded-full bg-rose-500" style="width: 95.37777777777777%"></div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="flex items-center gap-3 text-xs">
+                <span class="w-8 font-black text-slate-400 font-mono">D8</span>
+                <div class="flex-1 min-w-0">
+                  <div class="flex justify-between items-center mb-1">
+                    <span class="font-bold text-slate-800 dark:text-slate-200 truncate">茨中百年教堂/巴迪</span>
+                    <span class="font-black font-mono text-emerald-500">
+                      2000m
+                    </span>
+                  </div>
+                  <div class="w-full bg-slate-200 dark:bg-slate-700 h-2 rounded-full overflow-hidden">
+                    <div class="h-full rounded-full bg-emerald-500" style="width: 44.44444444444444%"></div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="flex items-center gap-3 text-xs">
+                <span class="w-8 font-black text-slate-400 font-mono">D9</span>
+                <div class="flex-1 min-w-0">
+                  <div class="flex justify-between items-center mb-1">
+                    <span class="font-bold text-slate-800 dark:text-slate-200 truncate">南极洛 3-9 号高山湖</span>
+                    <span class="font-black font-mono text-rose-500">
+                      4250m
+                    </span>
+                  </div>
+                  <div class="w-full bg-slate-200 dark:bg-slate-700 h-2 rounded-full overflow-hidden">
+                    <div class="h-full rounded-full bg-rose-500" style="width: 94.44444444444444%"></div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="flex items-center gap-3 text-xs">
+                <span class="w-8 font-black text-slate-400 font-mono">D10</span>
+                <div class="flex-1 min-w-0">
+                  <div class="flex justify-between items-center mb-1">
+                    <span class="font-bold text-slate-800 dark:text-slate-200 truncate">塔城滇金丝猴/石鼓</span>
+                    <span class="font-black font-mono text-emerald-500">
+                      2800m
+                    </span>
+                  </div>
+                  <div class="w-full bg-slate-200 dark:bg-slate-700 h-2 rounded-full overflow-hidden">
+                    <div class="h-full rounded-full bg-emerald-500" style="width: 62.22222222222222%"></div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="flex items-center gap-3 text-xs">
+                <span class="w-8 font-black text-slate-400 font-mono">D11</span>
+                <div class="flex-1 min-w-0">
+                  <div class="flex justify-between items-center mb-1">
+                    <span class="font-bold text-slate-800 dark:text-slate-200 truncate">丽江返程</span>
+                    <span class="font-black font-mono text-emerald-500">
+                      2240m
+                    </span>
+                  </div>
+                  <div class="w-full bg-slate-200 dark:bg-slate-700 h-2 rounded-full overflow-hidden">
+                    <div class="h-full rounded-full bg-emerald-500" style="width: 49.77777777777778%"></div>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+
+          <!-- SpO2 Guidance Card -->
+          <div class="rounded-2xl bg-emerald-500/10 border border-emerald-500/30 p-4 text-xs space-y-2 text-emerald-900 dark:text-emerald-300">
+            <h4 class="font-extrabold flex items-center gap-1.5">
+              <span>🩺</span> 高原指夹血氧仪 (SpO2) 判读标准
+            </h4>
+            <ul class="list-disc pl-4 space-y-1">
+              <li><strong>SpO2 ≥ 90%</strong>: 适应极佳，正常进行高原漫步与轻度摄影。</li>
+              <li><strong>SpO2 80% ~ 89%</strong>: 典型轻度代偿缺氧，放缓徒步配速，适当补温水与葡萄糖。</li>
+              <li><strong>SpO2 &lt; 80%</strong>: 立即停步休息，静坐吸入医用氧气 15–20 分钟；如伴随剧烈头痛、粉红色泡沫痰或步态不稳，立即联系医疗热线迅速下撤至 2500m 以下！</li>
+            </ul>
+          </div>
+        </div>
+        
+
+        <!-- Section 3: Survival Phrasebook -->
+        <div id="tab-phrases" class="hidden space-y-3">
+          
+          <div class="rounded-2xl bg-slate-50 dark:bg-slate-800/80 p-3.5 border border-slate-200 dark:border-slate-700 space-y-2">
+            <h4 class="text-xs font-black uppercase tracking-wider text-slate-400">
+              🗣️ TIBETAN 实用随身锦囊
+            </h4>
+            <div class="space-y-2">
+              
+              <div class="bg-white dark:bg-slate-900 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-2 shadow-sm">
+                <div class="flex-1 min-w-0">
+                  <p class="text-xs font-bold text-slate-900 dark:text-white">扎西德勒 (吉祥如意 / 见面问候)</p>
+                  <p class="text-xs font-extrabold text-primary truncate mt-0.5">བཀྲ་ཤིས་བདེ་ལེགས། (Tashi Delek)</p>
+                  
+                  <p class="text-[10px] text-slate-400 mt-0.5">藏区最万能礼貌祝福语，双手合十更佳</p>
+                  
+                </div>
+                <button onclick="speakPhrase('བཀྲ་ཤིས་བདེ་ལེགས། (Tashi Delek)', 'zh-CN')" class="w-8 h-8 rounded-lg bg-primary/10 hover:bg-primary text-primary hover:text-white text-xs font-bold flex items-center justify-center shrink-0 transition">
+                  🔊
+                </button>
+              </div>
+              
+              <div class="bg-white dark:bg-slate-900 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-2 shadow-sm">
+                <div class="flex-1 min-w-0">
+                  <p class="text-xs font-bold text-slate-900 dark:text-white">突及切 (非常感谢)</p>
+                  <p class="text-xs font-extrabold text-primary truncate mt-0.5">ཐུགས་རྗེ་ཆེ། (Thuk Je Che)</p>
+                  
+                  <p class="text-[10px] text-slate-400 mt-0.5">接受酥油茶或哈达时致谢</p>
+                  
+                </div>
+                <button onclick="speakPhrase('ཐུགས་རྗེ་ཆེ། (Thuk Je Che)', 'zh-CN')" class="w-8 h-8 rounded-lg bg-primary/10 hover:bg-primary text-primary hover:text-white text-xs font-bold flex items-center justify-center shrink-0 transition">
+                  🔊
+                </button>
+              </div>
+              
+              <div class="bg-white dark:bg-slate-900 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-2 shadow-sm">
+                <div class="flex-1 min-w-0">
+                  <p class="text-xs font-bold text-slate-900 dark:text-white">卡里沛 (慢走 / 再见)</p>
+                  <p class="text-xs font-extrabold text-primary truncate mt-0.5">ག་ལེར་ཕེབས། (Ga Ler Pheb)</p>
+                  
+                  <p class="text-[10px] text-slate-400 mt-0.5">送别向导或藏族主人</p>
+                  
+                </div>
+                <button onclick="speakPhrase('ག་ལེར་ཕེབས། (Ga Ler Pheb)', 'zh-CN')" class="w-8 h-8 rounded-lg bg-primary/10 hover:bg-primary text-primary hover:text-white text-xs font-bold flex items-center justify-center shrink-0 transition">
+                  🔊
+                </button>
+              </div>
+              
+              <div class="bg-white dark:bg-slate-900 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-2 shadow-sm">
+                <div class="flex-1 min-w-0">
+                  <p class="text-xs font-bold text-slate-900 dark:text-white">师傅，请慢一点开，有点晕车</p>
+                  <p class="text-xs font-extrabold text-primary truncate mt-0.5">师傅，山路弯急，麻烦稍微慢点开，谢谢您！</p>
+                  
+                  <p class="text-[10px] text-slate-400 mt-0.5">盘山公路安全提示</p>
+                  
+                </div>
+                <button onclick="speakPhrase('师傅，山路弯急，麻烦稍微慢点开，谢谢您！', 'zh-CN')" class="w-8 h-8 rounded-lg bg-primary/10 hover:bg-primary text-primary hover:text-white text-xs font-bold flex items-center justify-center shrink-0 transition">
+                  🔊
+                </button>
+              </div>
+              
+              <div class="bg-white dark:bg-slate-900 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-2 shadow-sm">
+                <div class="flex-1 min-w-0">
+                  <p class="text-xs font-bold text-slate-900 dark:text-white">请问这里有热水/吸氧机吗？</p>
+                  <p class="text-xs font-extrabold text-primary truncate mt-0.5">老板，请问店里有热水或者可以借用一下医用制氧机吗？</p>
+                  
+                  <p class="text-[10px] text-slate-400 mt-0.5">高原应急问询</p>
+                  
+                </div>
+                <button onclick="speakPhrase('老板，请问店里有热水或者可以借用一下医用制氧机吗？', 'zh-CN')" class="w-8 h-8 rounded-lg bg-primary/10 hover:bg-primary text-primary hover:text-white text-xs font-bold flex items-center justify-center shrink-0 transition">
+                  🔊
+                </button>
+              </div>
+              
+              <div class="bg-white dark:bg-slate-900 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-2 shadow-sm">
+                <div class="flex-1 min-w-0">
+                  <p class="text-xs font-bold text-slate-900 dark:text-white">少油少盐，不加味精 (餐饮叮嘱)</p>
+                  <p class="text-xs font-extrabold text-primary truncate mt-0.5">服务员，我们几个高原肠胃弱，麻烦菜里少放油盐和辣椒，谢谢！</p>
+                  
+                  <p class="text-[10px] text-slate-400 mt-0.5">高原饮食护胃指南</p>
+                  
+                </div>
+                <button onclick="speakPhrase('服务员，我们几个高原肠胃弱，麻烦菜里少放油盐和辣椒，谢谢！', 'zh-CN')" class="w-8 h-8 rounded-lg bg-primary/10 hover:bg-primary text-primary hover:text-white text-xs font-bold flex items-center justify-center shrink-0 transition">
+                  🔊
+                </button>
+              </div>
+              
+            </div>
+          </div>
+          
+        </div>
+
+        
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Driver / Large Card Modal -->
+  <div id="driverModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="w-full max-w-lg bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-2xl border border-slate-200 dark:border-slate-700 space-y-4 text-center">
+      <div class="text-[11px] font-extrabold uppercase tracking-widest text-slate-400">
+        🚗 请向司机或问路人直接出示本卡片
+      </div>
+      <div class="py-4 border-y border-slate-200 dark:border-slate-800">
+        <h2 id="driverCardTitle" class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white leading-tight"></h2>
+        <p id="driverCardSub" class="text-sm font-bold text-primary mt-2"></p>
+        <p id="driverCardAddress" class="text-xs text-slate-500 dark:text-slate-400 mt-2 px-4"></p>
+      </div>
+      <div class="flex gap-2">
+        <button onclick="speakDriverCard()" class="flex-1 py-3 rounded-2xl bg-primary text-white font-extrabold text-sm shadow-lg hover:opacity-90 active:scale-95 transition flex items-center justify-center gap-1.5">
+          <span>🔊</span> 朗读播报
+        </button>
+        <button onclick="toggleModal('driverModal')" class="flex-1 py-3 rounded-2xl bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-extrabold text-sm hover:bg-slate-300 dark:hover:bg-slate-700 active:scale-95 transition">
+          关闭
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Emergency Contacts Modal -->
+  <div id="emergencyModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="w-full max-w-md bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-2xl border border-slate-200 dark:border-slate-700 space-y-4">
+      <div class="flex items-center justify-between">
+        <h3 class="text-base font-black text-rose-600 dark:text-rose-400 flex items-center gap-2">
+          <span>🆘</span> 紧急求助与医疗联络人
+        </h3>
+        <button onclick="toggleModal('emergencyModal')" class="text-slate-400 hover:text-slate-600 p-1">✕</button>
+      </div>
+      <p class="text-xs text-slate-500 leading-relaxed">
+        如遇人身安全、高反重症或紧急证件遗失，可直接点击下方按钮发起直拨呼叫：
+      </p>
+      <div class="space-y-2">
+        
+        <a href="tel:0887-8222120" class="p-3 rounded-2xl bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 flex items-center justify-between transition group">
+          <div>
+            <div class="text-xs font-black text-slate-900 dark:text-white">急诊急救中心 (高反重症救治)</div>
+            <div class="text-[10px] text-slate-500">迪庆藏族自治州人民医院 (香格里拉) · 香格里拉市长征大道，具备高原重症与高压氧舱</div>
+          </div>
+          <div class="text-xs font-extrabold text-rose-600 font-mono group-hover:scale-105 transition">
+            📞 0887-8222120
+          </div>
+        </a>
+        
+        <a href="tel:0887-8412120" class="p-3 rounded-2xl bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 flex items-center justify-between transition group">
+          <div>
+            <div class="text-xs font-black text-slate-900 dark:text-white">急诊热线</div>
+            <div class="text-[10px] text-slate-500">德钦县人民医院 (梅里雪山前哨) · 德钦县升平镇，覆盖梅里雪山/飞来寺区域救援</div>
+          </div>
+          <div class="text-xs font-extrabold text-rose-600 font-mono group-hover:scale-105 transition">
+            📞 0887-8412120
+          </div>
+        </a>
+        
+        <a href="tel:0887-7728110" class="p-3 rounded-2xl bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 flex items-center justify-between transition group">
+          <div>
+            <div class="text-xs font-black text-slate-900 dark:text-white">南极洛野外救援与越野调度</div>
+            <div class="text-[10px] text-slate-500">维西县巴迪乡南极洛向导救援站 · 阿海洛村越野车队与向导站</div>
+          </div>
+          <div class="text-xs font-extrabold text-rose-600 font-mono group-hover:scale-105 transition">
+            📞 0887-7728110
+          </div>
+        </a>
+        
+        <a href="tel:120" class="p-3 rounded-2xl bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 flex items-center justify-between transition group">
+          <div>
+            <div class="text-xs font-black text-slate-900 dark:text-white">医疗急救</div>
+            <div class="text-[10px] text-slate-500">全国统一急救 · 报警 110 / 救援 119</div>
+          </div>
+          <div class="text-xs font-extrabold text-rose-600 font-mono group-hover:scale-105 transition">
+            📞 120
+          </div>
+        </a>
+        
+      </div>
+      <button onclick="toggleModal('emergencyModal')" class="w-full py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs">
+        返回行程
+      </button>
+    </div>
+  </div>
+
+  <!-- Data Injection -->
+  <script>
+    const TRIP_DATA = {"id": "yunnan-2026", "titleZh": "2026 滇西北秘境巅峰穿越 11 日随行伴侣", "titleEn": "2026 Yunnan Northwest Frontier 11-Day Expedition Companion", "subtitleZh": "丽江古城 · 虎跳峡高路 · 哈巴黑海 · 香格里拉松赞林 · 德钦梅里日照金山 · 南极洛高山神湖", "startDate": "2026-10-04", "endDate": "2026-10-14", "totalDays": 11, "networkProfile": "cn_domestic", "themeColor": "#059669", "secondaryColor": "#047857", "accentColor": "#10b981", "currency": "CNY", "currencySymbol": "¥", "emergencyContacts": [{"roleZh": "迪庆藏族自治州人民医院 (香格里拉)", "nameZh": "急诊急救中心 (高反重症救治)", "phone": "0887-8222120", "noteZh": "香格里拉市长征大道，具备高原重症与高压氧舱"}, {"roleZh": "德钦县人民医院 (梅里雪山前哨)", "nameZh": "急诊热线", "phone": "0887-8412120", "noteZh": "德钦县升平镇，覆盖梅里雪山/飞来寺区域救援"}, {"roleZh": "维西县巴迪乡南极洛向导救援站", "nameZh": "南极洛野外救援与越野调度", "phone": "0887-7728110", "noteZh": "阿海洛村越野车队与向导站"}, {"roleZh": "全国统一急救", "nameZh": "医疗急救", "phone": "120", "noteZh": "报警 110 / 救援 119"}], "layers": [{"id": "all", "nameZh": "🏔️ 全程 11 日总览", "nameEn": "All 24 Stops", "desc": "从金沙江峡谷到梅里卡瓦格博雪峰、南极洛九湖的全景纵贯"}, {"id": "lijiang", "nameZh": "🏮 丽江·古城与雪山前哨 (D1–D2)", "nameEn": "Lijiang", "desc": "大研古城、白沙壁画、玉龙雪山与纳西东巴文化"}, {"id": "gorge_haba", "nameZh": "🌊 虎跳峡与哈巴黑海 (D3–D4)", "nameEn": "Tiger Leaping Gorge & Haba", "desc": "金沙江狂涛高路徒步、哈巴高山牧场与黑海高山湖泊 (4100m)"}, {"id": "shangrila", "nameZh": "📿 香格里拉·圣境日月 (D4–D6)", "nameEn": "Shangri-La & Wudihu", "desc": "独克宗月光城、松赞林寺梵音、普达措属都湖与无底湖秘境"}, {"id": "meili", "nameZh": "🌄 德钦·梅里雪山日照金山 (D7–D8)", "nameEn": "Meili Snow Mountain", "desc": "白马雪山垭口 (4292m)、飞来寺观景台卡瓦格博峰、茨中百年天主教堂"}, {"id": "nanjiluo", "nameZh": "🌲 维西·南极洛阿海洛九湖 (D9–D11)", "nameEn": "Nanjiluo Sacred Lakes", "desc": "孔雀山垭口越野冲刺、三号湖到九号湖天堂眼、塔城金丝猴与丽江返程"}], "altitudeProfile": [{"day": "D1", "loc": "丽江机场/古城", "altitude": 2400, "level": "safe", "desc": "适应期，忌剧烈运动"}, {"day": "D2", "loc": "玉龙雪山云杉坪", "altitude": 3100, "level": "moderate", "desc": "开始轻微缺氧，备好便携氧气"}, {"day": "D3", "loc": "虎跳峡高路/哈巴村", "altitude": 2700, "level": "safe", "desc": "峡谷上升，步幅均匀"}, {"day": "D4", "loc": "哈巴黑海湖", "altitude": 4100, "level": "warning", "desc": "高海拔牧场，注意防风保暖"}, {"day": "D5", "loc": "香格里拉独克宗", "altitude": 3300, "level": "moderate", "desc": "夜晚注意保暖，不饮酒"}, {"day": "D6", "loc": "格咱乡无底湖", "altitude": 3800, "level": "moderate", "desc": "轻徒步，控制心率在120以内"}, {"day": "D7", "loc": "白马雪山垭口/飞来寺", "altitude": 4292, "level": "warning", "desc": "车行垭口短暂停留拍照，宿飞来寺 3450m"}, {"day": "D8", "loc": "茨中百年教堂/巴迪", "altitude": 2000, "level": "safe", "desc": "下降至澜沧江河谷，醉氧舒适"}, {"day": "D9", "loc": "南极洛 3-9 号高山湖", "altitude": 4250, "level": "warning", "desc": "全天徒步核心，带足热饮与路粮"}, {"day": "D10", "loc": "塔城滇金丝猴/石鼓", "altitude": 2800, "level": "safe", "desc": "森林氧吧，体力自然恢复"}, {"day": "D11", "loc": "丽江返程", "altitude": 2240, "level": "safe", "desc": "圆满收官"}], "survivalPhrases": {"TIBETAN": [{"zh": "扎西德勒 (吉祥如意 / 见面问候)", "local": "བཀྲ་ཤིས་བདེ་ལེགས། (Tashi Delek)", "lang": "zh-CN", "phonetic": "Zha-Xi-De-Le", "note": "藏区最万能礼貌祝福语，双手合十更佳"}, {"zh": "突及切 (非常感谢)", "local": "ཐུགས་རྗེ་ཆེ། (Thuk Je Che)", "lang": "zh-CN", "phonetic": "Tu-Ji-Qie", "note": "接受酥油茶或哈达时致谢"}, {"zh": "卡里沛 (慢走 / 再见)", "local": "ག་ལེར་ཕེབས། (Ga Ler Pheb)", "lang": "zh-CN", "phonetic": "Ka-Li-Pei", "note": "送别向导或藏族主人"}, {"zh": "师傅，请慢一点开，有点晕车", "local": "师傅，山路弯急，麻烦稍微慢点开，谢谢您！", "lang": "zh-CN", "phonetic": "Shi-Fu, Qing-Man-Dian", "note": "盘山公路安全提示"}, {"zh": "请问这里有热水/吸氧机吗？", "local": "老板，请问店里有热水或者可以借用一下医用制氧机吗？", "lang": "zh-CN", "phonetic": "Qing-Wen-You-Re-Shui-Ma", "note": "高原应急问询"}, {"zh": "少油少盐，不加味精 (餐饮叮嘱)", "local": "服务员，我们几个高原肠胃弱，麻烦菜里少放油盐和辣椒，谢谢！", "lang": "zh-CN", "phonetic": "Shao-You-Shao-Yan", "note": "高原饮食护胃指南"}]}, "places": [{"id": 101, "layer": "lijiang", "country": "CN", "city": "丽江市", "altitudeMeters": 2240, "didiAvailable": true, "layerZh": "🏮 丽江·古城与雪山前哨 (D1–D2)", "layerEn": "L1 Lijiang Old Town (D1–D2)", "day": "D1 (10/04)", "dayNum": [1], "cat": "airport", "catZh": "机场", "catEn": "Airport", "nameZh": "丽江三义国际机场 (LJG)", "nameEn": "Lijiang Sanyi International Airport (LJG)", "baikeZh": "丽江三义国际机场", "xhsSearch": "丽江三义机场落地攻略", "ctripSearch": "丽江三义国际机场", "storyZh": "滇西北旅程的空中门户。机场位于七河乡，海拔 2240 米。走出航站楼即可远眺玉龙雪山巍峨银白的山脊。专车已在贵宾停车场等候，40 分钟直达丽江古城。", "lat": 26.6797, "lng": 100.2458, "address": "云南省丽江市古城区七河乡金沙路", "hours": "24小时运营 | 专车全天候接机", "note": "⚠️ 初抵高原严禁奔跑或剧烈搬运大件行李；今晚避免洗热水澡过长，多喝温水促循环。", "navUrl": "https://uri.amap.com/marker?position=100.2458,26.6797&name=%E4%B8%BD%E6%B1%9F%E4%B8%89%E4%B9%89%E5%9B%BD%E9%99%85%E6%9C%BA%E5%9C%BA%20%28LJG%29&coordinate=wgs84&callnative=1", "rideInfo": {"type": "didi", "available": true, "label": "滴滴出行", "url": "https://common.diditaxi.com.cn/general/webLBSNavigation?lat=26.6797&lng=100.2458&name=%E4%B8%BD%E6%B1%9F%E4%B8%89%E4%B9%89%E5%9B%BD%E9%99%85%E6%9C%BA%E5%9C%BA%20%28LJG%29", "fallbackNote": "高原偏远山路建议提前联系统包车师傅或酒店前台叫车"}, "knowledgeLinks": {"baike": "https://baike.baidu.com/item/%E4%B8%BD%E6%B1%9F%E4%B8%89%E4%B9%89%E5%9B%BD%E9%99%85%E6%9C%BA%E5%9C%BA", "baikeLabel": "百度百科", "xhs": "https://www.xiaohongshu.com/search_result?keyword=%E4%B8%BD%E6%B1%9F%E4%B8%89%E4%B9%89%E6%9C%BA%E5%9C%BA%E8%90%BD%E5%9C%B0%E6%94%BB%E7%95%A5", "xhsLabel": "小红书攻略", "ctrip": "https://m.ctrip.com/webapp/you/search/result.html?keyword=%E4%B8%BD%E6%B1%9F%E4%B8%89%E4%B9%89%E5%9B%BD%E9%99%85%E6%9C%BA%E5%9C%BA", "ctripLabel": "携程指南"}}, {"id": 102, "layer": "lijiang", "country": "CN", "city": "丽江市", "altitudeMeters": 2416, "didiAvailable": true, "layerZh": "🏮 丽江·古城与雪山前哨 (D1–D2)", "layerEn": "L1 Lijiang Old Town (D1–D2)", "day": "D1 (10/04)", "dayNum": [1], "cat": "hotel", "catZh": "高端酒店/隐世宿集", "catEn": "Luxury Retreat", "nameZh": "丽江大研安缦酒店 (Aman Dayan)", "nameEn": "Amandayan Lijiang", "baikeZh": "丽江大研安缦", "xhsSearch": "大研安缦入住体验", "ctripSearch": "丽江大研安缦", "storyZh": "依狮子山山脊而建，俯瞰大研古城错落有致的青瓦屋顶与青石巷陌。采用云南本土纳西松木与石材，庭院幽深，配有恒温泳池与顶级普洱茶阁。", "lat": 26.8711, "lng": 100.2319, "address": "云南省丽江市古城区狮子山顶大研古城北门狮山路29号", "hours": "入住 15:00 | 退房 12:00", "note": "🌟 顶层茶室是拍摄古城晨光烟火与黄昏蓝调的绝美机位；房内提供地暖与加湿弥散式供氧。", "navUrl": "https://uri.amap.com/marker?position=100.2319,26.8711&name=%E4%B8%BD%E6%B1%9F%E5%A4%A7%E7%A0%94%E5%AE%89%E7%BC%A6%E9%85%92%E5%BA%97%20%28Aman%20Dayan%29&coordinate=wgs84&callnative=1", "rideInfo": {"type": "didi", "available": true, "label": "滴滴出行", "url": "https://common.diditaxi.com.cn/general/webLBSNavigation?lat=26.8711&lng=100.2319&name=%E4%B8%BD%E6%B1%9F%E5%A4%A7%E7%A0%94%E5%AE%89%E7%BC%A6%E9%85%92%E5%BA%97%20%28Aman%20Dayan%29", "fallbackNote": "高原偏远山路建议提前联系统包车师傅或酒店前台叫车"}, "knowledgeLinks": {"baike": "https://baike.baidu.com/item/%E4%B8%BD%E6%B1%9F%E5%A4%A7%E7%A0%94%E5%AE%89%E7%BC%A6", "baikeLabel": "百度百科", "xhs": "https://www.xiaohongshu.com/search_result?keyword=%E5%A4%A7%E7%A0%94%E5%AE%89%E7%BC%A6%E5%85%A5%E4%BD%8F%E4%BD%93%E9%AA%8C", "xhsLabel": "小红书攻略", "ctrip": "https://m.ctrip.com/webapp/you/search/result.html?keyword=%E4%B8%BD%E6%B1%9F%E5%A4%A7%E7%A0%94%E5%AE%89%E7%BC%A6", "ctripLabel": "携程指南"}}, {"id": 103, "layer": "lijiang", "country": "CN", "city": "丽江市", "altitudeMeters": 2470, "didiAvailable": true, "layerZh": "🏮 丽江·古城与雪山前哨 (D1–D2)", "layerEn": "L1 Lijiang Old Town (D1–D2)", "day": "D2 (10/05)", "dayNum": [2], "cat": "sight", "catZh": "历史古迹/文化", "catEn": "Culture & Heritage", "nameZh": "白沙古镇与纳西壁画", "nameEn": "Baisha Ancient Town & Frescoes", "baikeZh": "白沙古镇", "xhsSearch": "白沙古镇拍照机位", "ctripSearch": "白沙古镇", "storyZh": "纳西族木氏土司的发祥地，比大研更古朴静谧。抬头即是雪山倒影。大宝积宫内保存有明代纳西壁画，融汉、藏、纳西东巴教于一体。", "lat": 26.9583, "lng": 100.2185, "address": "云南省丽江市玉龙纳西族自治县白沙镇三家村", "hours": "全天开放 | 壁画展馆 08:30–17:30", "note": "☕ 推荐在二楼咖啡馆露台点一杯云南日晒手冲，以玉龙雪山十三峰为背景打卡。", "navUrl": "https://uri.amap.com/marker?position=100.2185,26.9583&name=%E7%99%BD%E6%B2%99%E5%8F%A4%E9%95%87%E4%B8%8E%E7%BA%B3%E8%A5%BF%E5%A3%81%E7%94%BB&coordinate=wgs84&callnative=1", "rideInfo": {"type": "didi", "available": true, "label": "滴滴出行", "url": "https://common.diditaxi.com.cn/general/webLBSNavigation?lat=26.9583&lng=100.2185&name=%E7%99%BD%E6%B2%99%E5%8F%A4%E9%95%87%E4%B8%8E%E7%BA%B3%E8%A5%BF%E5%A3%81%E7%94%BB", "fallbackNote": "高原偏远山路建议提前联系统包车师傅或酒店前台叫车"}, "knowledgeLinks": {"baike": "https://baike.baidu.com/item/%E7%99%BD%E6%B2%99%E5%8F%A4%E9%95%87", "baikeLabel": "百度百科", "xhs": "https://www.xiaohongshu.com/search_result?keyword=%E7%99%BD%E6%B2%99%E5%8F%A4%E9%95%87%E6%8B%8D%E7%85%A7%E6%9C%BA%E4%BD%8D", "xhsLabel": "小红书攻略", "ctrip": "https://m.ctrip.com/webapp/you/search/result.html?keyword=%E7%99%BD%E6%B2%99%E5%8F%A4%E9%95%87", "ctripLabel": "携程指南"}}, {"id": 104, "layer": "lijiang", "country": "CN", "city": "丽江市", "altitudeMeters": 3240, "didiAvailable": false, "layerZh": "🏮 丽江·古城与雪山前哨 (D1–D2)", "layerEn": "L1 Lijiang Old Town (D1–D2)", "day": "D2 (10/05)", "dayNum": [2], "cat": "sight", "catZh": "自然景观/雪山", "catEn": "Mountain Nature", "nameZh": "玉龙雪山云杉坪与蓝月谷", "nameEn": "Jade Dragon Snow Mountain: Spruce Meadow & Blue Moon Valley", "baikeZh": "玉龙雪山", "xhsSearch": "蓝月谷拍照穿搭机位", "ctripSearch": "玉龙雪山景区", "storyZh": "玉龙雪山东麓的原始森林巨型草甸，被纳西人称为「情死之地·玉龙第三国」。山脚下的蓝月谷由雪山冰川融水汇聚而成，水质呈梦幻蒂芙尼蓝色。", "lat": 27.1264, "lng": 100.2392, "address": "云南省丽江市玉龙纳西族自治县玉龙雪山国家重点风景名胜区内", "hours": "景区开放 07:00–17:00 | 索道运营 07:30–16:00", "note": "⚠️ 蓝月谷石阶漫步请放缓节奏；若遇阳光折射湖水最通透，午间 11:00–14:00 光线最佳。", "navUrl": "https://uri.amap.com/marker?position=100.2392,27.1264&name=%E7%8E%89%E9%BE%99%E9%9B%AA%E5%B1%B1%E4%BA%91%E6%9D%89%E5%9D%AA%E4%B8%8E%E8%93%9D%E6%9C%88%E8%B0%B7&coordinate=wgs84&callnative=1", "rideInfo": {"type": "didi", "available": false, "label": "滴滴出行", "url": "https://common.diditaxi.com.cn/general/webLBSNavigation?lat=27.1264&lng=100.2392&name=%E7%8E%89%E9%BE%99%E9%9B%AA%E5%B1%B1%E4%BA%91%E6%9D%89%E5%9D%AA%E4%B8%8E%E8%93%9D%E6%9C%88%E8%B0%B7", "fallbackNote": "高原偏远山路建议提前联系统包车师傅或酒店前台叫车"}, "knowledgeLinks": {"baike": "https://baike.baidu.com/item/%E7%8E%89%E9%BE%99%E9%9B%AA%E5%B1%B1", "baikeLabel": "百度百科", "xhs": "https://www.xiaohongshu.com/search_result?keyword=%E8%93%9D%E6%9C%88%E8%B0%B7%E6%8B%8D%E7%85%A7%E7%A9%BF%E6%90%AD%E6%9C%BA%E4%BD%8D", "xhsLabel": "小红书攻略", "ctrip": "https://m.ctrip.com/webapp/you/search/result.html?keyword=%E7%8E%89%E9%BE%99%E9%9B%AA%E5%B1%B1%E6%99%AF%E5%8C%BA", "ctripLabel": "携程指南"}}, {"id": 105, "layer": "gorge_haba", "country": "CN", "city": "迪庆藏族自治州", "altitudeMeters": 2100, "didiAvailable": false, "layerZh": "🌊 虎跳峡与哈巴黑海 (D3–D4)", "layerEn": "L2 Tiger Leaping Gorge & Haba (D3–D4)", "day": "D3 (10/06)", "dayNum": [3], "cat": "sight", "catZh": "峡谷徒步/奇观", "catEn": "Canyon Trekking", "nameZh": "虎跳峡高路徒步与中虎跳狂涛", "nameEn": "Tiger Leaping Gorge High Trail & Middle Rapids", "baikeZh": "虎跳峡", "xhsSearch": "虎跳峡高路精华段徒步", "ctripSearch": "虎跳峡景区", "storyZh": "世界十大经典徒步路线之一。金沙江在玉龙雪山与哈巴雪山两大 5000 米+巨峰之间劈开深邃峡谷，落差达 3900 米。徒步高路俯瞰江水轰鸣撕裂巨石。", "lat": 27.2415, "lng": 100.1258, "address": "云南省迪庆州香格里拉市虎跳峡镇", "hours": "景区 08:00–17:30", "note": "🥾 徒步请穿抓地力强的 Vibram 底徒步鞋；高血压/恐高者可乘专车走下虎跳平缓观景台。", "navUrl": "https://uri.amap.com/marker?position=100.1258,27.2415&name=%E8%99%8E%E8%B7%B3%E5%B3%A1%E9%AB%98%E8%B7%AF%E5%BE%92%E6%AD%A5%E4%B8%8E%E4%B8%AD%E8%99%8E%E8%B7%B3%E7%8B%82%E6%B6%9B&coordinate=wgs84&callnative=1", "rideInfo": {"type": "didi", "available": false, "label": "滴滴出行", "url": "https://common.diditaxi.com.cn/general/webLBSNavigation?lat=27.2415&lng=100.1258&name=%E8%99%8E%E8%B7%B3%E5%B3%A1%E9%AB%98%E8%B7%AF%E5%BE%92%E6%AD%A5%E4%B8%8E%E4%B8%AD%E8%99%8E%E8%B7%B3%E7%8B%82%E6%B6%9B", "fallbackNote": "高原偏远山路建议提前联系统包车师傅或酒店前台叫车"}, "knowledgeLinks": {"baike": "https://baike.baidu.com/item/%E8%99%8E%E8%B7%B3%E5%B3%A1", "baikeLabel": "百度百科", "xhs": "https://www.xiaohongshu.com/search_result?keyword=%E8%99%8E%E8%B7%B3%E5%B3%A1%E9%AB%98%E8%B7%AF%E7%B2%BE%E5%8D%8E%E6%AE%B5%E5%BE%92%E6%AD%A5", "xhsLabel": "小红书攻略", "ctrip": "https://m.ctrip.com/webapp/you/search/result.html?keyword=%E8%99%8E%E8%B7%B3%E5%B3%A1%E6%99%AF%E5%8C%BA", "ctripLabel": "携程指南"}}, {"id": 106, "layer": "gorge_haba", "country": "CN", "city": "迪庆藏族自治州", "altitudeMeters": 2680, "didiAvailable": false, "layerZh": "🌊 虎跳峡与哈巴黑海 (D3–D4)", "layerEn": "L2 Tiger Leaping Gorge & Haba (D3–D4)", "day": "D3 (10/06)", "dayNum": [3], "cat": "hotel", "catZh": "高山野奢客栈", "catEn": "Mountain Lodge", "nameZh": "哈巴村隐世山居客栈", "nameEn": "Haba Snow Mountain Village Retreat", "baikeZh": "哈巴村", "xhsSearch": "哈巴村向导住宿", "ctripSearch": "哈巴雪山民宿", "storyZh": "哈巴雪山西南麓的多民族共居古村落，是攀登哈巴雪山（5396m）与探索黑海湖的后勤大本营。推窗可见雪峰金顶与璀璨银河。", "lat": 27.3512, "lng": 100.1086, "address": "云南省迪庆州香格里拉市三坝纳西族乡哈巴村", "hours": "24小时接待", "note": "🌌 晚上 21:00 之后肉眼可见横跨天际的秋季银河；向导团队今晚开展高反筛查与明晨装备点检。", "navUrl": "https://uri.amap.com/marker?position=100.1086,27.3512&name=%E5%93%88%E5%B7%B4%E6%9D%91%E9%9A%90%E4%B8%96%E5%B1%B1%E5%B1%85%E5%AE%A2%E6%A0%88&coordinate=wgs84&callnative=1", "rideInfo": {"type": "didi", "available": false, "label": "滴滴出行", "url": "https://common.diditaxi.com.cn/general/webLBSNavigation?lat=27.3512&lng=100.1086&name=%E5%93%88%E5%B7%B4%E6%9D%91%E9%9A%90%E4%B8%96%E5%B1%B1%E5%B1%85%E5%AE%A2%E6%A0%88", "fallbackNote": "高原偏远山路建议提前联系统包车师傅或酒店前台叫车"}, "knowledgeLinks": {"baike": "https://baike.baidu.com/item/%E5%93%88%E5%B7%B4%E6%9D%91", "baikeLabel": "百度百科", "xhs": "https://www.xiaohongshu.com/search_result?keyword=%E5%93%88%E5%B7%B4%E6%9D%91%E5%90%91%E5%AF%BC%E4%BD%8F%E5%AE%BF", "xhsLabel": "小红书攻略", "ctrip": "https://m.ctrip.com/webapp/you/search/result.html?keyword=%E5%93%88%E5%B7%B4%E9%9B%AA%E5%B1%B1%E6%B0%91%E5%AE%BF", "ctripLabel": "携程指南"}}, {"id": 107, "layer": "gorge_haba", "country": "CN", "city": "迪庆藏族自治州", "altitudeMeters": 4100, "didiAvailable": false, "layerZh": "🌊 虎跳峡与哈巴黑海 (D3–D4)", "layerEn": "L2 Tiger Leaping Gorge & Haba (D3–D4)", "day": "D4 (10/07)", "dayNum": [4], "cat": "sight", "catZh": "高山神湖/轻徒步", "catEn": "Alpine Sacred Lake", "nameZh": "哈巴雪山黑海湖高山牧场", "nameEn": "Haba Black Sea Sacred Lake & Alpine Pasture", "baikeZh": "哈巴雪山", "xhsSearch": "哈巴雪山黑海湖骑马徒步", "ctripSearch": "哈巴雪山", "storyZh": "镶嵌在海拔 4100 米云端的冰川融蚀湖，湖水呈深邃黛黑，倒映着哈巴雪峰冰川。湖畔古杜鹃林与高山草甸遍布高山牦牛。", "lat": 27.3698, "lng": 100.1389, "address": "云南省迪庆州香格里拉市三坝乡哈巴雪山海拔4100米处", "hours": "08:00–16:00 (向导陪同安全窗口期)", "note": "⚠️ 核心高海拔区域（4100m）：配备专业高山协作向导与便携氧气，骑马/轻徒步结合，下午14:30前必须下撤。", "navUrl": "https://uri.amap.com/marker?position=100.1389,27.3698&name=%E5%93%88%E5%B7%B4%E9%9B%AA%E5%B1%B1%E9%BB%91%E6%B5%B7%E6%B9%96%E9%AB%98%E5%B1%B1%E7%89%A7%E5%9C%BA&coordinate=wgs84&callnative=1", "rideInfo": {"type": "didi", "available": false, "label": "滴滴出行", "url": "https://common.diditaxi.com.cn/general/webLBSNavigation?lat=27.3698&lng=100.1389&name=%E5%93%88%E5%B7%B4%E9%9B%AA%E5%B1%B1%E9%BB%91%E6%B5%B7%E6%B9%96%E9%AB%98%E5%B1%B1%E7%89%A7%E5%9C%BA", "fallbackNote": "高原偏远山路建议提前联系统包车师傅或酒店前台叫车"}, "knowledgeLinks": {"baike": "https://baike.baidu.com/item/%E5%93%88%E5%B7%B4%E9%9B%AA%E5%B1%B1", "baikeLabel": "百度百科", "xhs": "https://www.xiaohongshu.com/search_result?keyword=%E5%93%88%E5%B7%B4%E9%9B%AA%E5%B1%B1%E9%BB%91%E6%B5%B7%E6%B9%96%E9%AA%91%E9%A9%AC%E5%BE%92%E6%AD%A5", "xhsLabel": "小红书攻略", "ctrip": "https://m.ctrip.com/webapp/you/search/result.html?keyword=%E5%93%88%E5%B7%B4%E9%9B%AA%E5%B1%B1", "ctripLabel": "携程指南"}}, {"id": 108, "layer": "shangrila", "country": "CN", "city": "迪庆藏族自治州", "altitudeMeters": 3300, "didiAvailable": true, "layerZh": "📿 香格里拉·圣境日月 (D4–D6)", "layerEn": "L3 Shangri-La & Wudihu (D4–D6)", "day": "D4 (10/07)", "dayNum": [4], "cat": "sight", "catZh": "藏文化古城", "catEn": "Tibetan Ancient City", "nameZh": "独克宗古城与龟山大转经筒", "nameEn": "Dukezong Ancient Stone Town & Guishan Giant Prayer Wheel", "baikeZh": "独克宗古城", "xhsSearch": "独克宗古城转经筒夜景", "ctripSearch": "独克宗古城", "storyZh": "拥有 1300 年历史的茶马古道重镇，藏语意为「白色月光城」。龟山公园山顶矗立着高 21 米、重达 60 吨的世界最大镏金纯铜转经筒，需十余人齐心合力顺时针推动。", "lat": 27.8142, "lng": 99.7067, "address": "云南省迪庆州香格里拉市康珠大道独克宗古城", "hours": "古城全天开放 | 转经筒亮灯 19:30–22:30", "note": "🙏 顺时针转动经筒三周为全家祈福；古城四方街石板路保留有当年马帮的深深马蹄印。", "navUrl": "https://uri.amap.com/marker?position=99.7067,27.8142&name=%E7%8B%AC%E5%85%8B%E5%AE%97%E5%8F%A4%E5%9F%8E%E4%B8%8E%E9%BE%9F%E5%B1%B1%E5%A4%A7%E8%BD%AC%E7%BB%8F%E7%AD%92&coordinate=wgs84&callnative=1", "rideInfo": {"type": "didi", "available": true, "label": "滴滴出行", "url": "https://common.diditaxi.com.cn/general/webLBSNavigation?lat=27.8142&lng=99.7067&name=%E7%8B%AC%E5%85%8B%E5%AE%97%E5%8F%A4%E5%9F%8E%E4%B8%8E%E9%BE%9F%E5%B1%B1%E5%A4%A7%E8%BD%AC%E7%BB%8F%E7%AD%92", "fallbackNote": "高原偏远山路建议提前联系统包车师傅或酒店前台叫车"}, "knowledgeLinks": {"baike": "https://baike.baidu.com/item/%E7%8B%AC%E5%85%8B%E5%AE%97%E5%8F%A4%E5%9F%8E", "baikeLabel": "百度百科", "xhs": "https://www.xiaohongshu.com/search_result?keyword=%E7%8B%AC%E5%85%8B%E5%AE%97%E5%8F%A4%E5%9F%8E%E8%BD%AC%E7%BB%8F%E7%AD%92%E5%A4%9C%E6%99%AF", "xhsLabel": "小红书攻略", "ctrip": "https://m.ctrip.com/webapp/you/search/result.html?keyword=%E7%8B%AC%E5%85%8B%E5%AE%97%E5%8F%A4%E5%9F%8E", "ctripLabel": "携程指南"}}, {"id": 109, "layer": "shangrila", "country": "CN", "city": "迪庆藏族自治州", "altitudeMeters": 3380, "didiAvailable": true, "layerZh": "📿 香格里拉·圣境日月 (D4–D6)", "layerEn": "L3 Shangri-La & Wudihu (D4–D6)", "day": "D5 (10/08)", "dayNum": [5], "cat": "sight", "catZh": "藏传佛教圣殿", "catEn": "Tibetan Monasteries", "nameZh": "噶丹·松赞林寺 (归化寺)", "nameEn": "Ganden Sumtseling Monastery (Little Potala Palace)", "baikeZh": "噶丹松赞林寺", "xhsSearch": "松赞林寺拍照避坑攻略", "ctripSearch": "松赞林寺", "storyZh": "云南规模最大的藏传佛教格鲁派（黄教）寺院，被誉为「小布达拉宫」。依山而筑，金顶在高原澄澈阳光下熠熠生辉。拉姆央措湖倒映着整座圣寺殿宇。", "lat": 27.8631, "lng": 99.7042, "address": "云南省迪庆州香格里拉市尼旺路3号", "hours": "07:30–18:00", "note": "🪔 入寺殿内禁止拍照，顺时针绕行，勿踩踏门槛；清晨拉姆央措湖畔晨雾缭绕最适合出大片。", "navUrl": "https://uri.amap.com/marker?position=99.7042,27.8631&name=%E5%99%B6%E4%B8%B9%C2%B7%E6%9D%BE%E8%B5%9E%E6%9E%97%E5%AF%BA%20%28%E5%BD%92%E5%8C%96%E5%AF%BA%29&coordinate=wgs84&callnative=1", "rideInfo": {"type": "didi", "available": true, "label": "滴滴出行", "url": "https://common.diditaxi.com.cn/general/webLBSNavigation?lat=27.8631&lng=99.7042&name=%E5%99%B6%E4%B8%B9%C2%B7%E6%9D%BE%E8%B5%9E%E6%9E%97%E5%AF%BA%20%28%E5%BD%92%E5%8C%96%E5%AF%BA%29", "fallbackNote": "高原偏远山路建议提前联系统包车师傅或酒店前台叫车"}, "knowledgeLinks": {"baike": "https://baike.baidu.com/item/%E5%99%B6%E4%B8%B9%E6%9D%BE%E8%B5%9E%E6%9E%97%E5%AF%BA", "baikeLabel": "百度百科", "xhs": "https://www.xiaohongshu.com/search_result?keyword=%E6%9D%BE%E8%B5%9E%E6%9E%97%E5%AF%BA%E6%8B%8D%E7%85%A7%E9%81%BF%E5%9D%91%E6%94%BB%E7%95%A5", "xhsLabel": "小红书攻略", "ctrip": "https://m.ctrip.com/webapp/you/search/result.html?keyword=%E6%9D%BE%E8%B5%9E%E6%9E%97%E5%AF%BA", "ctripLabel": "携程指南"}}, {"id": 110, "layer": "shangrila", "country": "CN", "city": "迪庆藏族自治州", "altitudeMeters": 3820, "didiAvailable": false, "layerZh": "📿 香格里拉·圣境日月 (D4–D6)", "layerEn": "L3 Shangri-La & Wudihu (D4–D6)", "day": "D6 (10/09)", "dayNum": [6], "cat": "sight", "catZh": "高原秘境水域", "catEn": "Pristine Wilderness Lake", "nameZh": "格咱乡无底湖 (沃迪错秘境)", "nameEn": "Wudihu Emerald Lake (Woditsuo Hidden Gem)", "baikeZh": "香格里拉无底湖", "xhsSearch": "香格里拉无底湖自驾路况", "ctripSearch": "无底湖", "storyZh": "深藏在格咱乡原始森林腹地的翡翠秘境，藏语意为「松树环绕的深潭」。湖畔古松挂满树胡子（松萝，极净空气指标），湖水随光线变幻孔雀绿与宝石蓝。", "lat": 28.1824, "lng": 99.8893, "address": "云南省迪庆州香格里拉市格咱乡翁上村向北25公里", "hours": "08:30–17:00", "note": "🏕️ 沿湖木栈道徒步一圈约 1.5 小时，无手机信号，享受与世隔绝的静谧；随手带走全部垃圾保护脆弱生态。", "navUrl": "https://uri.amap.com/marker?position=99.8893,28.1824&name=%E6%A0%BC%E5%92%B1%E4%B9%A1%E6%97%A0%E5%BA%95%E6%B9%96%20%28%E6%B2%83%E8%BF%AA%E9%94%99%E7%A7%98%E5%A2%83%29&coordinate=wgs84&callnative=1", "rideInfo": {"type": "didi", "available": false, "label": "滴滴出行", "url": "https://common.diditaxi.com.cn/general/webLBSNavigation?lat=28.1824&lng=99.8893&name=%E6%A0%BC%E5%92%B1%E4%B9%A1%E6%97%A0%E5%BA%95%E6%B9%96%20%28%E6%B2%83%E8%BF%AA%E9%94%99%E7%A7%98%E5%A2%83%29", "fallbackNote": "高原偏远山路建议提前联系统包车师傅或酒店前台叫车"}, "knowledgeLinks": {"baike": "https://baike.baidu.com/item/%E9%A6%99%E6%A0%BC%E9%87%8C%E6%8B%89%E6%97%A0%E5%BA%95%E6%B9%96", "baikeLabel": "百度百科", "xhs": "https://www.xiaohongshu.com/search_result?keyword=%E9%A6%99%E6%A0%BC%E9%87%8C%E6%8B%89%E6%97%A0%E5%BA%95%E6%B9%96%E8%87%AA%E9%A9%BE%E8%B7%AF%E5%86%B5", "xhsLabel": "小红书攻略", "ctrip": "https://m.ctrip.com/webapp/you/search/result.html?keyword=%E6%97%A0%E5%BA%95%E6%B9%96", "ctripLabel": "携程指南"}}, {"id": 111, "layer": "meili", "country": "CN", "city": "迪庆藏族自治州", "altitudeMeters": 4292, "didiAvailable": false, "layerZh": "🌄 德钦·梅里雪山日照金山 (D7–D8)", "layerEn": "L4 Meili Snow Mountain (D7–D8)", "day": "D7 (10/10)", "dayNum": [7], "cat": "sight", "catZh": "雪山垭口/地标", "catEn": "Mountain Pass", "nameZh": "白马雪山国家级保护区 4292 垭口", "nameEn": "Baima Snow Mountain Pass (4,292m)", "baikeZh": "白马雪山国家级自然保护区", "xhsSearch": "白马雪山4292垭口打卡", "ctripSearch": "白马雪山", "storyZh": "滇藏公路（214国道）横跨青藏高原南缘的关键咽喉。在此挂满五彩风马旗的垭口，北望梅里雪山十三峰横亘天际，南瞰云海翻腾。秋季层林尽染金黄红叶。", "lat": 28.3496, "lng": 99.0345, "address": "云南省迪庆州德钦县214国道白马雪山垭口观景台", "hours": "全天开放 | 视天气风雪路况通行", "note": "🚩 海拔 4292 米，风大温低；建议停留不超过 20 分钟拍照即可返回车内，随身穿防风羽绒冲锋衣。", "navUrl": "https://uri.amap.com/marker?position=99.0345,28.3496&name=%E7%99%BD%E9%A9%AC%E9%9B%AA%E5%B1%B1%E5%9B%BD%E5%AE%B6%E7%BA%A7%E4%BF%9D%E6%8A%A4%E5%8C%BA%204292%20%E5%9E%AD%E5%8F%A3&coordinate=wgs84&callnative=1", "rideInfo": {"type": "didi", "available": false, "label": "滴滴出行", "url": "https://common.diditaxi.com.cn/general/webLBSNavigation?lat=28.3496&lng=99.0345&name=%E7%99%BD%E9%A9%AC%E9%9B%AA%E5%B1%B1%E5%9B%BD%E5%AE%B6%E7%BA%A7%E4%BF%9D%E6%8A%A4%E5%8C%BA%204292%20%E5%9E%AD%E5%8F%A3", "fallbackNote": "高原偏远山路建议提前联系统包车师傅或酒店前台叫车"}, "knowledgeLinks": {"baike": "https://baike.baidu.com/item/%E7%99%BD%E9%A9%AC%E9%9B%AA%E5%B1%B1%E5%9B%BD%E5%AE%B6%E7%BA%A7%E8%87%AA%E7%84%B6%E4%BF%9D%E6%8A%A4%E5%8C%BA", "baikeLabel": "百度百科", "xhs": "https://www.xiaohongshu.com/search_result?keyword=%E7%99%BD%E9%A9%AC%E9%9B%AA%E5%B1%B14292%E5%9E%AD%E5%8F%A3%E6%89%93%E5%8D%A1", "xhsLabel": "小红书攻略", "ctrip": "https://m.ctrip.com/webapp/you/search/result.html?keyword=%E7%99%BD%E9%A9%AC%E9%9B%AA%E5%B1%B1", "ctripLabel": "携程指南"}}, {"id": 112, "layer": "meili", "country": "CN", "city": "迪庆藏族自治州", "altitudeMeters": 3450, "didiAvailable": false, "layerZh": "🌄 德钦·梅里雪山日照金山 (D7–D8)", "layerEn": "L4 Meili Snow Mountain (D7–D8)", "day": "D7 (10/10)", "dayNum": [7, 8], "cat": "hotel", "catZh": "奢华观景酒店", "catEn": "Iconic Panorama View Hotel", "nameZh": "德钦飞来寺观景台 & 隐世山庄", "nameEn": "Feilai Temple Viewing Terrace & Mountain Lodge", "baikeZh": "飞来寺", "xhsSearch": "飞来寺日照金山最佳机位", "ctripSearch": "飞来寺酒店", "storyZh": "直面梅里雪山主峰卡瓦格博（海拔 6740 米，藏传佛教四大神山之首）的最佳观测点。清晨第一缕阳光将洁白雪峰瞬间点染为璀璨辉煌的金红霞光，见者吉祥一整年。", "lat": 28.4418, "lng": 98.8824, "address": "云南省迪庆州德钦县升平镇飞来寺观景台", "hours": "24小时运营 | 日照金山预计晨曦 06:45–07:15", "note": "🌅 明早 06:20 酒店露台架好三脚架拍摄延时；房间内配备地暖、弥散式供氧与加湿系统。", "navUrl": "https://uri.amap.com/marker?position=98.8824,28.4418&name=%E5%BE%B7%E9%92%A6%E9%A3%9E%E6%9D%A5%E5%AF%BA%E8%A7%82%E6%99%AF%E5%8F%B0%20%26%20%E9%9A%90%E4%B8%96%E5%B1%B1%E5%BA%84&coordinate=wgs84&callnative=1", "rideInfo": {"type": "didi", "available": false, "label": "滴滴出行", "url": "https://common.diditaxi.com.cn/general/webLBSNavigation?lat=28.4418&lng=98.8824&name=%E5%BE%B7%E9%92%A6%E9%A3%9E%E6%9D%A5%E5%AF%BA%E8%A7%82%E6%99%AF%E5%8F%B0%20%26%20%E9%9A%90%E4%B8%96%E5%B1%B1%E5%BA%84", "fallbackNote": "高原偏远山路建议提前联系统包车师傅或酒店前台叫车"}, "knowledgeLinks": {"baike": "https://baike.baidu.com/item/%E9%A3%9E%E6%9D%A5%E5%AF%BA", "baikeLabel": "百度百科", "xhs": "https://www.xiaohongshu.com/search_result?keyword=%E9%A3%9E%E6%9D%A5%E5%AF%BA%E6%97%A5%E7%85%A7%E9%87%91%E5%B1%B1%E6%9C%80%E4%BD%B3%E6%9C%BA%E4%BD%8D", "xhsLabel": "小红书攻略", "ctrip": "https://m.ctrip.com/webapp/you/search/result.html?keyword=%E9%A3%9E%E6%9D%A5%E5%AF%BA%E9%85%92%E5%BA%97", "ctripLabel": "携程指南"}}, {"id": 113, "layer": "meili", "country": "CN", "city": "迪庆藏族自治州", "altitudeMeters": 2000, "didiAvailable": false, "layerZh": "🌄 德钦·梅里雪山日照金山 (D7–D8)", "layerEn": "L4 Meili Snow Mountain (D7–D8)", "day": "D8 (10/11)", "dayNum": [8], "cat": "sight", "catZh": "传奇历史遗迹", "catEn": "Historic Vineyard Church", "nameZh": "茨中百年天主教堂与法国传教士玫瑰蜜葡萄园", "nameEn": "Cizhong 100-Year French Catholic Church & Heritage Vineyard", "baikeZh": "茨中天主教堂", "xhsSearch": "茨中天主教堂玫瑰蜜红酒", "ctripSearch": "茨中天主教堂", "storyZh": "澜沧江峡谷里的传奇中西合璧建筑。1909 年由法国传教士历时十年建成，飞檐斗拱配哥特式钟楼。当年传教士带来的法国波尔多古老品种「玫瑰蜜」葡萄在此传承百年，酿造纯正干红。", "lat": 27.9715, "lng": 98.9248, "address": "云南省迪庆州德钦县燕门乡茨中村", "hours": "08:30–17:30", "note": "🍷 海拔降至 2000 米，植被繁茂极度舒适；推荐在藏民庭院品尝现烤藏香猪与私酿玫瑰蜜葡萄酒。", "navUrl": "https://uri.amap.com/marker?position=98.9248,27.9715&name=%E8%8C%A8%E4%B8%AD%E7%99%BE%E5%B9%B4%E5%A4%A9%E4%B8%BB%E6%95%99%E5%A0%82%E4%B8%8E%E6%B3%95%E5%9B%BD%E4%BC%A0%E6%95%99%E5%A3%AB%E7%8E%AB%E7%91%B0%E8%9C%9C%E8%91%A1%E8%90%84%E5%9B%AD&coordinate=wgs84&callnative=1", "rideInfo": {"type": "didi", "available": false, "label": "滴滴出行", "url": "https://common.diditaxi.com.cn/general/webLBSNavigation?lat=27.9715&lng=98.9248&name=%E8%8C%A8%E4%B8%AD%E7%99%BE%E5%B9%B4%E5%A4%A9%E4%B8%BB%E6%95%99%E5%A0%82%E4%B8%8E%E6%B3%95%E5%9B%BD%E4%BC%A0%E6%95%99%E5%A3%AB%E7%8E%AB%E7%91%B0%E8%9C%9C%E8%91%A1%E8%90%84%E5%9B%AD", "fallbackNote": "高原偏远山路建议提前联系统包车师傅或酒店前台叫车"}, "knowledgeLinks": {"baike": "https://baike.baidu.com/item/%E8%8C%A8%E4%B8%AD%E5%A4%A9%E4%B8%BB%E6%95%99%E5%A0%82", "baikeLabel": "百度百科", "xhs": "https://www.xiaohongshu.com/search_result?keyword=%E8%8C%A8%E4%B8%AD%E5%A4%A9%E4%B8%BB%E6%95%99%E5%A0%82%E7%8E%AB%E7%91%B0%E8%9C%9C%E7%BA%A2%E9%85%92", "xhsLabel": "小红书攻略", "ctrip": "https://m.ctrip.com/webapp/you/search/result.html?keyword=%E8%8C%A8%E4%B8%AD%E5%A4%A9%E4%B8%BB%E6%95%99%E5%A0%82", "ctripLabel": "携程指南"}}, {"id": 114, "layer": "nanjiluo", "country": "CN", "city": "迪庆藏族自治州", "altitudeMeters": 2600, "didiAvailable": false, "layerZh": "🌲 维西·南极洛阿海洛九湖 (D9–D11)", "layerEn": "L5 Nanjiluo Sacred Lakes (D9–D11)", "day": "D9 (10/12)", "dayNum": [9], "cat": "sight", "catZh": "秘境徒步大本营", "catEn": "Expedition Basecamp", "nameZh": "巴迪乡阿海洛村 (南极洛越野换乘站)", "nameEn": "Ahailuo Village (Nanjiluo 4x4 Off-Road Staging Camp)", "baikeZh": "南极洛", "xhsSearch": "南极洛越野车预约向导", "ctripSearch": "南极洛", "storyZh": "傈僳语意为「放牧羊群的地方」。这里是进入南极洛核心保护区的唯一合法入口。所有社会车辆在此换乘当地傈僳族专属高底盘四驱皮卡，穿越崎岖弹石路攀升至三号湖。", "lat": 27.8185, "lng": 98.9042, "address": "云南省迪庆州维西傈僳族自治县巴迪乡阿海洛村", "hours": "晨间 07:00–08:30 越野车集结统一进山", "note": "🚙 严禁私家车自驾闯入保护区；已提前锁定本地金牌傈僳族协作向导与越野车队。", "navUrl": "https://uri.amap.com/marker?position=98.9042,27.8185&name=%E5%B7%B4%E8%BF%AA%E4%B9%A1%E9%98%BF%E6%B5%B7%E6%B4%9B%E6%9D%91%20%28%E5%8D%97%E6%9E%81%E6%B4%9B%E8%B6%8A%E9%87%8E%E6%8D%A2%E4%B9%98%E7%AB%99%29&coordinate=wgs84&callnative=1", "rideInfo": {"type": "didi", "available": false, "label": "滴滴出行", "url": "https://common.diditaxi.com.cn/general/webLBSNavigation?lat=27.8185&lng=98.9042&name=%E5%B7%B4%E8%BF%AA%E4%B9%A1%E9%98%BF%E6%B5%B7%E6%B4%9B%E6%9D%91%20%28%E5%8D%97%E6%9E%81%E6%B4%9B%E8%B6%8A%E9%87%8E%E6%8D%A2%E4%B9%98%E7%AB%99%29", "fallbackNote": "高原偏远山路建议提前联系统包车师傅或酒店前台叫车"}, "knowledgeLinks": {"baike": "https://baike.baidu.com/item/%E5%8D%97%E6%9E%81%E6%B4%9B", "baikeLabel": "百度百科", "xhs": "https://www.xiaohongshu.com/search_result?keyword=%E5%8D%97%E6%9E%81%E6%B4%9B%E8%B6%8A%E9%87%8E%E8%BD%A6%E9%A2%84%E7%BA%A6%E5%90%91%E5%AF%BC", "xhsLabel": "小红书攻略", "ctrip": "https://m.ctrip.com/webapp/you/search/result.html?keyword=%E5%8D%97%E6%9E%81%E6%B4%9B", "ctripLabel": "携程指南"}}, {"id": 115, "layer": "nanjiluo", "country": "CN", "city": "迪庆藏族自治州", "altitudeMeters": 3800, "didiAvailable": false, "layerZh": "🌲 维西·南极洛阿海洛九湖 (D9–D11)", "layerEn": "L5 Nanjiluo Sacred Lakes (D9–D11)", "day": "D9 (10/12)", "dayNum": [9], "cat": "sight", "catZh": "高山神湖群", "catEn": "Alpine Glacial Lakes", "nameZh": "南极洛三号湖至五号湖 (高山杜鹃与瀑布群)", "nameEn": "Nanjiluo Lakes 3 to 5 (Alpine Rhododendron & Waterfalls)", "baikeZh": "南极洛", "xhsSearch": "南极洛小环线大环线攻略", "ctripSearch": "南极洛景区", "storyZh": "碧罗雪山深处被上帝遗落的人间仙境。三号湖畔设有木屋与湖心草甸，四号湖巨型飞瀑飞流直下，五号湖倒映着冰川角峰。小环线徒步约 4 公里，老少皆宜。", "lat": 27.8423, "lng": 98.8415, "address": "云南省维西县碧罗雪山国家级自然保护区南极洛核心区", "hours": "09:00–16:00 (保护区严格日落前清场)", "note": "🌊 湖边湿度大，带好防水外壳冲锋衣；无人机需向导报备后顺风起飞，防强阵风。", "navUrl": "https://uri.amap.com/marker?position=98.8415,27.8423&name=%E5%8D%97%E6%9E%81%E6%B4%9B%E4%B8%89%E5%8F%B7%E6%B9%96%E8%87%B3%E4%BA%94%E5%8F%B7%E6%B9%96%20%28%E9%AB%98%E5%B1%B1%E6%9D%9C%E9%B9%83%E4%B8%8E%E7%80%91%E5%B8%83%E7%BE%A4%29&coordinate=wgs84&callnative=1", "rideInfo": {"type": "didi", "available": false, "label": "滴滴出行", "url": "https://common.diditaxi.com.cn/general/webLBSNavigation?lat=27.8423&lng=98.8415&name=%E5%8D%97%E6%9E%81%E6%B4%9B%E4%B8%89%E5%8F%B7%E6%B9%96%E8%87%B3%E4%BA%94%E5%8F%B7%E6%B9%96%20%28%E9%AB%98%E5%B1%B1%E6%9D%9C%E9%B9%83%E4%B8%8E%E7%80%91%E5%B8%83%E7%BE%A4%29", "fallbackNote": "高原偏远山路建议提前联系统包车师傅或酒店前台叫车"}, "knowledgeLinks": {"baike": "https://baike.baidu.com/item/%E5%8D%97%E6%9E%81%E6%B4%9B", "baikeLabel": "百度百科", "xhs": "https://www.xiaohongshu.com/search_result?keyword=%E5%8D%97%E6%9E%81%E6%B4%9B%E5%B0%8F%E7%8E%AF%E7%BA%BF%E5%A4%A7%E7%8E%AF%E7%BA%BF%E6%94%BB%E7%95%A5", "xhsLabel": "小红书攻略", "ctrip": "https://m.ctrip.com/webapp/you/search/result.html?keyword=%E5%8D%97%E6%9E%81%E6%B4%9B%E6%99%AF%E5%8C%BA", "ctripLabel": "携程指南"}}, {"id": 116, "layer": "nanjiluo", "country": "CN", "city": "迪庆藏族自治州", "altitudeMeters": 4250, "didiAvailable": false, "layerZh": "🌲 维西·南极洛阿海洛九湖 (D9–D11)", "layerEn": "L5 Nanjiluo Sacred Lakes (D9–D11)", "day": "D9 (10/12)", "dayNum": [9], "cat": "sight", "catZh": "巅峰秘境/大环线", "catEn": "Heavenly Eye High Pass Lake", "nameZh": "南极洛七号至九号湖 (天堂之眼高山圣湖)", "nameEn": "Nanjiluo Lakes 7 to 9: Eye of Heaven High Ridge", "baikeZh": "南极洛", "xhsSearch": "南极洛大环线九号湖天堂之眼", "ctripSearch": "南极洛", "storyZh": "南极洛大环线徒步的皇冠明珠。翻越海拔 4250 米的山脊垭口，九号湖呈深邃的心形与眼眸状嵌入黑色岩壁之中，云雾缭绕如同通往天界的天堂之眼。", "lat": 27.8592, "lng": 98.8251, "address": "云南省维西县碧罗雪山南极洛九号湖山脊", "hours": "11:00–14:30 (大环线强行关门时间 14:30)", "note": "⚠️ 挑战级高海拔碎石坡；需视当天心率血氧及天气决定是否登顶，安全永远第一。", "navUrl": "https://uri.amap.com/marker?position=98.8251,27.8592&name=%E5%8D%97%E6%9E%81%E6%B4%9B%E4%B8%83%E5%8F%B7%E8%87%B3%E4%B9%9D%E5%8F%B7%E6%B9%96%20%28%E5%A4%A9%E5%A0%82%E4%B9%8B%E7%9C%BC%E9%AB%98%E5%B1%B1%E5%9C%A3%E6%B9%96%29&coordinate=wgs84&callnative=1", "rideInfo": {"type": "didi", "available": false, "label": "滴滴出行", "url": "https://common.diditaxi.com.cn/general/webLBSNavigation?lat=27.8592&lng=98.8251&name=%E5%8D%97%E6%9E%81%E6%B4%9B%E4%B8%83%E5%8F%B7%E8%87%B3%E4%B9%9D%E5%8F%B7%E6%B9%96%20%28%E5%A4%A9%E5%A0%82%E4%B9%8B%E7%9C%BC%E9%AB%98%E5%B1%B1%E5%9C%A3%E6%B9%96%29", "fallbackNote": "高原偏远山路建议提前联系统包车师傅或酒店前台叫车"}, "knowledgeLinks": {"baike": "https://baike.baidu.com/item/%E5%8D%97%E6%9E%81%E6%B4%9B", "baikeLabel": "百度百科", "xhs": "https://www.xiaohongshu.com/search_result?keyword=%E5%8D%97%E6%9E%81%E6%B4%9B%E5%A4%A7%E7%8E%AF%E7%BA%BF%E4%B9%9D%E5%8F%B7%E6%B9%96%E5%A4%A9%E5%A0%82%E4%B9%8B%E7%9C%BC", "xhsLabel": "小红书攻略", "ctrip": "https://m.ctrip.com/webapp/you/search/result.html?keyword=%E5%8D%97%E6%9E%81%E6%B4%9B", "ctripLabel": "携程指南"}}, {"id": 117, "layer": "nanjiluo", "country": "CN", "city": "迪庆藏族自治州", "altitudeMeters": 2800, "didiAvailable": false, "layerZh": "🌲 维西·南极洛阿海洛九湖 (D9–D11)", "layerEn": "L5 Nanjiluo Sacred Lakes (D9–D11)", "day": "D10 (10/13)", "dayNum": [10], "cat": "sight", "catZh": "珍稀国宝生态", "catEn": "National Park Wildlife", "nameZh": "滇金丝猴国家公园 (塔城白济汛)", "nameEn": "Yunnan Snub-Nosed Monkey National Park (Tacheng)", "baikeZh": "滇金丝猴国家公园", "xhsSearch": "塔城滇金丝猴早上喂食时间", "ctripSearch": "滇金丝猴国家公园", "storyZh": "世界上除人类外唯一拥有红唇、最美丽灵动的高山灵长类动物栖息地。公园位于金沙江支流达摩河谷，上午 09:00 是护林员定点投喂观察猴群嬉戏的最佳时段。", "lat": 27.6014, "lng": 99.2842, "address": "云南省迪庆州维西县塔城镇响古箐", "hours": "08:00–12:00 (观猴核心在 09:00–10:30)", "note": "🐒 保持 5 米以上安全距离，严禁投喂人类零食；长焦镜头（70-200mm）是捕获母猴抱幼崽特写的利器。", "navUrl": "https://uri.amap.com/marker?position=99.2842,27.6014&name=%E6%BB%87%E9%87%91%E4%B8%9D%E7%8C%B4%E5%9B%BD%E5%AE%B6%E5%85%AC%E5%9B%AD%20%28%E5%A1%94%E5%9F%8E%E7%99%BD%E6%B5%8E%E6%B1%9B%29&coordinate=wgs84&callnative=1", "rideInfo": {"type": "didi", "available": false, "label": "滴滴出行", "url": "https://common.diditaxi.com.cn/general/webLBSNavigation?lat=27.6014&lng=99.2842&name=%E6%BB%87%E9%87%91%E4%B8%9D%E7%8C%B4%E5%9B%BD%E5%AE%B6%E5%85%AC%E5%9B%AD%20%28%E5%A1%94%E5%9F%8E%E7%99%BD%E6%B5%8E%E6%B1%9B%29", "fallbackNote": "高原偏远山路建议提前联系统包车师傅或酒店前台叫车"}, "knowledgeLinks": {"baike": "https://baike.baidu.com/item/%E6%BB%87%E9%87%91%E4%B8%9D%E7%8C%B4%E5%9B%BD%E5%AE%B6%E5%85%AC%E5%9B%AD", "baikeLabel": "百度百科", "xhs": "https://www.xiaohongshu.com/search_result?keyword=%E5%A1%94%E5%9F%8E%E6%BB%87%E9%87%91%E4%B8%9D%E7%8C%B4%E6%97%A9%E4%B8%8A%E5%96%82%E9%A3%9F%E6%97%B6%E9%97%B4", "xhsLabel": "小红书攻略", "ctrip": "https://m.ctrip.com/webapp/you/search/result.html?keyword=%E6%BB%87%E9%87%91%E4%B8%9D%E7%8C%B4%E5%9B%BD%E5%AE%B6%E5%85%AC%E5%9B%AD", "ctripLabel": "携程指南"}}]};
+    const TILE_CONFIGS = [{"id": "amap", "name": "高德街道", "url": "https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}", "subdomains": "1234", "attribution": "© 高德地图 AutoNavi", "maxZoom": "18"}, {"id": "amap_sat", "name": "高德卫星", "url": "https://webst0{s}.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}", "subdomains": "1234", "attribution": "© 高德地图 AutoNavi 卫星图", "maxZoom": "18"}, {"id": "carto", "name": "浅色极简", "url": "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", "subdomains": "abcd", "attribution": "© CARTO, © OpenStreetMap", "maxZoom": "19"}];
+    const PLACES = TRIP_DATA.places;
+    const NETWORK_PROFILE = TRIP_DATA.networkProfile;
+
+    let map = null;
+    let markers = [];
+    let tileLayers = {};
+    let currentTileId = TILE_CONFIGS[0]?.id || 'default';
+    let activePlace = null;
+    let currentFilteredPlaces = [...PLACES];
+
+    // Initialize Map
+    function initMap() {
+      // Calculate initial center
+      const avgLat = PLACES.reduce((sum, p) => sum + p.lat, 0) / PLACES.length;
+      const avgLng = PLACES.reduce((sum, p) => sum + p.lng, 0) / PLACES.length;
+
+      map = L.map('map', {
+        zoomControl: false,
+        attributionControl: false
+      }).setView([avgLat, avgLng], 6);
+
+      L.control.zoom({ position: 'bottomright' }).addTo(map);
+
+      // Register Tile Layers
+      TILE_CONFIGS.forEach((tc, idx) => {
+        const sub = tc.subdomains ? tc.subdomains.split('') : ['a', 'b', 'c'];
+        const layer = L.tileLayer(tc.url, {
+          subdomains: sub,
+          maxZoom: parseInt(tc.maxZoom) || 18,
+          attribution: tc.attribution
+        });
+        tileLayers[tc.id] = layer;
+        if (idx === 0) layer.addTo(map);
+      });
+
+      renderMarkers(PLACES);
+      fitAllBounds();
+    }
+
+    function switchTileLayer(tileId) {
+      if (!tileLayers[tileId]) return;
+      Object.keys(tileLayers).forEach(k => map.removeLayer(tileLayers[k]));
+      tileLayers[tileId].addTo(map);
+      currentTileId = tileId;
+
+      document.querySelectorAll('.tile-btn').forEach(btn => {
+        btn.classList.remove('bg-slate-900', 'text-white', 'dark:bg-white', 'dark:text-slate-900');
+        btn.classList.add('text-slate-600', 'dark:text-slate-400');
+      });
+      const activeBtn = document.getElementById(`tileBtn-${tileId}`);
+      if (activeBtn) {
+        activeBtn.classList.remove('text-slate-600', 'dark:text-slate-400');
+        activeBtn.classList.add('bg-slate-900', 'text-white', 'dark:bg-white', 'dark:text-slate-900');
+      }
+    }
+
+    function getCatColor(cat) {
+      const colors = {
+        airport: '#2563eb',
+        hotel: '#d97706',
+        sight: '#059669',
+        food: '#dc2626',
+        show: '#e11d48'
+      };
+      return colors[cat] || '#0284c7';
+    }
+
+    function renderMarkers(places) {
+      markers.forEach(m => map.removeLayer(m));
+      markers = [];
+
+      places.forEach(p => {
+        const color = getCatColor(p.cat);
+        const icon = L.divIcon({
+          className: 'custom-div-icon',
+          html: `<div id="pin-${p.id}" class="custom-pin w-7 h-7" style="background-color: ${color}">#${p.id}</div>`,
+          iconSize: [28, 28],
+          iconAnchor: [14, 14]
+        });
+
+        const marker = L.marker([p.lat, p.lng], { icon }).addTo(map);
+        marker.on('click', () => selectPlace(p.id, true));
+        markers.push(marker);
+      });
+    }
+
+    function fitAllBounds() {
+      if (!markers.length) return;
+      const group = new L.featureGroup(markers);
+      map.fitBounds(group.getBounds().pad(0.15));
+    }
+
+    function renderPlacesList(places) {
+      const container = document.getElementById('placesList');
+      container.innerHTML = '';
+      document.getElementById('placeCountBadge').innerText = places.length;
+
+      places.forEach(p => {
+        const color = getCatColor(p.cat);
+        const div = document.createElement('div');
+        div.id = `place-item-${p.id}`;
+        div.className = 'p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700/80 hover:border-primary/60 cursor-pointer transition flex items-center justify-between gap-3 group';
+        div.onclick = () => selectPlace(p.id, true);
+
+        div.innerHTML = `
+          <div class="flex items-center gap-3 min-w-0">
+            <span class="w-7 h-7 rounded-xl flex items-center justify-center text-white text-[10px] font-black shrink-0 font-mono shadow-sm" style="background-color: ${color}">
+              #${p.id}
+            </span>
+            <div class="min-w-0">
+              <div class="flex items-center gap-1.5 mb-0.5">
+                <span class="text-[10px] font-bold text-slate-400">${p.day}</span>
+                <span class="text-[10px] px-1.5 rounded bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 font-semibold">${p.catZh}</span>
+                ${p.altitudeMeters ? `<span class="text-[9px] font-bold font-mono px-1 rounded bg-amber-500/20 text-amber-600">⛰️ ${p.altitudeMeters}m</span>` : ''}
+              </div>
+              <h4 class="text-xs font-black text-slate-900 dark:text-white truncate group-hover:text-primary transition">${p.nameZh}</h4>
+              <p class="text-[11px] text-slate-500 truncate">${p.nameLocal || p.nameEn || p.address}</p>
+            </div>
+          </div>
+          <button onclick="event.stopPropagation(); speakItem('${p.nameLocal || p.nameEn || p.nameZh}', '${p.country === 'CN' ? 'zh-CN' : (p.country === 'BR' ? 'pt-BR' : 'es-AR')}')" class="w-8 h-8 rounded-xl bg-white dark:bg-slate-800 shadow-sm border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-500 hover:text-primary transition shrink-0" title="语音发音">
+            🔊
+          </button>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function selectPlace(placeId, pan = true) {
+      const place = PLACES.find(p => p.id === placeId);
+      if (!place) return;
+      activePlace = place;
+
+      // Update Pin styling
+      document.querySelectorAll('.custom-pin').forEach(pin => pin.classList.remove('active'));
+      const activePin = document.getElementById(`pin-${place.id}`);
+      if (activePin) activePin.classList.add('active');
+
+      // Update List selection highlight
+      document.querySelectorAll('#placesList > div').forEach(d => d.classList.remove('ring-2', 'ring-primary', 'bg-primary/5'));
+      const listItem = document.getElementById(`place-item-${place.id}`);
+      if (listItem) {
+        listItem.classList.add('ring-2', 'ring-primary', 'bg-primary/5');
+        listItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+
+      // Populate Active Place Card
+      const card = document.getElementById('activePlaceCard');
+      card.classList.remove('hidden');
+
+      document.getElementById('activePlaceBadge').innerText = `#${place.id}`;
+      document.getElementById('activePlaceDay').innerText = place.day;
+      document.getElementById('activePlaceCat').innerText = place.catZh;
+
+      const altBadge = document.getElementById('activePlaceAltitude');
+      if (place.altitudeMeters) {
+        altBadge.classList.remove('hidden');
+        altBadge.innerText = `⛰️ ${place.altitudeMeters}m`;
+      } else {
+        altBadge.classList.add('hidden');
+      }
+
+      document.getElementById('activePlaceNameZh').innerText = place.nameZh;
+      document.getElementById('activePlaceNameEn').innerText = place.nameEn || '';
+      document.getElementById('activePlaceLocalName').innerText = place.nameLocal || place.nameEs || place.namePt || place.nameZh;
+      document.getElementById('activePlaceLangCode').innerText = place.country || 'LOC';
+      document.getElementById('activePlaceStory').innerText = place.storyZh;
+
+      // Warning Box
+      const warnBox = document.getElementById('activePlaceWarningBox');
+      const warnText = document.getElementById('activePlaceWarningText');
+      if (place.note) {
+        warnBox.classList.remove('hidden');
+        warnText.innerText = place.note;
+      } else {
+        warnBox.classList.add('hidden');
+      }
+
+      // Setup 3 Primary CTAs
+      const navBtn = document.getElementById('activeNavBtn');
+      const rideBtn = document.getElementById('activeRideBtn');
+      const rideLabel = document.getElementById('activeRideLabel');
+
+      if (NETWORK_PROFILE === 'cn_domestic') {
+        navBtn.href = `https://uri.amap.com/marker?position=${place.lng},${place.lat}&name=${encodeURIComponent(place.nameZh)}&coordinate=wgs84&callnative=1`;
+        rideBtn.href = `https://common.diditaxi.com.cn/general/webLBSNavigation?lat=${place.lat}&lng=${place.lng}&name=${encodeURIComponent(place.nameZh)}`;
+        rideLabel.innerText = '🚕 滴滴打车';
+      } else {
+        navBtn.href = `https://www.google.com/maps/dir/?api=1&destination=${place.lat},${place.lng}`;
+        rideBtn.href = `https://m.uber.com/ul/?action=setPickup&pickup=my_location&dropoff[latitude]=${place.lat}&dropoff[longitude]=${place.lng}&dropoff[nickname]=${encodeURIComponent(place.nameEn || place.nameZh)}&dropoff[formatted_address]=${encodeURIComponent(place.address || '')}`;
+        rideLabel.innerText = '🚗 一键 Uber';
+      }
+
+      // Populate Knowledge & Review Chips
+      const chipStrip = document.getElementById('activePlaceKnowledgeStrip');
+      chipStrip.innerHTML = '';
+
+      if (NETWORK_PROFILE === 'cn_domestic') {
+        const baikeKey = place.baikeZh || place.nameZh;
+        const xhsKey = place.xhsSearch || place.nameZh;
+        const ctripKey = place.ctripSearch || place.nameZh;
+
+        chipStrip.innerHTML = `
+          <a href="https://baike.baidu.com/item/${encodeURIComponent(baikeKey)}" target="_blank" class="px-2.5 py-1 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 text-[11px] font-bold hover:bg-blue-500/20 transition flex items-center gap-1">
+            <span>📖</span> 百度百科
+          </a>
+          <a href="https://www.xiaohongshu.com/search_result?keyword=${encodeURIComponent(xhsKey)}" target="_blank" class="px-2.5 py-1 rounded-lg bg-red-500/10 text-red-600 dark:text-red-400 text-[11px] font-bold hover:bg-red-500/20 transition flex items-center gap-1">
+            <span>📕</span> 小红书实拍
+          </a>
+          <a href="https://m.ctrip.com/webapp/you/search/result.html?keyword=${encodeURIComponent(ctripKey)}" target="_blank" class="px-2.5 py-1 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[11px] font-bold hover:bg-emerald-500/20 transition flex items-center gap-1">
+            <span>🐬</span> 携程攻略
+          </a>
+        `;
+      } else {
+        if (place.wikiZh) {
+          chipStrip.innerHTML += `<a href="https://zh.wikipedia.org/wiki/${encodeURIComponent(place.wikiZh)}" target="_blank" class="px-2.5 py-1 rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-[11px] font-bold hover:bg-slate-300 transition">🇨🇳 维基百科</a>`;
+        }
+        if (place.wikiEn) {
+          chipStrip.innerHTML += `<a href="https://en.wikipedia.org/wiki/${encodeURIComponent(place.wikiEn)}" target="_blank" class="px-2.5 py-1 rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-[11px] font-bold hover:bg-slate-300 transition">🇬🇧 Wikipedia</a>`;
+        }
+      }
+
+      if (pan) {
+        map.flyTo([place.lat, place.lng], 14, { duration: 0.8 });
+      }
+    }
+
+    function closeActivePlace() {
+      document.getElementById('activePlaceCard').classList.add('hidden');
+      document.querySelectorAll('.custom-pin').forEach(pin => pin.classList.remove('active'));
+      activePlace = null;
+    }
+
+    function filterLayer(layerId) {
+      document.querySelectorAll('.layer-pill').forEach(btn => {
+        if (btn.dataset.layer === layerId) {
+          btn.classList.add('active', 'bg-slate-900', 'text-white', 'dark:bg-white', 'dark:text-slate-900');
+          btn.classList.remove('bg-white', 'dark:bg-slate-800', 'text-slate-600', 'dark:text-slate-300');
+        } else {
+          btn.classList.remove('active', 'bg-slate-900', 'text-white', 'dark:bg-white', 'dark:text-slate-900');
+          btn.classList.add('bg-white', 'dark:bg-slate-800', 'text-slate-600', 'dark:text-slate-300');
+        }
+      });
+
+      if (layerId === 'all') {
+        currentFilteredPlaces = [...PLACES];
+      } else {
+        currentFilteredPlaces = PLACES.filter(p => p.layer === layerId);
+      }
+
+      renderMarkers(currentFilteredPlaces);
+      renderPlacesList(currentFilteredPlaces);
+      if (currentFilteredPlaces.length) fitAllBounds();
+    }
+
+    // Search Filtering
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+      const query = e.target.value.trim().toLowerCase();
+      if (!query) {
+        renderPlacesList(currentFilteredPlaces);
+        renderMarkers(currentFilteredPlaces);
+        return;
+      }
+      const matched = currentFilteredPlaces.filter(p => 
+        p.nameZh.toLowerCase().includes(query) ||
+        (p.nameEn && p.nameEn.toLowerCase().includes(query)) ||
+        (p.nameLocal && p.nameLocal.toLowerCase().includes(query)) ||
+        p.address.toLowerCase().includes(query) ||
+        p.storyZh.toLowerCase().includes(query)
+      );
+      renderPlacesList(matched);
+      renderMarkers(matched);
+      if (matched.length) selectPlace(matched[0].id, true);
+    });
+
+    // Web Speech API Voice Pronunciation
+    function speakCurrent(rate = 1.0) {
+      if (!activePlace) return;
+      const text = activePlace.nameLocal || activePlace.nameEs || activePlace.namePt || activePlace.nameZh;
+      const lang = activePlace.country === 'CN' ? 'zh-CN' : (activePlace.country === 'BR' ? 'pt-BR' : 'es-AR');
+      speakPhrase(text, lang, rate);
+    }
+
+    function speakItem(text, lang, rate = 1.0) {
+      speakPhrase(text, lang, rate);
+    }
+
+    function speakPhrase(text, lang = 'zh-CN', rate = 1.0) {
+      if (!('speechSynthesis' in window)) {
+        alert('当前浏览器暂不支持语音合成');
+        return;
+      }
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = lang;
+      utterance.rate = rate;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    // Modal Control
+    function toggleModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) modal.classList.toggle('hidden');
+    }
+
+    function showDriverCard() {
+      if (!activePlace) return;
+      document.getElementById('driverCardTitle').innerText = activePlace.nameLocal || activePlace.nameZh;
+      document.getElementById('driverCardSub').innerText = activePlace.nameZh !== activePlace.nameLocal ? activePlace.nameZh : (activePlace.nameEn || '');
+      document.getElementById('driverCardAddress').innerText = activePlace.address || '';
+      toggleModal('driverModal');
+    }
+
+    function speakDriverCard() {
+      if (!activePlace) return;
+      const text = activePlace.nameLocal || activePlace.nameZh;
+      const lang = activePlace.country === 'CN' ? 'zh-CN' : (activePlace.country === 'BR' ? 'pt-BR' : 'es-AR');
+      speakPhrase(text, lang, 0.9);
+    }
+
+    // Tab Switching
+    function switchTab(tabId) {
+      ['itinerary', 'altitude', 'phrases', 'photos'].forEach(t => {
+        const content = document.getElementById(`tab-${t}`);
+        const btn = document.getElementById(`tabBtn-${t}`);
+        if (content) {
+          if (t === tabId) {
+            content.classList.remove('hidden');
+            if (btn) {
+              btn.classList.add('active', 'bg-white', 'dark:bg-slate-800', 'shadow-sm', 'text-slate-900', 'dark:text-white', 'border', 'border-slate-200', 'dark:border-slate-700');
+              btn.classList.remove('text-slate-600', 'dark:text-slate-400');
+            }
+          } else {
+            content.classList.add('hidden');
+            if (btn) {
+              btn.classList.remove('active', 'bg-white', 'dark:bg-slate-800', 'shadow-sm', 'text-slate-900', 'dark:text-white', 'border', 'border-slate-200', 'dark:border-slate-700');
+              btn.classList.add('text-slate-600', 'dark:text-slate-400');
+            }
+          }
+        }
+      });
+    }
+
+    // Offline Service Worker Registration
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(reg => console.log('[Travel Studio] SW registered successfully:', reg.scope))
+          .catch(err => console.warn('[Travel Studio] SW registration failed:', err));
+      });
+    }
+
+    // Offline Status Monitoring
+    function updateOnlineStatus() {
+      const banner = document.getElementById('offlineBanner');
+      if (!navigator.onLine) {
+        banner.classList.remove('hidden');
+      } else {
+        banner.classList.add('hidden');
+      }
+    }
+    window.addEventListener('online', updateOnlineStatus);
+    window.addEventListener('offline', updateOnlineStatus);
+
+    // Boot
+    window.addEventListener('DOMContentLoaded', () => {
+      initMap();
+      renderPlacesList(PLACES);
+      updateOnlineStatus();
+      if (PLACES.length > 0) {
+        selectPlace(PLACES[0].id, false);
+      }
+    });
+  </script>
+</body>
+</html>
