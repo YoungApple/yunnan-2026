@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675">
+  <defs>
+    <linearGradient id="sky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="55%" stop-color="#1e3a5f"/>
+      <stop offset="100%" stop-color="#f59e0b"/>
+    </linearGradient>
+    <linearGradient id="goldGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef3c7" stop-opacity="0.95"/>
+      <stop offset="50%" stop-color="#f59e0b" stop-opacity="0.75"/>
+      <stop offset="100%" stop-color="#1e3a5f" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="lake" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e3a5f" stop-opacity="0.88"/>
+      <stop offset="100%" stop-color="#0f172a" stop-opacity="0.98"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="675" fill="url(#sky)"/>
+  <circle cx="920" cy="170" r="88" fill="#fef3c7" opacity="0.22"/>
+  <circle cx="920" cy="170" r="46" fill="#fef3c7" opacity="0.55"/>
+  <!-- Distant sacred snow peaks -->
+  <polygon points="0,470 180,260 340,390 540,165 730,350 910,195 1090,340 1200,250 1200,500 0,500" fill="url(#goldGlow)"/>
+  <polygon points="540,165 615,280 485,310" fill="#ffffff" opacity="0.92"/>
+  <polygon points="910,195 975,290 855,315" fill="#ffffff" opacity="0.88"/>
+  <polygon points="180,260 235,340 130,355" fill="#ffffff" opacity="0.82"/>
+  <!-- Foreground alpine ridge -->
+  <polygon points="0,485 260,370 490,445 780,355 1040,435 1200,380 1200,520 0,520" fill="#0f172a" opacity="0.72"/>
+  <!-- Alpine glacial lake reflection -->
+  <rect x="0" y="485" width="1200" height="190" fill="url(#lake)"/>
+  <path d="M 120 530 Q 420 515 720 535 T 1120 525" stroke="#fef3c7" stroke-width="2" fill="none" opacity="0.35"/>
+  <path d="M 220 570 Q 520 558 840 575 T 1080 565" stroke="#fef3c7" stroke-width="1.5" fill="none" opacity="0.25"/>
+  <!-- Top badge -->
+  <rect x="44" y="38" width="420" height="44" rx="22" fill="#090d16" fill-opacity="0.68" stroke="#fef3c7" stroke-opacity="0.4"/>
+  <text x="68" y="66" fill="#fef3c7" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="20" font-weight="bold">🏔️ 滇西北·雪山秘境奢野环线 · 5,596m 玉龙主峰扇子陡</text>
+  <!-- Bottom editorial overlay -->
+  <rect x="0" y="490" width="1200" height="185" fill="#090d16" fill-opacity="0.62"/>
+  <text x="48" y="548" fill="#ffffff" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="34" font-weight="900">丽江大研古城与玉龙雪山远眺</text>
+  <text x="48" y="590" fill="#fef3c7" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="22" font-weight="600">D1 · 10/04 · 海拔 2,400m · 高原适应首站</text>
+  <text x="48" y="632" fill="#cbd5e1" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="19">📷 狮子山万古楼 / 大水车暮色蓝调时刻</text>
+</svg>
