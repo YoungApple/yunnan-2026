@@ -181,7 +181,7 @@
               </span>
               <button id="btnOpenVersionHistory" onclick="openVersionHistoryModal()" title="查看路书版本更新记录与 Vibe 迭代历史" class="px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-sky-500/15 text-sky-500 border border-sky-500/30 hover:bg-sky-500/25 transition cursor-pointer flex items-center gap-1 shrink-0">
                 <span>📜</span>
-                <span id="headerVersionLabel">v1.5 · 版本记录</span>
+                <span id="headerVersionLabel">v1.6 · 版本记录</span>
               </button>
             </div>
             <p id="brandSubtitleText" class="text-[11px] text-[var(--muted-foreground)] truncate">
@@ -318,7 +318,7 @@
             <div class="flex items-center gap-2.5 text-[10px] text-[var(--muted-foreground)]">
               <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-amber-500 inline-block"></span>日间最高</span>
               <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-sky-500 inline-block"></span>夜间睡眠</span>
-              <button onclick="openVersionHistoryModal()" class="text-sky-500 font-bold hover:underline cursor-pointer">📜 v1.5记录</button>
+              <button onclick="openVersionHistoryModal()" class="text-sky-500 font-bold hover:underline cursor-pointer">📜 v1.6记录</button>
             </div>
           </div>
 
@@ -564,7 +564,7 @@
           <div class="min-w-0 space-y-0.5">
             <div class="flex items-center gap-1.5 font-extrabold text-[var(--foreground)] truncate">
               <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping inline-block shrink-0"></span>
-              <span id="vibeLiveVersionBadge" class="truncate">📡 云端 AI 迭代引擎在线 (v1.5)</span>
+              <span id="vibeLiveVersionBadge" class="truncate">📡 云端 AI 迭代引擎在线 (v1.6)</span>
             </div>
             <div id="vibeLatestChangelog" class="text-[11px] text-[var(--muted-foreground)] truncate">
               最近更新：已全面重构手机端一屏双核体验与底部抽屉弹窗自适应
@@ -670,7 +670,7 @@
       <div class="px-3.5 sm:px-4 py-2.5 border-b border-[var(--border)] flex items-center justify-between gap-2 bg-gradient-to-r from-sky-500/20 via-amber-500/10 to-emerald-500/10 shrink-0">
         <div class="min-w-0">
           <div class="flex items-center gap-1.5">
-            <span id="vhCurrentVersionPill" class="px-2 py-0.5 rounded-full text-[10px] font-black bg-sky-500 text-slate-950 shrink-0">v1.5</span>
+            <span id="vhCurrentVersionPill" class="px-2 py-0.5 rounded-full text-[10px] font-black bg-sky-500 text-slate-950 shrink-0">v1.6</span>
             <h3 class="text-xs sm:text-base font-black text-[var(--foreground)] truncate">📜 路书版本演进与 Vibe 自动迭代记录</h3>
           </div>
           <p class="text-[10px] sm:text-[11px] text-[var(--muted-foreground)] truncate mt-0.5">
@@ -795,7 +795,7 @@
       💡 使用指南
     </button>
     <button onclick="openVersionHistoryModal()" class="px-2 py-0.5 rounded-md bg-sky-500/10 text-sky-500 border border-sky-500/30 text-[10px] font-mono-code font-bold cursor-pointer">
-      📜 <span id="footerVersionText">v1.5 · 版本记录</span>
+      📜 <span id="footerVersionText">v1.6 · 版本记录</span>
     </button>
     <button onclick="unlockAndOpenVibeModal()" class="px-2 py-0.5 rounded-md bg-[var(--content)]/60 hover:bg-amber-500/15 hover:text-amber-500 border border-[var(--border)] text-[10px] font-mono-code cursor-pointer">
       ✦ Vibe 调优舱
@@ -1911,6 +1911,16 @@
             </div>
           </div>
 
+          <!-- Spot Illustration Visual Banner (在地灵动风物插画) -->
+          <div class="relative group rounded-xl overflow-hidden border border-[var(--border)] bg-slate-900 cursor-pointer shadow-xs" onclick="openBaikeModal(${p.id})">
+            <img src="${p.photoUrl}" alt="${p.name}" class="w-full h-32 sm:h-40 object-cover group-hover:scale-101 transition duration-300" loading="lazy" />
+            <div class="absolute bottom-2 left-2 px-2.5 py-1 rounded-lg bg-slate-950/85 text-[10px] font-black text-amber-300 border border-amber-500/40 backdrop-blur-xs flex items-center gap-1.5 shadow-sm">
+              <span>🎨 在地风物灵动画卷</span>
+              <span class="text-slate-500">|</span>
+              <span class="text-sky-300 font-bold hover:underline">展开风物志与机位 ›</span>
+            </div>
+          </div>
+
           <!-- Editorial Description & Tips -->
           <div class="text-xs text-[var(--foreground)] leading-relaxed space-y-1.5">
             <p>${p.desc}</p>
@@ -2187,7 +2197,12 @@
       document.getElementById("infoModalHeader").textContent = `📖 滇西北风物志 & 百度百科 · ${p.baikeTerm || p.name}`;
       document.getElementById("infoModalBody").innerHTML = `
         <div class="space-y-3 text-xs sm:text-sm leading-relaxed">
-          <img src="${p.photoUrl}" alt="${p.name}" class="w-full h-44 object-cover rounded-xl bg-slate-900" />
+          <div class="relative group rounded-xl overflow-hidden border border-[var(--border)] bg-slate-900 shadow-sm">
+            <img src="${p.photoUrl}" alt="${p.name}" class="w-full h-44 sm:h-52 object-cover" />
+            <div class="absolute top-2 left-2 px-2.5 py-0.5 rounded-full bg-slate-950/80 text-[10px] font-black text-amber-400 border border-amber-500/40 backdrop-blur-xs">
+              🎨 纳西藏族在地风物灵动矢量画
+            </div>
+          </div>
           <div class="flex flex-wrap items-center gap-2">
             <span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-500 font-bold text-xs">${p.day}</span>
             <span class="px-2 py-0.5 rounded bg-sky-500/20 text-sky-500 font-bold text-xs">海拔 ${p.elev}m</span>
@@ -2429,13 +2444,26 @@
 
     // ==================== 11.5 HIDDEN VIBE FEEDBACK, AUTO-UPDATE POLLING & VERSION HISTORY ENGINE ====================
     const VIBE_NTFY_URL = "https://ntfy.sh/yungapple_yunnan2026_vibe_9f8a7b6c";
-    const APP_BUILTIN_VERSION = "v1.5";
+    const APP_BUILTIN_VERSION = "v1.6";
     let selectedVibeTags = new Set();
     let cloudVibeStatus = null;
     let postSubmitWatchTimer = null;
     let baselineVersionAtSubmit = null;
 
     const DEFAULT_VIBE_HISTORY = [
+      {
+        version: "v1.6",
+        title: "纳西藏族在地风物灵动插画重塑 · 萌趣与视觉盛宴升级",
+        timestamp: "2026-10-05 22:35 CST",
+        author: "Shuguo Test & 随身AI定制师",
+        scope: "🌟 整体行程 Vibe 与节奏",
+        vibe_prompt: "I hope the illustration could be more fun and delightful according to the local elements. Optimze the visual to make it beyond awesome!",
+        changes: [
+          "全面重塑全环线 8 大手绘矢量风物插画（Photos/SVG）：融入纳西东巴大水车与红灯笼、白沙扎染与萌宠小羊驼、虎跳峡金沙狂澜猛虎腾跃、哈巴黑海湖五彩经幡与玛尼堆、香格里拉无底湖静谧黑牦牛与牧人木屋、巴拉格宗千年菩提手印与天然佛塔、飞来寺八塔煨桑与日照金山盛典、南极洛绝壁双瀑与高山流石滩萌趣雪山鼠",
+          "视觉细节全面升级：在景点详情卡引入在地灵动画卷实时预览横幅，增强风物百科、旅途画册与决策卡微交互，注入纳西东巴文化、茶马古道与扎西德勒藏地祝福",
+          "Service Worker 升级至 yunnan-2026-bespoke-v6，实现秒级热更新，离线也能 0ms 极速畅览高精风物插画"
+        ]
+      },
       {
         version: "v1.5",
         title: "手机端一屏双核架构重构 · 底部抽屉弹窗与地图气泡全面自适应",
