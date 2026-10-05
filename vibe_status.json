@@ -1,11 +1,32 @@
 {
   "app": "yunnan-2026",
-  "version": "v2.1",
-  "updated_at": "2026-10-05 23:42 CST",
+  "version": "v2.2",
+  "updated_at": "2026-10-06 05:15 CST",
   "password_protected": true,
   "target_conversation_id": "4aa6fc13-048a-443a-9afe-a58b2bd7940d",
-  "latest_summary": "全面打通「两步路户外助手 (2bulu)」4大轨迹格式（KML轨迹/KML路径/KMZ/GPX）双向导出导入 & Vibe 轨迹上传引擎",
+  "latest_summary": "全站丝滑滚动重构（消除双根滚动容器冲突、移除右侧面板嵌套滚动陷阱、默认锁止地图滚轮劫持、消除 scrollIntoView 抢焦点抖动）",
   "history": [
+    {
+      "version": "v2.2",
+      "title": "全站丝滑滚动重构 · 根治多重滚动容器冲突与滚轮/触控卡顿",
+      "timestamp": "2026-10-06 05:15 CST",
+      "author": "Shuguo & 随身AI定制师",
+      "scope": "⚡ 全站滚动引擎 & 交互体验重构",
+      "vibe_tags": [
+        "丝滑滚动修复",
+        "单根滚动容器",
+        "地图防滚轮劫持",
+        "触控惯性优化"
+      ],
+      "vibe_prompt": "bugs for latest version: can't smooth scrolling sometimes for the whole page? multiple scrolling controller conflicts?",
+      "summary": "彻底排查并修复全站 4 处多重滚动控制器冲突：修复 html/body 双根 overflow-x:hidden 导致惯性滚动中断，移除右侧面板 820px 固定高度与 4 处内部 overflow-y-auto 嵌套滚动陷阱，高德地图默认关闭滚轮缩放劫持（点击激活，移出释放），并移除切换景点时 scrollIntoView({behavior:'smooth'}) 反向拉扯主窗口的冲突。",
+      "changes": [
+        "修复 CSS 双根滚动容器冲突：将 html, body 同时设置 overflow-x: hidden（触发浏览器隐式将 body 变成第二个 overflow-y: auto 滚动根容器）升级为标准 overflow-x: clip 单一 Window 根滚动流",
+        "消除右侧面板嵌套滚动陷阱 (Scroll Trap)：移除 #rightPaneCol 固定 lg:h-[820px] 与 4 个子面板（行程流/画册/清单/AI领队）的独立 overflow-y-auto，全页统一交由主窗口顺滑滚动，彻底解决鼠标/手指停留在右半屏无法滚全页的问题",
+        "高德地图防滚轮劫持：将 Leaflet 默认 scrollWheelZoom 改为 false（悬停滚轮优先顺滑滚页面；点击地图或右上角「🔒滚轮」按钮才激活滚轮缩放，鼠标移出地图自动释放），并新增「＋ / －」悬浮缩放按钮",
+        "消除编程式平滑滚动打架：移除 selectPlace() 中每次点击景点/上一站/下一站时触发的 el.scrollIntoView({ behavior: 'smooth' })，并为横向胶囊栏与海拔图补充 touch-action: pan-x pan-y"
+      ]
+    },
     {
       "version": "v2.1",
       "title": "上线「🎙️ 语音录入快改行程」+「🤖 云端 AI Agent 实时查天气/日照金山规划舱」",
