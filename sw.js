@@ -1,4 +1,4 @@
-const CACHE_NAME = "yunnan-2026-bespoke-v5";
+const CACHE_NAME = "yunnan-2026-bespoke-v6";
 const CORE_ASSETS = [
   "./",
   "./index.html",
