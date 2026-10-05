@@ -181,7 +181,7 @@
               </span>
               <button id="btnOpenVersionHistory" onclick="openVersionHistoryModal()" title="查看路书版本更新记录与 Vibe 迭代历史" class="px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-sky-500/15 text-sky-500 border border-sky-500/30 hover:bg-sky-500/25 transition cursor-pointer flex items-center gap-1 shrink-0">
                 <span>📜</span>
-                <span id="headerVersionLabel">v1.7 · 版本记录</span>
+                <span id="headerVersionLabel">v1.8 · 版本记录</span>
               </button>
             </div>
             <p id="brandSubtitleText" class="text-[11px] text-[var(--muted-foreground)] truncate">
@@ -318,7 +318,7 @@
             <div class="flex items-center gap-2.5 text-[10px] text-[var(--muted-foreground)]">
               <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-amber-500 inline-block"></span>日间最高</span>
               <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-sky-500 inline-block"></span>夜间睡眠</span>
-              <button onclick="openVersionHistoryModal()" class="text-sky-500 font-bold hover:underline cursor-pointer">📜 v1.7记录</button>
+              <button onclick="openVersionHistoryModal()" class="text-sky-500 font-bold hover:underline cursor-pointer">📜 v1.8记录</button>
             </div>
           </div>
 
@@ -564,10 +564,10 @@
           <div class="min-w-0 space-y-0.5">
             <div class="flex items-center gap-1.5 font-extrabold text-[var(--foreground)] truncate">
               <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping inline-block shrink-0"></span>
-              <span id="vibeLiveVersionBadge" class="truncate">📡 云端 AI 迭代引擎在线 (v1.7)</span>
+              <span id="vibeLiveVersionBadge" class="truncate">📡 云端 AI 迭代引擎在线 (v1.8 · 口令保护已启用)</span>
             </div>
             <div id="vibeLatestChangelog" class="text-[11px] text-[var(--muted-foreground)] truncate">
-              最近更新：已全面重构手机端一屏双核体验与底部抽屉弹窗自适应
+              最近更新：已启用 Vibe 专属口令门禁保护，防止公开链接被误触改版
             </div>
           </div>
           <button onclick="refreshVibeStatusJson()" class="px-2 py-1 rounded-lg bg-[var(--card)] border border-[var(--border)] text-[11px] font-bold hover:border-amber-500 cursor-pointer shrink-0">
@@ -575,6 +575,31 @@
           </button>
         </div>
 
+        <!-- Password Gate Box (Locked State) -->
+        <div id="vibePasswordGateBox" class="p-3 rounded-2xl bg-amber-500/10 border-2 border-amber-500/40 space-y-2">
+          <div class="flex items-center justify-between gap-2">
+            <span class="font-black text-amber-500 text-xs flex items-center gap-1">🔒 旅伴专属 Vibe 口令认证 (防误触门禁)</span>
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-500/20 text-amber-500">验证一次 · 设备自动记住</span>
+          </div>
+          <p class="text-[11px] text-[var(--muted-foreground)] leading-relaxed">
+            为防止公开路书链接被非同行人员误触自动改版，请输入云南同行专属口令解锁 Vibe 实时迭代舱：
+          </p>
+          <div class="flex items-center gap-2">
+            <input id="vibePasswordInput" type="password" placeholder="请输入云南专属 Vibe 口令..." onkeydown="if(event.key==='Enter') verifyYunnanVibePassword()" class="flex-1 px-3 py-2 rounded-xl bg-[var(--card)] border border-[var(--border)] text-xs font-bold text-[var(--foreground)] focus:outline-none focus:border-amber-500" />
+            <button type="button" onclick="verifyYunnanVibePassword()" class="px-3.5 py-2 rounded-xl bg-amber-500 text-slate-950 font-black text-xs cursor-pointer shrink-0 hover:opacity-95">
+              🔓 验证解锁
+            </button>
+          </div>
+          <div id="vibePasswordError" class="hidden text-[11px] font-bold text-rose-500"></div>
+        </div>
+
+        <!-- Unlocked Status Bar -->
+        <div id="vibeUnlockedBar" class="hidden px-3 py-2 rounded-xl bg-emerald-500/15 border border-emerald-500/40 flex items-center justify-between gap-2">
+          <span class="text-[11px] font-extrabold text-emerald-500">🔓 已通过口令认证 · 设备已记住（随时可提交修改）</span>
+          <button type="button" onclick="lockYunnanVibePassword()" class="text-[10px] font-bold text-[var(--muted-foreground)] hover:text-rose-500 cursor-pointer">🔒 退出认证</button>
+        </div>
+
+        <div id="vibeProtectedFormArea" class="space-y-3">
         <!-- Author & Target Day/Stop Scope -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
           <div>
@@ -638,6 +663,7 @@
           </button>
         </div>
         <div id="vibeSubmitStatusText" class="text-xs font-bold text-emerald-500"></div>
+        </div>
 
         <!-- Live Post-Submit Auto-Compile Progress Stepper -->
         <div id="vibeAutoWatchBox" class="hidden p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 space-y-1">
@@ -670,7 +696,7 @@
       <div class="px-3.5 sm:px-4 py-2.5 border-b border-[var(--border)] flex items-center justify-between gap-2 bg-gradient-to-r from-sky-500/20 via-amber-500/10 to-emerald-500/10 shrink-0">
         <div class="min-w-0">
           <div class="flex items-center gap-1.5">
-            <span id="vhCurrentVersionPill" class="px-2 py-0.5 rounded-full text-[10px] font-black bg-sky-500 text-slate-950 shrink-0">v1.7</span>
+            <span id="vhCurrentVersionPill" class="px-2 py-0.5 rounded-full text-[10px] font-black bg-sky-500 text-slate-950 shrink-0">v1.8</span>
             <h3 class="text-xs sm:text-base font-black text-[var(--foreground)] truncate">📜 路书版本演进与 Vibe 自动迭代记录</h3>
           </div>
           <p class="text-[10px] sm:text-[11px] text-[var(--muted-foreground)] truncate mt-0.5">
@@ -795,7 +821,7 @@
       💡 使用指南
     </button>
     <button onclick="openVersionHistoryModal()" class="px-2 py-0.5 rounded-md bg-sky-500/10 text-sky-500 border border-sky-500/30 text-[10px] font-mono-code font-bold cursor-pointer">
-      📜 <span id="footerVersionText">v1.7 · 版本记录</span>
+      📜 <span id="footerVersionText">v1.8 · 版本记录</span>
     </button>
     <button onclick="unlockAndOpenVibeModal()" class="px-2 py-0.5 rounded-md bg-[var(--content)]/60 hover:bg-amber-500/15 hover:text-amber-500 border border-[var(--border)] text-[10px] font-mono-code cursor-pointer">
       ✦ Vibe 调优舱
@@ -2444,13 +2470,29 @@
 
     // ==================== 11.5 HIDDEN VIBE FEEDBACK, AUTO-UPDATE POLLING & VERSION HISTORY ENGINE ====================
     const VIBE_NTFY_URL = "https://ntfy.sh/yungapple_yunnan2026_vibe_9f8a7b6c";
-    const APP_BUILTIN_VERSION = "v1.7";
+    const APP_BUILTIN_VERSION = "v1.8";
+    const YUNNAN_VIBE_PASSWORD = "applefriend";
+    const YUNNAN_PW_STORAGE_KEY = "yunnan2026_vibe_pw";
+    const YUNNAN_UNLOCK_STORAGE_KEY = "vibe_unlocked_yunnan-2026";
     let selectedVibeTags = new Set();
     let cloudVibeStatus = null;
     let postSubmitWatchTimer = null;
     let baselineVersionAtSubmit = null;
 
     const DEFAULT_VIBE_HISTORY = [
+      {
+        version: "v1.8",
+        title: "上线「🔒 旅伴专属 Vibe 口令认证 (applefriend)」防误触门禁与设备自动记忆",
+        timestamp: "2026-10-05 22:58 CST",
+        author: "Shuguo & 随身AI定制师",
+        scope: "🔒 全站安全护栏与 Vibe 自动迭代闭环",
+        vibe_prompt: "Let's extract the vibe feedback-newversion-loop into a premium feature in the travel-studio, also make it in my south-americ trip side as well. Let's put some passwords before anyone can vibe the site. For yunnan: password is: applefriend, south americ: sa26, all others: applefriend",
+        changes: [
+          "在「✨ AI 定制师 · 实时反馈与自动迭代舱」顶部新增专属口令认证门禁（口令：applefriend），防止公开路书链接被非同行人员误触改版",
+          "支持设备级口令记忆（验证通过一次后自动保存在本机 localStorage，后续打开直接展示 🔓 已通过口令认证状态条）",
+          "后端 Cloudtop vibe_bridge.py 同步开启多项目口令强校验（password_token），Service Worker 升级至 yunnan-2026-bespoke-v8"
+        ]
+      },
       {
         version: "v1.7",
         title: "D3/D4/D5 节奏精准重排 · D3休整看雪山/D4徒步中虎跳住哈巴/D5徒步黑海湖住香格里拉",
@@ -2556,6 +2598,48 @@
       }
     ];
 
+    function isYunnanVibePasswordUnlocked() {
+      const savedPw = localStorage.getItem(YUNNAN_PW_STORAGE_KEY) || "";
+      return savedPw === YUNNAN_VIBE_PASSWORD || localStorage.getItem(YUNNAN_UNLOCK_STORAGE_KEY) === "1";
+    }
+
+    function syncYunnanPasswordGateUi() {
+      const unlocked = isYunnanVibePasswordUnlocked();
+      const gateBox = document.getElementById("vibePasswordGateBox");
+      const unlockedBar = document.getElementById("vibeUnlockedBar");
+      const formArea = document.getElementById("vibeProtectedFormArea");
+      if (gateBox) gateBox.classList.toggle("hidden", unlocked);
+      if (unlockedBar) unlockedBar.classList.toggle("hidden", !unlocked);
+      if (formArea) {
+        formArea.style.opacity = unlocked ? "1" : "0.4";
+        formArea.style.pointerEvents = unlocked ? "auto" : "none";
+      }
+    }
+
+    window.verifyYunnanVibePassword = function() {
+      const inputEl = document.getElementById("vibePasswordInput");
+      const errEl = document.getElementById("vibePasswordError");
+      const val = (inputEl?.value || "").trim();
+      if (val === YUNNAN_VIBE_PASSWORD) {
+        localStorage.setItem(YUNNAN_PW_STORAGE_KEY, val);
+        localStorage.setItem(YUNNAN_UNLOCK_STORAGE_KEY, "1");
+        if (errEl) errEl.classList.add("hidden");
+        if (inputEl) inputEl.value = "";
+        syncYunnanPasswordGateUi();
+      } else {
+        if (errEl) {
+          errEl.textContent = "❌ 口令不正确，请向行程发起人确认专属 Vibe 口令后重试。";
+          errEl.classList.remove("hidden");
+        }
+      }
+    };
+
+    window.lockYunnanVibePassword = function() {
+      localStorage.removeItem(YUNNAN_PW_STORAGE_KEY);
+      localStorage.removeItem(YUNNAN_UNLOCK_STORAGE_KEY);
+      syncYunnanPasswordGateUi();
+    };
+
     window.openUserGuideModal = function() {
       document.getElementById("userGuideModal")?.classList.remove("hidden");
     };
@@ -2584,6 +2668,7 @@
 
     window.openVibeFeedbackModal = function() {
       document.getElementById("vibeFeedbackModal")?.classList.remove("hidden");
+      syncYunnanPasswordGateUi();
       const savedAuthor = localStorage.getItem("yn2026_vibe_author") || "";
       const authorEl = document.getElementById("vibeAuthorInput");
       if (authorEl && !authorEl.value && savedAuthor) authorEl.value = savedAuthor;
@@ -2809,6 +2894,15 @@
     };
 
     window.submitVibeFeedback = async function() {
+      if (!isYunnanVibePasswordUnlocked()) {
+        syncYunnanPasswordGateUi();
+        const errEl = document.getElementById("vibePasswordError");
+        if (errEl) {
+          errEl.textContent = "⚠️ 请先输入上方云南专属 Vibe 口令解锁后再提交修改！";
+          errEl.classList.remove("hidden");
+        }
+        return;
+      }
       const author = (document.getElementById("vibeAuthorInput")?.value || "同行旅伴").trim();
       const scope = document.getElementById("vibeScopeSelect")?.value || "🌟 整体行程 Vibe 与节奏";
       const message = (document.getElementById("vibeMessageInput")?.value || "").trim();
@@ -2832,6 +2926,7 @@
         scope,
         vibe_tags: Array.from(selectedVibeTags),
         message,
+        password_token: localStorage.getItem(YUNNAN_PW_STORAGE_KEY) || YUNNAN_VIBE_PASSWORD,
         timestamp: new Date().toISOString()
       };
 
