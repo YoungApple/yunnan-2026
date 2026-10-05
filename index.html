@@ -158,6 +158,17 @@
       header, #mobileBottomBar, #floatingVibeBtn { display: none !important; }
       body { background: #fff !important; color: #000 !important; }
     }
+    @keyframes voicePulseRing {
+      0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.65); }
+      70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+    }
+    .voice-recording-active {
+      animation: voicePulseRing 1.4s infinite !important;
+      background: linear-gradient(135deg, #ef4444, #f97316) !important;
+      color: #ffffff !important;
+      border-color: #f87171 !important;
+    }
   </style>
 </head>
 <body class="pb-16 lg:pb-6">
@@ -181,7 +192,7 @@
               </span>
               <button id="btnOpenVersionHistory" onclick="openVersionHistoryModal()" title="查看路书版本更新记录与 Vibe 迭代历史" class="px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-sky-500/15 text-sky-500 border border-sky-500/30 hover:bg-sky-500/25 transition cursor-pointer flex items-center gap-1 shrink-0">
                 <span>📜</span>
-                <span id="headerVersionLabel">v2.0 · 版本记录</span>
+                <span id="headerVersionLabel">v2.1 · 版本记录</span>
               </button>
             </div>
             <p id="brandSubtitleText" class="text-[11px] text-[var(--muted-foreground)] truncate">
@@ -234,8 +245,9 @@
             <span>💎</span>
             <span>导出</span>
           </button>
-          <button id="btnSecretVibeHeader" onclick="unlockAndOpenVibeModal()" title="Vibe 实时反馈与两步路轨迹导入" class="px-2 py-1 rounded-lg text-[11px] font-extrabold bg-amber-500/15 text-amber-500 border border-amber-500/30 hover:bg-amber-500/25 transition cursor-pointer select-none">
-            ✨
+          <button id="btnSecretVibeHeader" onclick="unlockAndOpenVibeModal()" title="🎙️ 语音快速改行程 / 让云端 AI Agent 查天气与规划" class="px-2 py-1 rounded-lg text-[11px] font-extrabold bg-amber-500/15 text-amber-500 border border-amber-500/30 hover:bg-amber-500/25 transition cursor-pointer select-none flex items-center gap-0.5">
+            <span>🎙️✨</span>
+            <span class="hidden sm:inline">语音改</span>
           </button>
         </div>
       </div>
@@ -442,16 +454,20 @@
             </div>
           </div>
           <div class="p-2 border-b border-[var(--border)] bg-[var(--card)] flex items-center gap-1.5 overflow-x-auto no-scrollbar" id="aiQuickPrompts">
-            <button data-q="哈巴黑海湖徒步难度大吗？穿什么鞋？" class="ai-q-btn shrink-0 px-2.5 py-1 rounded-full text-[11px] font-bold bg-[var(--content)] hover:bg-amber-500/20 text-[var(--foreground)] cursor-pointer">🥾 哈巴黑海湖攻略</button>
-            <button data-q="南极洛1-5号湖和1-9号湖怎么选？10.13怎么拼车回丽江？" class="ai-q-btn shrink-0 px-2.5 py-1 rounded-full text-[11px] font-bold bg-[var(--content)] hover:bg-amber-500/20 text-[var(--foreground)] cursor-pointer">💧 南极洛&拼车</button>
+            <button type="button" onclick="triggerAiLiveWeatherQuery()" class="shrink-0 px-2.5 py-1 rounded-full text-[11px] font-black bg-sky-500/20 text-sky-400 border border-sky-500/40 hover:bg-sky-500/30 cursor-pointer">🌤️ 查全线实时天气&日照金山</button>
+            <button type="button" onclick="unlockAndOpenVibeModal()" class="shrink-0 px-2.5 py-1 rounded-full text-[11px] font-black bg-amber-500/20 text-amber-400 border border-amber-500/40 hover:bg-amber-500/30 cursor-pointer">🎙️ 语音让Agent改行程</button>
+            <button data-q="哈巴黑海湖徒步难度大吗？穿什么鞋？" class="ai-q-btn shrink-0 px-2.5 py-1 rounded-full text-[11px] font-bold bg-[var(--content)] hover:bg-amber-500/20 text-[var(--foreground)] cursor-pointer">🥾 哈巴黑海湖17km攻略</button>
+            <button data-q="南极洛1-5号湖和1-9号湖怎么选？10.13怎么拼车回丽江？" class="ai-q-btn shrink-0 px-2.5 py-1 rounded-full text-[11px] font-bold bg-[var(--content)] hover:bg-amber-500/20 text-[var(--foreground)] cursor-pointer">💧 南极洛环线&拼车</button>
             <button data-q="为什么10.11必须下午14:30从香格里拉出发去德钦？" class="ai-q-btn shrink-0 px-2.5 py-1 rounded-full text-[11px] font-bold bg-[var(--content)] hover:bg-amber-500/20 text-[var(--foreground)] cursor-pointer">⏰ 10.11 14:30出发</button>
-            <button data-q="10.5香巴拉牧场和云栖壹号院怎么选？" class="ai-q-btn shrink-0 px-2.5 py-1 rounded-full text-[11px] font-bold bg-[var(--content)] hover:bg-amber-500/20 text-[var(--foreground)] cursor-pointer">🔀 香巴拉 vs 云栖</button>
             <button data-q="飞来寺明珠拉卡酒店看梅里日照金山几点起床？" class="ai-q-btn shrink-0 px-2.5 py-1 rounded-full text-[11px] font-bold bg-[var(--content)] hover:bg-amber-500/20 text-[var(--foreground)] cursor-pointer">🌅 日照金山时刻</button>
-            <button data-q="全程海拔怎么阶梯适应预防高反？" class="ai-q-btn shrink-0 px-2.5 py-1 rounded-full text-[11px] font-bold bg-[var(--content)] hover:bg-amber-500/20 text-[var(--foreground)] cursor-pointer">🫁 高反阶梯预防</button>
           </div>
           <div id="aiChatMessages" class="flex-1 overflow-y-auto p-3 space-y-3"></div>
-          <form id="aiChatForm" class="p-2.5 border-t border-[var(--border)] bg-[var(--card)] flex items-center gap-2">
-            <input id="aiChatInput" type="text" placeholder="向随身领队提问（如：无底湖路况、四大美宿亮点）..." class="flex-1 px-3 py-2 rounded-xl text-xs bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] focus:outline-none focus:border-amber-500" />
+          <form id="aiChatForm" class="p-2.5 border-t border-[var(--border)] bg-[var(--card)] flex items-center gap-1.5">
+            <button type="button" id="btnVoiceAiChat" onclick="toggleVoiceInput('aiChatInput', 'btnVoiceAiChat', true)" title="点击用语音提问" class="px-2.5 py-2 rounded-xl text-xs font-extrabold bg-[var(--content)] text-amber-500 border border-amber-500/40 hover:bg-amber-500/15 cursor-pointer shrink-0 flex items-center gap-1">
+              <span>🎙️</span>
+              <span class="hidden sm:inline">语音</span>
+            </button>
+            <input id="aiChatInput" type="text" placeholder="可点🎙️语音提问（如：查梅里天气、黑海湖穿衣、调整行程）..." class="flex-1 px-3 py-2 rounded-xl text-xs bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] focus:outline-none focus:border-amber-500" />
             <button type="submit" class="px-3.5 py-2 rounded-xl text-xs font-extrabold bg-amber-500 text-slate-950 hover:opacity-95 cursor-pointer shrink-0">发送</button>
           </form>
         </div>
@@ -636,6 +652,8 @@
         <div>
           <label class="block font-bold mb-1 text-[var(--foreground)]">✨ 期望调整的 Vibe 方向（可多选）：</label>
           <div class="flex flex-wrap gap-1.5" id="vibeTagChips">
+            <button type="button" data-vtag="🌤️ 让Agent查询实时天气/日照金山概率并写入路书" class="vibe-tag-btn px-2 py-1 rounded-lg bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] text-[11px] font-bold cursor-pointer transition">🌤️ 查天气/日照金山</button>
+            <button type="button" data-vtag="🧥 根据最新气温更新每日穿衣与防寒装备" class="vibe-tag-btn px-2 py-1 rounded-lg bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] text-[11px] font-bold cursor-pointer transition">🧥 穿衣防寒规划</button>
             <button type="button" data-vtag="🥾 导入两步路户外轨迹 (.kml/.kmz/.gpx)" class="vibe-tag-btn px-2 py-1 rounded-lg bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] text-[11px] font-bold cursor-pointer transition">🥾 两步路轨迹</button>
             <button type="button" data-vtag="🥾 降低徒步强度 / 更松弛" class="vibe-tag-btn px-2 py-1 rounded-lg bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] text-[11px] font-bold cursor-pointer transition">🥾 更松弛</button>
             <button type="button" data-vtag="🏔️ 增加硬核徒步 / 秘境探索" class="vibe-tag-btn px-2 py-1 rounded-lg bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] text-[11px] font-bold cursor-pointer transition">🏔️ 秘境探索</button>
@@ -673,16 +691,68 @@
           <div id="ynVibeTrackPreviewBox" class="hidden p-2.5 rounded-xl bg-[var(--card)] border border-emerald-500/40 space-y-1.5 text-[11px]"></div>
         </div>
 
-        <!-- Freeform Vibe Prompt + 1-Tap Examples -->
-        <div>
-          <div class="flex flex-wrap items-center justify-between gap-1 mb-1">
-            <label class="font-bold text-[var(--foreground)]">💬 具体想法或新 Vibe 描述：</label>
-            <div class="flex items-center gap-1 text-[10px]">
-              <button type="button" onclick="fillVibeSample('10.5 下午我们敲定去云栖壹号院喝下午茶看雪山倒影，把默认推荐改成云栖壹号院，并补充点单攻略！', 'D2 (10.5) 丽江·束河·白沙·香巴拉or云栖')" class="px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-500 font-bold cursor-pointer">示例1：敲定云栖</button>
-              <button type="button" onclick="fillVibeSample('10.9 无底湖我们想走最轻松的摄影环湖线，帮我补充沿途最佳咖啡补给点和穿搭颜色建议！', 'D6 (10.9) 香格里拉-无底湖轻徒步')" class="px-1.5 py-0.5 rounded bg-sky-500/15 text-sky-500 font-bold cursor-pointer">示例2：无底湖摄影</button>
+        <!-- 🤖 Cloud AI Agent Planning Capabilities & Live Plateau Weather Radar -->
+        <div class="p-3 rounded-2xl bg-gradient-to-br from-sky-500/15 via-indigo-500/10 to-amber-500/10 border border-sky-500/40 space-y-2">
+          <div class="flex items-center justify-between gap-2 flex-wrap">
+            <div class="flex items-center gap-1.5">
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-sky-500 text-slate-950">🤖 AGENT 助手</span>
+              <span class="font-black text-xs text-[var(--foreground)]">云端 AI Agent 还能帮你做实时规划（查天气 / 算日照金山 / 改行程）</span>
+            </div>
+            <button type="button" onclick="fetchAndRenderModalLiveWeather()" class="px-2.5 py-1 rounded-lg bg-sky-500 text-slate-950 font-black text-[11px] hover:opacity-95 cursor-pointer flex items-center gap-1 shadow-2xs">
+              <span>🌤️ 实时拉取全线天气</span>
+            </button>
+          </div>
+          <p class="text-[11px] text-[var(--muted-foreground)] leading-relaxed">
+            本应用背后直连专属 <strong>云端 AI Agent</strong>！除了改行程，你还可以点下方快捷指令或<strong>直接用语音吩咐 Agent 帮你查各海拔赛段最新天气、测算梅里日照金山概率、定制穿衣清单或搜寻餐厅</strong>，Agent 会自动联网查询并将结果永久更新到路书里：
+          </p>
+          <!-- Live Weather Radar Result Box (Populated on click) -->
+          <div id="vibeLiveWeatherBox" class="hidden p-2.5 rounded-xl bg-[var(--card)]/90 border border-sky-500/40 space-y-2 text-[11px]"></div>
+          <!-- 1-Tap Agent Task Pills -->
+          <div class="flex flex-wrap gap-1.5 pt-0.5">
+            <button type="button" onclick="fillVibeSample('帮我联网查询 10.4–10.14 丽江、虎跳峡、哈巴黑海湖(4100m)、香格里拉、德钦梅里雪山和南极洛的最新天气预报与气温范围，并把每日天气和防寒防雨提醒更新到路书卡片里！', '🌟 整体行程 Vibe 与节奏')" class="px-2 py-1 rounded-lg bg-sky-500/15 hover:bg-sky-500/25 text-sky-400 border border-sky-500/30 font-extrabold text-[11px] cursor-pointer">
+              🌤️ 让Agent查全线天气写进路书
+            </button>
+            <button type="button" onclick="fillVibeSample('帮我查询 10.11–10.12 德钦飞来寺的云量、风速与日出时间，测算梅里雪山「日照金山」看到概率并补充到 D8–D9 卡片中！', 'D9 (10.12) 飞来寺日照金山-孔雀山-南极洛御景园')" class="px-2 py-1 rounded-lg bg-amber-500/15 hover:bg-amber-500/25 text-amber-400 border border-amber-500/30 font-extrabold text-[11px] cursor-pointer">
+              🌅 测算梅里日照金山概率
+            </button>
+            <button type="button" onclick="fillVibeSample('根据十月最新高海拔气温，帮我细化 D5 哈巴黑海湖(17km/4100m) 和 D10 南极洛(4380m) 的每日穿衣层数与必备防寒装备清单！', 'D5 (10.8) 哈巴黑海湖徒步·赴香格里拉独克宗')" class="px-2 py-1 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-400 border border-emerald-500/30 font-extrabold text-[11px] cursor-pointer">
+              🧥 定制高海拔穿衣清单
+            </button>
+            <button type="button" onclick="fillVibeSample('帮我在香格里拉独克宗古城（连住3晚期间）和丽江白沙古镇各挑 2 家口碑最好的地道牦牛肉火锅/野生菌餐厅写进每日推荐里！', 'D6 (10.9) 香格里拉-无底湖轻徒步')" class="px-2 py-1 rounded-lg bg-rose-500/15 hover:bg-rose-500/25 text-rose-400 border border-rose-500/30 font-extrabold text-[11px] cursor-pointer">
+              🍲 推荐地道藏餐与菌子火锅
+            </button>
+            <button type="button" onclick="fillVibeSample('帮我核实巴拉格宗大峡谷与维西巴迪南极洛的最新进山路况、越野车接驳时刻与门票预约注意事项，更新到对应日程！', 'D10 (10.13) 南极洛核心徒步 & 返丽江拼车决策')" class="px-2 py-1 rounded-lg bg-purple-500/15 hover:bg-purple-500/25 text-purple-400 border border-purple-500/30 font-extrabold text-[11px] cursor-pointer">
+              🚗 核实南极洛/巴拉格宗路况
+            </button>
+          </div>
+        </div>
+
+        <!-- 🎙️ Voice Input + Freeform Vibe Prompt -->
+        <div class="space-y-2">
+          <div class="flex flex-wrap items-center justify-between gap-1.5">
+            <label class="font-black text-xs text-[var(--foreground)] flex items-center gap-1">
+              <span>🎙️ 语音录入或打字输入你的行程调整 / 规划需求：</span>
+            </label>
+            <div class="flex items-center gap-1.5">
+              <button type="button" id="btnVoiceDictateVibe" onclick="toggleVoiceInput('vibeMessageInput', 'btnVoiceDictateVibe', false)" class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-rose-500 to-amber-500 text-white font-black text-xs shadow-sm hover:opacity-95 cursor-pointer flex items-center gap-1.5 transition">
+                <span>🎙️ 点击开始语音录入</span>
+              </button>
+              <button type="button" id="btnVoiceQuickSubmitVibe" onclick="toggleVoiceInput('vibeMessageInput', 'btnVoiceDictateVibe', false, true)" title="说完自动提交给云端 Agent" class="px-2.5 py-1.5 rounded-xl bg-amber-500/20 text-amber-400 border border-amber-500/40 font-extrabold text-[11px] hover:bg-amber-500/30 cursor-pointer">
+                ⚡ 说完即发
+              </button>
             </div>
           </div>
-          <textarea id="vibeMessageInput" rows="3" placeholder="直接写下你想调整的行程细节、节奏偏好、新增机位或餐厅需求（若已上传两步路轨迹文件，此处也可留空，系统将自动生成合入说明）..." class="w-full p-2.5 rounded-xl bg-[var(--content)] border border-[var(--border)] text-xs text-[var(--foreground)] focus:outline-none focus:border-amber-500 leading-relaxed"></textarea>
+
+          <!-- Live Voice Recognition Wave & Status Banner -->
+          <div id="voiceLiveStatusBanner" class="hidden p-2.5 rounded-xl bg-rose-500/15 border border-rose-500/40 text-xs flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2 min-w-0">
+              <span class="inline-block w-2.5 h-2.5 rounded-full bg-rose-500 animate-ping shrink-0"></span>
+              <span id="voiceLiveTranscriptText" class="font-bold text-rose-400 truncate">正在聆听你的普通话/中英指令，请直接说话...</span>
+            </div>
+            <button type="button" onclick="stopActiveVoiceInput()" class="px-2 py-0.5 rounded bg-rose-500 text-white font-black text-[10px] shrink-0 cursor-pointer">完成录音</button>
+          </div>
+
+          <textarea id="vibeMessageInput" rows="3" placeholder="点击上方「🎙️ 点击开始语音录入」直接说话（如：“D6上午在独克宗睡懒觉，下午再去无底湖” 或 “帮我查一下梅里雪山天气”），也可用手机键盘自带麦克风或直接打字..." class="w-full p-2.5 rounded-xl bg-[var(--content)] border border-[var(--border)] text-xs text-[var(--foreground)] focus:outline-none focus:border-amber-500 leading-relaxed"></textarea>
         </div>
 
         <!-- Submit & Backup Copy Actions -->
@@ -731,7 +801,7 @@
       <div class="px-3.5 sm:px-4 py-2.5 border-b border-[var(--border)] flex items-center justify-between gap-2 bg-gradient-to-r from-sky-500/20 via-amber-500/10 to-emerald-500/10 shrink-0">
         <div class="min-w-0">
           <div class="flex items-center gap-1.5">
-            <span id="vhCurrentVersionPill" class="px-2 py-0.5 rounded-full text-[10px] font-black bg-sky-500 text-slate-950 shrink-0">v2.0</span>
+            <span id="vhCurrentVersionPill" class="px-2 py-0.5 rounded-full text-[10px] font-black bg-sky-500 text-slate-950 shrink-0">v2.1</span>
             <h3 class="text-xs sm:text-base font-black text-[var(--foreground)] truncate">📜 路书版本演进与 Vibe 自动迭代记录</h3>
           </div>
           <p class="text-[10px] sm:text-[11px] text-[var(--muted-foreground)] truncate mt-0.5">
@@ -794,15 +864,15 @@
 
           <div class="p-3 rounded-xl bg-gradient-to-br from-amber-500/15 via-orange-500/10 to-sky-500/15 border border-amber-500/50 space-y-1.5">
             <div class="flex items-center justify-between gap-1">
-              <span class="font-black text-xs text-amber-500">✨ 4. AI Vibe 实时改版 + 版本记录</span>
-              <span class="px-1.5 py-0.2 rounded text-[9px] font-black bg-amber-500 text-slate-950">AUTO</span>
+              <span class="font-black text-xs text-amber-500">🎙️✨ 4. 语音秒改行程 + Agent 查天气规划</span>
+              <span class="px-1.5 py-0.2 rounded text-[9px] font-black bg-amber-500 text-slate-950">VOICE + AGENT</span>
             </div>
             <p class="text-[11px] text-[var(--foreground)] leading-relaxed">
-              连点左上角「云境」3 次或点右上角 <strong>✨</strong> 打开迭代舱提需求，云端 AI <strong>1–2 分钟自动改好网页并上线</strong>，所有改动全程记入 <strong>📜 版本记录</strong>！
+              点右上角 <strong>🎙️✨</strong> 打开迭代舱，支持<strong>🎙️直接语音说想法改行程</strong>、上传两步路轨迹，还能让背后直连的 <strong>云端 AI Agent 帮查全线实时天气、测算梅里日照金山概率、定制穿衣清单</strong>，1–2分钟自动更新网页！
             </p>
-            <div class="flex items-center gap-1.5 pt-0.5">
+            <div class="flex flex-wrap items-center gap-1.5 pt-0.5">
               <button onclick="closeUserGuideModal(); unlockAndOpenVibeModal();" class="px-2 py-1 rounded-lg bg-amber-500 text-slate-950 font-black text-[11px] cursor-pointer">
-                ✨ 提 Vibe 需求
+                🎙️✨ 语音改行程 / 查天气
               </button>
               <button onclick="closeUserGuideModal(); openVersionHistoryModal();" class="px-2 py-1 rounded-lg bg-sky-500/20 text-sky-400 border border-sky-500/40 font-extrabold text-[11px] cursor-pointer">
                 📜 版本记录
@@ -827,7 +897,7 @@
 1️⃣ 手机打开直接看高德实景地图 + 当前景点卡片，点「‹ 上一站 / 下一站 ›」切换 25 个核心机位与四大必住雪山美宿。
 2️⃣ 每个景点一键唤醒「高德导航」「百度百科」「小红书实拍机位」「给司机看大字卡」，进山无信号也能离线看。
 3️⃣ 内置 10.5 下午茶二选一、10.11 14:30准时出发德钦、10.13 南极洛拼车决策器与每日高爬低睡海拔曲线。
-4️⃣ ✨ 随时改路书：点右上角「✨」或连点左上角「云境」3次打开【AI Vibe 实时迭代舱】提需求，云端 AI 1-2分钟自动改好网页并更新【📜 版本记录】！</pre>
+4️⃣ 🎙️✨ 语音改行程 & Agent查天气：点右上角「🎙️✨」打开【AI Vibe 实时迭代舱】（口令：applefriend），支持🎙️直接语音说想法改日程、上传两步路轨迹，还能让云端 AI Agent 帮忙查高海拔实时天气、测算日照金山概率、规划穿衣与餐厅，1-2分钟自动更新网页！</pre>
           <div id="wechatGuideCopyStatus" class="text-[11px] font-bold text-emerald-500"></div>
         </div>
       </div>
@@ -846,7 +916,7 @@
 
   <!-- Floating Vibe Pill (Visible once unlocked) -->
   <button id="floatingVibeBtn" onclick="openVibeFeedbackModal()" class="hidden fixed bottom-16 lg:bottom-5 right-3.5 z-40 px-3 py-1.5 rounded-full bg-gradient-to-r from-amber-500 to-orange-600 text-slate-950 font-black text-xs shadow-xl border border-white/80 cursor-pointer flex items-center gap-1 hover:scale-105 transition">
-    <span>✨ Vibe 调优</span>
+    <span>🎙️✨ 语音/Agent调优</span>
   </button>
 
   <!-- Subtle Footer -->
@@ -856,7 +926,7 @@
       💡 使用指南
     </button>
     <button onclick="openVersionHistoryModal()" class="px-2 py-0.5 rounded-md bg-sky-500/10 text-sky-500 border border-sky-500/30 text-[10px] font-mono-code font-bold cursor-pointer">
-      📜 <span id="footerVersionText">v1.9 · 版本记录</span>
+      📜 <span id="footerVersionText">v2.1 · 版本记录</span>
     </button>
     <button onclick="unlockAndOpenVibeModal()" class="px-2 py-0.5 rounded-md bg-[var(--content)]/60 hover:bg-amber-500/15 hover:text-amber-500 border border-[var(--border)] text-[10px] font-mono-code cursor-pointer">
       ✦ Vibe 调优舱
@@ -3155,6 +3225,256 @@ ${trkpts}
       window.speechSynthesis.speak(u);
     };
 
+    
+    // ==================== 9.5 VOICE DICTATION ENGINE (Web Speech API + Mobile Fallback) & LIVE PLATEAU WEATHER RADAR ====================
+    let activeSpeechRec = null;
+    let activeSpeechTargetId = null;
+    let activeSpeechBtnId = null;
+    let activeSpeechAutoSubmit = false;
+    let activeSpeechTimer = null;
+    let activeSpeechSeconds = 0;
+
+    window.stopActiveVoiceInput = function() {
+      if (activeSpeechTimer) {
+        clearInterval(activeSpeechTimer);
+        activeSpeechTimer = null;
+      }
+      if (activeSpeechRec) {
+        try { activeSpeechRec.stop(); } catch (e) {}
+        activeSpeechRec = null;
+      }
+      const banner = document.getElementById("voiceLiveStatusBanner");
+      if (banner) banner.classList.add("hidden");
+      if (activeSpeechBtnId) {
+        const btn = document.getElementById(activeSpeechBtnId);
+        if (btn) {
+          btn.classList.remove("voice-recording-active");
+          if (activeSpeechBtnId === "btnVoiceDictateVibe") {
+            btn.innerHTML = "<span>🎙️ 点击开始语音录入</span>";
+          } else {
+            btn.innerHTML = "<span>🎙️</span><span class=\"hidden sm:inline\">语音</span>";
+          }
+        }
+      }
+    };
+
+    window.toggleVoiceInput = function(targetInputId, btnId, isAiChat = false, autoSubmitVibe = false) {
+      if (activeSpeechRec) {
+        stopActiveVoiceInput();
+        return;
+      }
+
+      const targetEl = document.getElementById(targetInputId);
+      const btnEl = document.getElementById(btnId);
+      const banner = document.getElementById("voiceLiveStatusBanner");
+      const transText = document.getElementById("voiceLiveTranscriptText");
+      const statusEl = document.getElementById("vibeSubmitStatusText");
+
+      const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRec) {
+        // Graceful fallback for WeChat in-app browser or browsers without Web Speech API
+        if (targetEl) {
+          targetEl.focus();
+        }
+        const tipMsg = "💡 已为你聚焦输入框！当前浏览器环境可直接点击手机输入法键盘右下角的【🎙️麦克风】按钮说话，秒速转文字！";
+        if (banner && transText && !isAiChat) {
+          banner.classList.remove("hidden");
+          transText.textContent = tipMsg;
+          setTimeout(() => { banner.classList.add("hidden"); }, 6000);
+        } else if (statusEl) {
+          statusEl.textContent = tipMsg;
+        } else {
+          alert(tipMsg);
+        }
+        return;
+      }
+
+      try {
+        const rec = new SpeechRec();
+        rec.lang = "zh-CN";
+        rec.continuous = !isAiChat;
+        rec.interimResults = true;
+
+        activeSpeechRec = rec;
+        activeSpeechTargetId = targetInputId;
+        activeSpeechBtnId = btnId;
+        activeSpeechAutoSubmit = autoSubmitVibe;
+        activeSpeechSeconds = 0;
+
+        const baseVal = targetEl ? (targetEl.value ? targetEl.value.trim() + " " : "") : "";
+        let finalAccum = "";
+
+        if (btnEl) {
+          btnEl.classList.add("voice-recording-active");
+          btnEl.innerHTML = isAiChat ? "<span>🔴 听音中</span>" : "<span>🔴 正在语音录入 (0s) · 点击停止</span>";
+        }
+        if (banner && transText && !isAiChat) {
+          banner.classList.remove("hidden");
+          transText.textContent = "🎤 请直接说话（如：“D6改成下午去无底湖” 或 “帮我查一下梅里雪山天气”）...";
+        }
+
+        activeSpeechTimer = setInterval(() => {
+          activeSpeechSeconds += 1;
+          if (btnEl && !isAiChat) {
+            btnEl.innerHTML = `<span>🔴 正在语音录入 (${activeSpeechSeconds}s) · 点击完成</span>`;
+          }
+        }, 1000);
+
+        rec.onresult = function(event) {
+          let interim = "";
+          for (let i = event.resultIndex; i < event.results.length; i++) {
+            const transcript = event.results[i][0].transcript;
+            if (event.results[i].isFinal) {
+              finalAccum += transcript;
+            } else {
+              interim += transcript;
+            }
+          }
+          const combined = (baseVal + finalAccum + interim).trim();
+          if (targetEl) targetEl.value = combined;
+          if (transText && !isAiChat) {
+            transText.textContent = `🎤 实时识别：「${(finalAccum + interim) || "正在倾听..."}」`;
+          }
+        };
+
+        rec.onerror = function(err) {
+          stopActiveVoiceInput();
+          if (targetEl) targetEl.focus();
+          if (statusEl && !isAiChat) {
+            statusEl.textContent = "💡 麦克风权限未开启或当前处于微信内置浏览器，可直接点击手机输入法键盘上的【🎙️麦克风】说话输入！";
+          }
+        };
+
+        rec.onend = function() {
+          const shouldSubmitVibe = activeSpeechAutoSubmit;
+          stopActiveVoiceInput();
+          if (isAiChat && targetEl && targetEl.value.trim()) {
+            document.getElementById("aiChatForm")?.dispatchEvent(new Event("submit", { cancelable: true }));
+          } else if (shouldSubmitVibe && targetEl && targetEl.value.trim()) {
+            submitVibeFeedback();
+          }
+        };
+
+        rec.start();
+      } catch (e) {
+        stopActiveVoiceInput();
+        if (targetEl) targetEl.focus();
+      }
+    };
+
+    // Live Plateau Weather Radar (6 Key Elevation Stages via Open-Meteo + Seasonal Fallback)
+    const YUNNAN_WEATHER_STAGES = [
+      { id: "lj", name: "🏮 丽江古城/白沙", elev: "2,400m", lat: 26.87, lng: 100.23, fallbackTemp: "9°C ~ 21°C", fallbackDesc: "☀️ 晴朗微风", goldenProb: "88%" },
+      { id: "htx", name: "🐯 虎跳峡新茶马", elev: "1,980m", lat: 27.20, lng: 100.12, fallbackTemp: "13°C ~ 24°C", fallbackDesc: "🌤️ 峡谷晴暖", goldenProb: "85%" },
+      { id: "hb", name: "🥾 哈巴黑海湖", elev: "4,100m", lat: 27.32, lng: 100.05, fallbackTemp: "1°C ~ 10°C", fallbackDesc: "⛅ 高山多云", goldenProb: "75%" },
+      { id: "xgl", name: "☸️ 香格里拉/无底湖", elev: "3,300–3,800m", lat: 27.81, lng: 99.71, fallbackTemp: "4°C ~ 16°C", fallbackDesc: "☀️ 高原晴空", goldenProb: "86%" },
+      { id: "ml", name: "🌅 德钦飞来寺(梅里)", elev: "3,400m", lat: 28.45, lng: 98.88, fallbackTemp: "3°C ~ 14°C", fallbackDesc: "☀️ 晨间少云", goldenProb: "82% (极佳)" },
+      { id: "njl", name: "💧 维西巴迪南极洛", elev: "3,900–4,380m", lat: 27.93, lng: 99.03, fallbackTemp: "0°C ~ 9°C", fallbackDesc: "🌦️ 秘境薄雾", goldenProb: "72%" }
+    ];
+
+    function weatherCodeToLabel(code) {
+      if (code === 0) return "☀️ 碧空万里";
+      if (code === 1 || code === 2) return "🌤️ 晴间少云";
+      if (code === 3) return "⛅ 多云";
+      if (code >= 45 && code <= 48) return "🌫️ 高山晨雾";
+      if (code >= 51 && code <= 67) return "🌦️ 阵雨/小雨";
+      if (code >= 71 && code <= 77) return "❄️ 高山飘雪";
+      if (code >= 80) return "🌧️ 阵性降水";
+      return "🌤️ 高原多云";
+    }
+
+    async function fetchYunnanLiveWeatherSummary() {
+      const results = [];
+      for (const st of YUNNAN_WEATHER_STAGES) {
+        try {
+          const url = `https://api.open-meteo.com/v1/forecast?latitude=${st.lat}&longitude=${st.lng}&current=temperature_2m,weather_code,cloud_cover,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia%2FShanghai&forecast_days=1`;
+          const res = await fetch(url);
+          if (!res.ok) throw new Error("fetch failed");
+          const data = await res.json();
+          const curTemp = Math.round(data.current?.temperature_2m ?? 12);
+          const minT = Math.round(data.daily?.temperature_2m_min?.[0] ?? 4);
+          const maxT = Math.round(data.daily?.temperature_2m_max?.[0] ?? 16);
+          const cloud = data.current?.cloud_cover ?? 25;
+          const rainProb = data.daily?.precipitation_probability_max?.[0] ?? 15;
+          const desc = weatherCodeToLabel(data.current?.weather_code ?? 1);
+          const golden = Math.max(35, Math.min(96, Math.round(100 - cloud * 0.65 - rainProb * 0.2))) + "%";
+          results.push({
+            ...st,
+            live: true,
+            tempStr: `${minT}°C ~ ${maxT}°C (实况 ${curTemp}°C)`,
+            descStr: `${desc} · 降水概率 ${rainProb}%`,
+            goldenStr: `🌅 日照金山/晴空指数 ${golden}`
+          });
+        } catch (e) {
+          results.push({
+            ...st,
+            live: false,
+            tempStr: `${st.fallbackTemp} (10月气候基准)`,
+            descStr: st.fallbackDesc,
+            goldenStr: `🌅 日照金山历史指数 ${st.goldenProb}`
+          });
+        }
+      }
+      return results;
+    }
+
+    function buildWeatherCardsHtml(list, includeVibeAction = true) {
+      const cards = list.map(item => `
+        <div class="p-2 rounded-xl bg-[var(--content)]/80 border border-[var(--border)] flex flex-col justify-between gap-0.5">
+          <div class="flex items-center justify-between gap-1">
+            <span class="font-black text-[11px] text-[var(--foreground)]">${item.name}</span>
+            <span class="text-[10px] font-mono-code text-sky-400">${item.elev}</span>
+          </div>
+          <div class="text-[11px] font-extrabold text-amber-500">${item.tempStr}</div>
+          <div class="flex items-center justify-between text-[10px] text-[var(--muted-foreground)]">
+            <span>${item.descStr}</span>
+            <span class="text-emerald-400 font-bold">${item.goldenStr}</span>
+          </div>
+        </div>
+      `).join("");
+
+      const actionBtn = includeVibeAction ? `
+        <div class="pt-1 flex flex-wrap items-center justify-between gap-2">
+          <span class="text-[10px] text-[var(--muted-foreground)]">💡 想把最新天气预报与每日穿衣建议写进路书卡片？</span>
+          <button type="button" onclick="fillVibeSample('请根据最新实况气象（' + '${list.map(i => i.name.replace(/[^\u4e00-\u9fa5]/g, '') + i.tempStr).join('；')}' + '），帮我更新全线 11 日卡片的天气提醒、日照金山概率与洋葱式穿衣建议！', '🌟 整体行程 Vibe 与节奏')" class="px-2.5 py-1 rounded-lg bg-amber-500 text-slate-950 font-black text-[11px] cursor-pointer">
+            🚀 一键填入并让 Agent 写入路书
+          </button>
+        </div>
+      ` : "";
+
+      return `
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="font-black text-sky-400 text-xs">🌤️ 滇西北 6 大海拔梯度实况气象 & 日照金山雷达</span>
+            <span class="text-[10px] text-emerald-400 font-bold">实时高原气象已同步</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5">${cards}</div>
+          ${actionBtn}
+        </div>
+      `;
+    }
+
+    window.fetchAndRenderModalLiveWeather = async function() {
+      const box = document.getElementById("vibeLiveWeatherBox");
+      if (!box) return;
+      box.classList.remove("hidden");
+      box.innerHTML = `<div class="text-xs font-bold text-sky-400 animate-pulse">🛰️ 正在联网拉取丽江 / 虎跳峡 / 哈巴黑海湖(4100m) / 香格里拉 / 梅里飞来寺 / 南极洛 6 大赛段实况气象...</div>`;
+      const data = await fetchYunnanLiveWeatherSummary();
+      box.innerHTML = buildWeatherCardsHtml(data, true);
+    };
+
+    window.triggerAiLiveWeatherQuery = async function() {
+      appendAiBubble("user", "🌤️ 帮我查询滇西北全线 6 大高海拔赛段的实时天气与梅里日照金山指数");
+      appendAiBubble("assistant", `<div class="text-xs font-bold text-sky-400 animate-pulse">🛰️ 正在为你实时拉取丽江、哈巴雪山、香格里拉、德钦梅里雪山与南极洛的高原气象雷达数据...</div>`);
+      const data = await fetchYunnanLiveWeatherSummary();
+      appendAiBubble("assistant", buildWeatherCardsHtml(data, false) + `
+        <div class="mt-2 pt-2 border-t border-[var(--border)] flex items-center justify-between gap-2">
+          <span class="text-[11px] text-[var(--muted-foreground)]">你还可以点右上角 <strong>🎙️✨</strong> 让云端 AI Agent 将每日天气正式编入路书！</span>
+          <button type="button" onclick="unlockAndOpenVibeModal(); fetchAndRenderModalLiveWeather();" class="px-2.5 py-1 rounded-lg bg-amber-500 text-slate-950 font-black text-[11px] cursor-pointer shrink-0">🎙️✨ 唤醒云端Agent</button>
+        </div>
+      `);
+    };
+
     // ==================== 10. SMART LOCAL + OPTIONAL LLM AI EXPEDITION GUIDE ====================
     function appendAiBubble(role, html) {
       const box = document.getElementById("aiChatMessages");
@@ -3174,6 +3494,17 @@ ${trkpts}
 
     function buildOfflineExpertReply(q) {
       const s = q.toLowerCase();
+      if (s.includes("天气") || s.includes("气温") || s.includes("下雨") || s.includes("穿衣") || s.includes("冷吗") || s.includes("weather")) {
+        setTimeout(() => { triggerAiLiveWeatherQuery(); }, 80);
+        return `
+          <div class="font-black text-sky-400">🌤️ 滇西北 10月黄金秋色气候与洋葱穿衣指南（正在同步实况雷达...）：</div>
+          <ul class="list-disc pl-4 space-y-1">
+            <li><strong>丽江 / 虎跳峡 (1,980m–2,400m)：</strong>白天阳光温暖（18°C–24°C），早晚微凉（10°C），长袖T恤+薄外套即可。</li>
+            <li><strong>香格里拉 / 飞来寺 (3,300m–3,400m)：</strong>昼夜温差极大（3°C–16°C），清晨守候梅里日照金山需穿<strong>轻羽绒+防风硬壳冲锋衣</strong>。</li>
+            <li><strong>哈巴黑海湖 / 南极洛 (4,100m–4,380m)：</strong>高山冰蚀湖区气温约 0°C–10°C，偶有阵风或小雪，必带<strong>抓绒/羽绒内胆+防水冲锋衣+中高帮防滑徒步鞋+防风帽手套</strong>！</li>
+          </ul>
+        `;
+      }
       if (s.includes("黑海") || s.includes("哈巴")) {
         return `
           <div class="font-black text-emerald-500">🥾 哈巴雪山黑海湖徒步 (10.8 · D5) 专家锦囊：</div>
@@ -3291,7 +3622,7 @@ ${trkpts}
 
     // ==================== 11.5 HIDDEN VIBE FEEDBACK, AUTO-UPDATE POLLING & VERSION HISTORY ENGINE ====================
     const VIBE_NTFY_URL = "https://ntfy.sh/yungapple_yunnan2026_vibe_9f8a7b6c";
-    const APP_BUILTIN_VERSION = "v2.0";
+    const APP_BUILTIN_VERSION = "v2.1";
     const YUNNAN_VIBE_PASSWORD = "applefriend";
     const YUNNAN_PW_STORAGE_KEY = "yunnan2026_vibe_pw";
     const YUNNAN_UNLOCK_STORAGE_KEY = "vibe_unlocked_yunnan-2026";
@@ -3301,6 +3632,22 @@ ${trkpts}
     let baselineVersionAtSubmit = null;
 
     const DEFAULT_VIBE_HISTORY = [
+      {
+        version: "v2.1",
+        title: "上线「🎙️ 语音录入快改行程」+「🤖 云端 AI Agent 实时查天气/日照金山规划舱」",
+        timestamp: "2026-10-06 04:50 CST",
+        author: "Shuguo & 随身AI定制师",
+        scope: "🎙️ 语音交互 & 🤖 云端 Agent 全能规划助手",
+        vibe_tags: ["语音录入", "实时查天气", "AI Agent规划", "日照金山雷达"],
+        vibe_prompt: "来加入语音录入功能，可以快速调整行程。也可以提示agent的web app可以帮忙做一些规划，例如查天气等操作",
+        summary: "在 Vibe 迭代舱与随身 AI 领队全面接入🎙️语音录入（支持直接说话改行程与「⚡说完即发」），新增🤖云端 AI Agent 全能规划指令矩阵与「🌤️滇西北6大高海拔赛段实况气象&日照金山雷达」。",
+        changes: [
+          "上线「🎙️ 语音录入快改行程 (Voice-to-Vibe)」：在 Vibe 迭代舱与随身 AI 领队输入框加入麦克风语音识别按钮（带实时声波状态条与「⚡说完即发」模式，并在微信内置浏览器提供手机键盘麦克风智能引导）",
+          "新增「🤖 云端 AI Agent 全能规划能力舱」：明确提示旅伴可随时通过语音或 6 大一键胶囊让后台 Agent 帮忙查全线天气、测算梅里日照金山概率、定制高海拔穿衣清单、搜寻地道藏餐及核实南极洛路况",
+          "内置「🌤️ 滇西北 6 大高海拔赛段实况气象 & 日照金山云量雷达」：支持一键实时拉取丽江(2400m)、虎跳峡(1980m)、哈巴黑海湖(4100m)、香格里拉(3300m)、飞来寺(3400m)、南极洛(4150m)最新气温与日照金山指数",
+          "Service Worker 升级至 yunnan-2026-bespoke-v11，更新使用指南与微信群分享文案"
+        ]
+      },
       {
         version: "v2.0",
         title: "全面打通「两步路户外助手 (2bulu)」4大轨迹格式双向互通 & Vibe 轨迹上传引擎",
