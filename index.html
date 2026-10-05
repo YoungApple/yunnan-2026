@@ -181,7 +181,7 @@
               </span>
               <button id="btnOpenVersionHistory" onclick="openVersionHistoryModal()" title="查看路书版本更新记录与 Vibe 迭代历史" class="px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-sky-500/15 text-sky-500 border border-sky-500/30 hover:bg-sky-500/25 transition cursor-pointer flex items-center gap-1 shrink-0">
                 <span>📜</span>
-                <span id="headerVersionLabel">v1.9 · 版本记录</span>
+                <span id="headerVersionLabel">v2.0 · 版本记录</span>
               </button>
             </div>
             <p id="brandSubtitleText" class="text-[11px] text-[var(--muted-foreground)] truncate">
@@ -234,7 +234,7 @@
             <span>💎</span>
             <span>导出</span>
           </button>
-          <button id="btnSecretVibeHeader" onclick="unlockAndOpenVibeModal()" title="Vibe 实时反馈与 AI 自动迭代" class="px-2 py-1 rounded-lg text-[11px] font-extrabold bg-amber-500/15 text-amber-500 border border-amber-500/30 hover:bg-amber-500/25 transition cursor-pointer select-none">
+          <button id="btnSecretVibeHeader" onclick="unlockAndOpenVibeModal()" title="Vibe 实时反馈与两步路轨迹导入" class="px-2 py-1 rounded-lg text-[11px] font-extrabold bg-amber-500/15 text-amber-500 border border-amber-500/30 hover:bg-amber-500/25 transition cursor-pointer select-none">
             ✨
           </button>
         </div>
@@ -275,6 +275,9 @@
             <button data-map-mode="vector" class="map-mode-btn px-2 py-1 rounded-lg text-[11px] font-semibold text-slate-200 hover:text-white transition cursor-pointer">
               🏔️ 等高线
             </button>
+            <button id="btnToggleYunnanTrails" onclick="toggleYunnanTrailsLayer()" class="px-2 py-1 rounded-lg text-[11px] font-extrabold bg-emerald-500 text-slate-950 transition cursor-pointer" title="在地图上显示/隐藏户外徒步轨迹线">
+              🥾 轨迹
+            </button>
           </div>
 
           <!-- Top-Right Floating Category + Reset Bounds Pill -->
@@ -304,9 +307,9 @@
         <!-- 2. ACTIVE STOP DEEP COMMERCIAL DETAIL CARD (Immediately Below Map Above the Fold!) -->
         <div id="detailCard" class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-3 sm:p-4 shadow-xs"></div>
 
-        <!-- 3. ELEVATION & ACCLIMATIZATION CURVE + 3 CRITICAL TRIP DECISIONS -->
-        <section id="elevationSection" class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-3 sm:p-4 shadow-xs">
-          <div class="flex flex-wrap items-center justify-between gap-1.5 mb-2">
+        <!-- 3. ELEVATION & ACCLIMATIZATION CURVE + 3 CRITICAL TRIP DECISIONS + 2BULU TRAILS HUB -->
+        <section id="elevationSection" class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-3 sm:p-4 shadow-xs space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-1.5">
             <div class="flex items-center gap-1.5 min-w-0">
               <span class="px-2 py-0.5 rounded-lg text-[10px] font-black bg-emerald-500/15 text-emerald-500 border border-emerald-500/30 shrink-0">
                 高爬低睡阶梯
@@ -318,7 +321,7 @@
             <div class="flex items-center gap-2.5 text-[10px] text-[var(--muted-foreground)]">
               <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-amber-500 inline-block"></span>日间最高</span>
               <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-sky-500 inline-block"></span>夜间睡眠</span>
-              <button onclick="openVersionHistoryModal()" class="text-sky-500 font-bold hover:underline cursor-pointer">📜 v1.8记录</button>
+              <button onclick="openVersionHistoryModal()" class="text-sky-500 font-bold hover:underline cursor-pointer">📜 v2.0记录</button>
             </div>
           </div>
 
@@ -328,7 +331,7 @@
           </div>
 
           <!-- 3 Critical Trip Decision & Milestone Pills -->
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-2 mt-2.5 pt-2.5 border-t border-[var(--border)]/70">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-2 pt-2.5 border-t border-[var(--border)]/70">
             <div class="rounded-xl bg-[var(--content)]/70 border border-[var(--border)] p-2.5 flex items-center justify-between gap-2">
               <div class="min-w-0">
                 <div class="text-[11px] font-extrabold text-amber-500">🔀 10.5 (D2) 下午茶牧场二选一</div>
@@ -359,6 +362,9 @@
               </button>
             </div>
           </div>
+
+          <!-- 🥾 2BULU OUTDOOR HIKING TRAILS HUB (GPX/KML Export + Upload 4 Formats) -->
+          <div id="yunnanTrailsHubCard" class="pt-2.5 border-t border-[var(--border)]/70"></div>
         </section>
       </div>
 
@@ -621,6 +627,7 @@
               <option value="D9 (10.12) 飞来寺日照金山-孔雀山-南极洛御景园">D9 (10.12) 飞来寺日照金山-孔雀山-南极洛御景园</option>
               <option value="D10 (10.13) 南极洛核心徒步 & 返丽江拼车决策">D10 (10.13) 南极洛核心徒步 & 返丽江拼车决策</option>
               <option value="D11 (10.14) 南极洛-澜沧江峡谷-丽江收官">D11 (10.14) 南极洛-澜沧江峡谷-丽江收官</option>
+              <option value="🥾 全环线7条户外徒步轨迹与两步路导入">🥾 全环线7条户外徒步轨迹与两步路导入</option>
             </select>
           </div>
         </div>
@@ -629,6 +636,7 @@
         <div>
           <label class="block font-bold mb-1 text-[var(--foreground)]">✨ 期望调整的 Vibe 方向（可多选）：</label>
           <div class="flex flex-wrap gap-1.5" id="vibeTagChips">
+            <button type="button" data-vtag="🥾 导入两步路户外轨迹 (.kml/.kmz/.gpx)" class="vibe-tag-btn px-2 py-1 rounded-lg bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] text-[11px] font-bold cursor-pointer transition">🥾 两步路轨迹</button>
             <button type="button" data-vtag="🥾 降低徒步强度 / 更松弛" class="vibe-tag-btn px-2 py-1 rounded-lg bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] text-[11px] font-bold cursor-pointer transition">🥾 更松弛</button>
             <button type="button" data-vtag="🏔️ 增加硬核徒步 / 秘境探索" class="vibe-tag-btn px-2 py-1 rounded-lg bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] text-[11px] font-bold cursor-pointer transition">🏔️ 秘境探索</button>
             <button type="button" data-vtag="📸 强化日照金山 / 摄影机位" class="vibe-tag-btn px-2 py-1 rounded-lg bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] text-[11px] font-bold cursor-pointer transition">📸 摄影机位</button>
@@ -636,6 +644,33 @@
             <button type="button" data-vtag="🏨 敲定或更换民宿方案" class="vibe-tag-btn px-2 py-1 rounded-lg bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] text-[11px] font-bold cursor-pointer transition">🏨 宿集方案</button>
             <button type="button" data-vtag="🚗 更新包车 / 拼车 / 出发时间" class="vibe-tag-btn px-2 py-1 rounded-lg bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] text-[11px] font-bold cursor-pointer transition">🚗 拼车/时间</button>
           </div>
+        </div>
+
+        <!-- 🥾 2bulu / Outdoor Track File Upload & Share Link Box -->
+        <div class="p-3 rounded-2xl bg-emerald-500/10 border-2 border-emerald-500/40 space-y-2">
+          <div class="flex items-center justify-between gap-2 flex-wrap">
+            <span class="font-black text-emerald-500 text-xs flex items-center gap-1">
+              🥾 上传户外徒步轨迹文件 (全面兼容「两步路」4 大导出格式)
+            </span>
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-500/20 text-emerald-500">
+              KML(轨迹) · KML(路径) · KMZ · GPX · GeoJSON
+            </span>
+          </div>
+          <p class="text-[11px] text-[var(--muted-foreground)] leading-relaxed">
+            在<strong>「两步路户外助手」</strong>App 点击【导出轨迹文件】，任选 <strong>KML格式(轨迹) / KML格式(路径) / KMZ格式 / GPX格式</strong> 保存到手机后在此上传：系统将自动纠偏叠加至高德实景地图，并随 Vibe 同步至云端永久合入路书！
+          </p>
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+            <label class="flex-1 px-3 py-2 rounded-xl bg-[var(--card)] border border-dashed border-emerald-500/60 hover:border-emerald-500 cursor-pointer flex items-center justify-between gap-2 transition">
+              <span id="ynVibeTrackFileLabel" class="text-[11px] font-bold text-emerald-500 truncate">📂 点击选择轨迹文件 (.kml / .kmz / .gpx / .geojson)</span>
+              <input id="ynVibeTrackFileInput" type="file" accept=".gpx,.kml,.kmz,.geojson,.json,.xml" class="hidden" onchange="handleYunnanTrackFileUpload(this.files[0])" />
+              <span class="px-2 py-0.5 rounded bg-emerald-500 text-slate-950 font-black text-[10px] shrink-0">选择文件</span>
+            </label>
+            <button type="button" id="btnClearYnVibeTrack" onclick="clearYunnanUploadedTrack()" class="hidden px-2.5 py-2 rounded-xl bg-rose-500/15 text-rose-500 border border-rose-500/30 font-bold text-[11px] cursor-pointer shrink-0">
+              ✕ 移除
+            </button>
+          </div>
+          <input id="vibeTrackUrlInput" type="url" placeholder="🔗 或粘贴两步路 (2bulu.com) / 六只脚 / AllTrails 轨迹分享链接 (选填)..." class="w-full px-3 py-1.5 rounded-xl bg-[var(--content)] border border-[var(--border)] text-[11px] font-semibold text-[var(--foreground)] focus:outline-none focus:border-emerald-500" />
+          <div id="ynVibeTrackPreviewBox" class="hidden p-2.5 rounded-xl bg-[var(--card)] border border-emerald-500/40 space-y-1.5 text-[11px]"></div>
         </div>
 
         <!-- Freeform Vibe Prompt + 1-Tap Examples -->
@@ -647,13 +682,13 @@
               <button type="button" onclick="fillVibeSample('10.9 无底湖我们想走最轻松的摄影环湖线，帮我补充沿途最佳咖啡补给点和穿搭颜色建议！', 'D6 (10.9) 香格里拉-无底湖轻徒步')" class="px-1.5 py-0.5 rounded bg-sky-500/15 text-sky-500 font-bold cursor-pointer">示例2：无底湖摄影</button>
             </div>
           </div>
-          <textarea id="vibeMessageInput" rows="3" placeholder="直接写下你想调整的行程细节、节奏偏好、新增机位或餐厅需求，提交后后台将自动唤醒云南专属 Agent 会话进行迭代并重新发布..." class="w-full p-2.5 rounded-xl bg-[var(--content)] border border-[var(--border)] text-xs text-[var(--foreground)] focus:outline-none focus:border-amber-500 leading-relaxed"></textarea>
+          <textarea id="vibeMessageInput" rows="3" placeholder="直接写下你想调整的行程细节、节奏偏好、新增机位或餐厅需求（若已上传两步路轨迹文件，此处也可留空，系统将自动生成合入说明）..." class="w-full p-2.5 rounded-xl bg-[var(--content)] border border-[var(--border)] text-xs text-[var(--foreground)] focus:outline-none focus:border-amber-500 leading-relaxed"></textarea>
         </div>
 
         <!-- Submit & Backup Copy Actions -->
         <div class="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-2 pt-0.5">
           <button type="button" id="btnSubmitVibeFeedback" onclick="submitVibeFeedback()" class="col-span-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-black text-xs shadow-sm hover:opacity-95 cursor-pointer flex items-center justify-center gap-1.5">
-            <span>🚀 发送新 Vibe 并自动迭代</span>
+            <span>🚀 发送新 Vibe (含轨迹) 并自动迭代</span>
           </button>
           <button type="button" onclick="openVersionHistoryModal()" class="px-3 py-2 rounded-xl bg-sky-500/15 text-sky-500 border border-sky-500/30 font-extrabold text-xs hover:bg-sky-500/25 cursor-pointer text-center">
             📜 版本记录
@@ -696,11 +731,11 @@
       <div class="px-3.5 sm:px-4 py-2.5 border-b border-[var(--border)] flex items-center justify-between gap-2 bg-gradient-to-r from-sky-500/20 via-amber-500/10 to-emerald-500/10 shrink-0">
         <div class="min-w-0">
           <div class="flex items-center gap-1.5">
-            <span id="vhCurrentVersionPill" class="px-2 py-0.5 rounded-full text-[10px] font-black bg-sky-500 text-slate-950 shrink-0">v1.9</span>
+            <span id="vhCurrentVersionPill" class="px-2 py-0.5 rounded-full text-[10px] font-black bg-sky-500 text-slate-950 shrink-0">v2.0</span>
             <h3 class="text-xs sm:text-base font-black text-[var(--foreground)] truncate">📜 路书版本演进与 Vibe 自动迭代记录</h3>
           </div>
           <p class="text-[10px] sm:text-[11px] text-[var(--muted-foreground)] truncate mt-0.5">
-            每次提交新 Vibe，云端 AI 自动修改路书、递增版本号并记录变更明细
+            每次提交新 Vibe 或上传两步路轨迹，云端 AI 自动修改路书、递增版本号并记录变更明细
           </p>
         </div>
         <div class="flex items-center gap-1.5 shrink-0">
@@ -1563,7 +1598,7 @@
       { id: "c11", group: "📷 摄影与行程关键动作", text: "【10.13 D10】南极洛徒步归来当晚，在御景园民宿敲定10.14拼车或包车回丽江", done: false }
     ];
 
-    // ==================== APPLICATION STATE ====================
+    // ==================== APPLICATION STATE & 2BULU HIKING TRAILS DATA ====================
     let activeLayer = "all";
     let activeCat = "all";
     let activeMapMode = "amap_road";
@@ -1575,8 +1610,669 @@
     let lfTileLayer = null;
     let lfLabelLayer = null;
     let lfMarkers = [];
+    let lfTrailLayers = [];
     let lfRouteLine = null;
     let scenicManifest = [];
+    let showTrailsOnMap = true;
+    let highlightedTrailId = "haba-black-lake";
+    let ynUploadedTrack = null;
+
+    // 5. BUILT-IN 7 NORTHWEST YUNNAN HIKING TRAILS (GCJ-02 Coords for Gaode AMap + Auto WGS-84 Export for 2bulu)
+    const BUILTIN_YUNNAN_TRAILS = [
+      {
+        id: "tiger-leaping-middle",
+        name: "中虎跳峡谷 · 张老师客栈—一线天—发呆石—天梯环线",
+        day: "D4 · 10.07 上午",
+        layer: "haba",
+        placeIds: [7, 8],
+        difficulty: "⭐⭐⭐ 中等峡谷线",
+        diffColor: "#f59e0b",
+        distanceKm: "6.5 km",
+        elevationGain: "+520 m",
+        maxAltitude: "2,150 m",
+        duration: "3–3.5 小时",
+        trailheadName: "张老师客栈步道入口",
+        endPointName: "中虎跳发呆石 / 满天星礁石区",
+        twobuluKey: "中虎跳峡徒步",
+        highlights: "直下金沙江咆哮峽谷底部，近距离感受江水撞击虎跳石的雷霆万钧；返程可走 168 级勇者天梯或一线天步道。",
+        coordsGcj02: [
+          [27.2245, 100.1325, 2120],
+          [27.2268, 100.1348, 2010],
+          [27.2292, 100.1376, 1890],
+          [27.2315, 100.1405, 1820],
+          [27.2285, 100.1362, 1960],
+          [27.2245, 100.1325, 2120]
+        ]
+      },
+      {
+        id: "haba-black-lake",
+        name: "哈巴雪山黑海湖 · 原始冷杉松萝林—冰碛黑海往返线",
+        day: "D5 · 10.08 全天",
+        layer: "haba",
+        placeIds: [9, 10, 11],
+        difficulty: "⭐⭐⭐⭐ 高原进阶 (可骑马辅助)",
+        diffColor: "#10b981",
+        distanceKm: "17.0 km",
+        elevationGain: "+1,000 m",
+        maxAltitude: "4,100 m",
+        duration: "6.5–8 小时",
+        trailheadName: "哈巴村向导站 / 兰花坪山门",
+        endPointName: "哈巴雪山黑海湖冰碛湖畔 (4,100m)",
+        twobuluKey: "哈巴雪山黑海",
+        highlights: "同行旅伴实测校准参数（往返17km·爬升1000m）：穿越挂满千缕松萝的原始冷杉苔藓森林与高山杜鹃林，终抵海拔 4100m 的墨玉冰川湖「黑海」。支持单程上山骑马托包、徒步下山。",
+        coordsGcj02: [
+          [27.3695, 100.1045, 2650],
+          [27.3610, 100.0985, 3100],
+          [27.3525, 100.0930, 3480],
+          [27.3435, 100.0885, 3790],
+          [27.3350, 100.0848, 4020],
+          [27.3285, 100.0820, 4100]
+        ]
+      },
+      {
+        id: "wudihu-loop",
+        name: "香格里拉无底湖 (沃迪错) · 冷杉草甸环湖轻徒步",
+        day: "D6 · 10.09",
+        layer: "shangrila",
+        placeIds: [12, 13, 14, 15],
+        difficulty: "⭐⭐ 轻松治愈摄影线",
+        diffColor: "#06b6d4",
+        distanceKm: "5.2 km",
+        elevationGain: "+180 m",
+        maxAltitude: "3,850 m",
+        duration: "2.5–3 小时",
+        trailheadName: "无底湖南岸牧场木屋",
+        endPointName: "沃迪错冷杉林北岸观景台 (环线)",
+        twobuluKey: "香格里拉无底湖",
+        highlights: "海拔 3800m 的高山冰蚀翡翠湖，环湖木栈道与原生草甸平缓舒适，黑牦牛、木屋、雪峰倒影随手拍出北欧旷野感。",
+        coordsGcj02: [
+          [28.0535, 99.8620, 3800],
+          [28.0568, 99.8662, 3815],
+          [28.0612, 99.8635, 3850],
+          [28.0588, 99.8582, 3825],
+          [28.0535, 99.8620, 3800]
+        ]
+      },
+      {
+        id: "balagezong-shambhala",
+        name: "巴拉格宗 · 回音壁高空栈道 & 4250m 天然香巴拉佛塔雪山线",
+        day: "D7 · 10.10",
+        layer: "shangrila",
+        placeIds: [16, 17],
+        difficulty: "⭐⭐ 景区车+高空木栈道",
+        diffColor: "#8b5cf6",
+        distanceKm: "4.2 km",
+        elevationGain: "+260 m",
+        maxAltitude: "4,250 m",
+        duration: "2.5 小时",
+        trailheadName: "巴拉村 / 回音壁栈道起点",
+        endPointName: "香巴拉佛塔雪山经幡观景台 (4,250m)",
+        twobuluKey: "巴拉格宗香巴拉佛塔",
+        highlights: "从海拔 2000m 岗曲河谷一路攀升至 4250m 天然金字塔雪山佛塔，漫步绝壁回音壁栈道与千年康巴藏寨巴拉村。",
+        coordsGcj02: [
+          [28.2515, 99.4235, 2900],
+          [28.2640, 99.4135, 3480],
+          [28.2765, 99.4025, 3960],
+          [28.2885, 99.3915, 4250]
+        ]
+      },
+      {
+        id: "meili-feilaisi-kongqueshan",
+        name: "梅里雪山飞来寺白塔走廊 & 3890m 孔雀山心形湖垭口漫步",
+        day: "D8–D9 · 10.11–10.12",
+        layer: "meili",
+        placeIds: [19, 20, 21, 22],
+        difficulty: "⭐⭐ 观景摄影漫步线",
+        diffColor: "#ec4899",
+        distanceKm: "3.8 km",
+        elevationGain: "+210 m",
+        maxAltitude: "3,890 m",
+        duration: "2 小时",
+        trailheadName: "飞来寺日照金山白塔观景台",
+        endPointName: "德贡公路孔雀山垭口心形湖 (3,890m)",
+        twobuluKey: "德钦孔雀山垭口",
+        highlights: "清晨在飞来寺守候 6740m 卡瓦格博日照金山，随后沿德贡公路翻越海拔 3890m 孔雀山垭口，俯瞰碧罗雪山高山冰蚀心形湖。",
+        coordsGcj02: [
+          [28.4412, 98.8805, 3420],
+          [28.3980, 98.8895, 3580],
+          [28.1120, 98.8350, 3890],
+          [28.1065, 98.8295, 3860]
+        ]
+      },
+      {
+        id: "nanjiluo-1-to-5",
+        name: "南极洛 (阿尺打嘎) · 1–5号湖经典翡翠小环线 (推荐首选)",
+        day: "D10 · 10.13 (首选小环线)",
+        layer: "nanjiluo",
+        placeIds: [23, 24],
+        difficulty: "⭐⭐⭐ 高原精华环线",
+        diffColor: "#14b8a6",
+        distanceKm: "5.5 km",
+        elevationGain: "+320 m",
+        maxAltitude: "4,150 m",
+        duration: "3.5–4 小时",
+        trailheadName: "南极洛 3号湖越野车终点木桥 (3,900m)",
+        endPointName: "5号湖雪山飞瀑草甸 → 环回3号湖",
+        twobuluKey: "南极洛1-5号湖",
+        highlights: "囊括南极洛最出片的 3号湖晨雾木桥、4号双子翡翠湖、4/5号湖俯拍制高点与 5号湖雪山瀑布草甸，无需翻越 4380m 乱石垭口，出片率与舒适度最佳！",
+        coordsGcj02: [
+          [27.9120, 99.0110, 3900],
+          [27.9082, 99.0152, 3980],
+          [27.9050, 99.0180, 4080],
+          [27.9015, 99.0225, 4150],
+          [27.9070, 99.0135, 3990],
+          [27.9120, 99.0110, 3900]
+        ]
+      },
+      {
+        id: "nanjiluo-1-to-9",
+        name: "南极洛 (阿尺打嘎) · 1–9号湖高山冰川湖群大环线 (高阶挑战)",
+        day: "D10 · 10.13 (高阶大环线)",
+        layer: "nanjiluo",
+        placeIds: [23, 24],
+        difficulty: "⭐⭐⭐⭐⭐ 硬核高海拔大环线",
+        diffColor: "#ef4444",
+        distanceKm: "11.2 km",
+        elevationGain: "+680 m",
+        maxAltitude: "4,380 m",
+        duration: "6–7 小时",
+        trailheadName: "南极洛 3号湖起点 (3,900m)",
+        endPointName: "4380m垭口 → 6/7/8/9号湖 → 环回3号湖",
+        twobuluKey: "南极洛大环线",
+        highlights: "从 5 号湖继续攀升翻越海拔 4,380m 流石滩垭口，俯瞰深邃苍凉的 6–9 号冰川湖群（「上帝遗落的眼泪」全貌），仅限当日天气晴好且体能充沛时在向导带领下挑战。",
+        coordsGcj02: [
+          [27.9120, 99.0110, 3900],
+          [27.9050, 99.0180, 4080],
+          [27.9015, 99.0225, 4150],
+          [27.8965, 99.0275, 4380],
+          [27.8920, 99.0310, 4290],
+          [27.8955, 99.0240, 4210],
+          [27.9005, 99.0195, 4160],
+          [27.9120, 99.0110, 3900]
+        ]
+      }
+    ];
+
+    function getCustomUploadedTrails() {
+      try {
+        return JSON.parse(localStorage.getItem("yn2026_custom_tracks") || "[]");
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveCustomUploadedTrail(tr) {
+      const list = getCustomUploadedTrails().filter(x => x.id !== tr.id && x.name !== tr.name);
+      list.unshift(tr);
+      localStorage.setItem("yn2026_custom_tracks", JSON.stringify(list.slice(0, 20)));
+    }
+
+    function getAllYunnanTrails() {
+      const custom = getCustomUploadedTrails().map(ct => ({
+        id: ct.id || ("custom-" + Date.now()),
+        name: `📂 [实测导入] ${ct.name || ct.fileName || "自定义轨迹"}`,
+        day: ct.scope || "自定义轨迹",
+        layer: "all",
+        placeIds: [selectedPlaceId],
+        difficulty: `📌 ${ct.format || "GPX/KML"} 实测`,
+        diffColor: "#ec4899",
+        distanceKm: `${ct.distanceKm || "?"} km`,
+        elevationGain: `+${ct.elevationGainM || 0} m`,
+        maxAltitude: `${ct.maxElevM || 0} m`,
+        duration: `采样 ${ct.pointCount || (ct.coordsGcj02 || []).length} 点`,
+        trailheadName: (ct.waypoints && ct.waypoints[0] && ct.waypoints[0].name) || "轨迹起点",
+        endPointName: (ct.waypoints && ct.waypoints.length > 1 && ct.waypoints[ct.waypoints.length - 1].name) || "轨迹终点",
+        twobuluKey: ct.name || "滇西北徒步",
+        highlights: `由 ${ct.author || "同行旅伴"} 上传的两步路/户外实测轨迹（文件：${ct.fileName || ct.name}），已自动完成 WGS-84 ➔ 高德 GCJ-02 坐标纠偏对齐。`,
+        coordsGcj02: ct.coordsGcj02 || ct.coords || [],
+        coordsWgs84: ct.coords || ct.coordsGcj02 || [],
+        isCustom: true
+      }));
+      return [...custom, ...BUILTIN_YUNNAN_TRAILS];
+    }
+
+    // ==================== WGS-84 ⇄ GCJ-02 CONVERTER & 2BULU 4-FORMAT PARSER/EXPORTER ====================
+    const YN_PI = Math.PI;
+    const YN_AXIS = 6378245.0;
+    const YN_EE = 0.00669342162296594323;
+
+    function ynIsInChina(lat, lng) {
+      return lng >= 73.33 && lng <= 135.05 && lat >= 18.15 && lat <= 53.55;
+    }
+    function ynTransformLat(x, y) {
+      let ret = -100.0 + 2.0 * x + 3.0 * y + 0.2 * y * y + 0.1 * x * y + 0.2 * Math.sqrt(Math.abs(x));
+      ret += (20.0 * Math.sin(6.0 * x * YN_PI) + 20.0 * Math.sin(2.0 * x * YN_PI)) * 2.0 / 3.0;
+      ret += (20.0 * Math.sin(y * YN_PI) + 40.0 * Math.sin(y / 3.0 * YN_PI)) * 2.0 / 3.0;
+      ret += (160.0 * Math.sin(y / 12.0 * YN_PI) + 320 * Math.sin(y * YN_PI / 30.0)) * 2.0 / 3.0;
+      return ret;
+    }
+    function ynTransformLng(x, y) {
+      let ret = 300.0 + x + 2.0 * y + 0.1 * x * x + 0.1 * x * y + 0.1 * Math.sqrt(Math.abs(x));
+      ret += (20.0 * Math.sin(6.0 * x * YN_PI) + 20.0 * Math.sin(2.0 * x * YN_PI)) * 2.0 / 3.0;
+      ret += (20.0 * Math.sin(x * YN_PI) + 40.0 * Math.sin(x / 3.0 * YN_PI)) * 2.0 / 3.0;
+      ret += (150.0 * Math.sin(x / 12.0 * YN_PI) + 300.0 * Math.sin(x / 30.0 * YN_PI)) * 2.0 / 3.0;
+      return ret;
+    }
+    function wgs84ToGcj02(lat, lng) {
+      if (!ynIsInChina(lat, lng)) return [lat, lng];
+      let dLat = ynTransformLat(lng - 105.0, lat - 35.0);
+      let dLng = ynTransformLng(lng - 105.0, lat - 35.0);
+      const radLat = lat / 180.0 * YN_PI;
+      let magic = Math.sin(radLat);
+      magic = 1 - YN_EE * magic * magic;
+      const sqrtMagic = Math.sqrt(magic);
+      dLat = (dLat * 180.0) / ((YN_AXIS * (1 - YN_EE)) / (magic * sqrtMagic) * YN_PI);
+      dLng = (dLng * 180.0) / (YN_AXIS / sqrtMagic * Math.cos(radLat) * YN_PI);
+      return [Number((lat + dLat).toFixed(6)), Number((lng + dLng).toFixed(6))];
+    }
+    function gcj02ToWgs84(lat, lng) {
+      if (!ynIsInChina(lat, lng)) return [lat, lng];
+      const [gLat, gLng] = wgs84ToGcj02(lat, lng);
+      return [Number((lat * 2 - gLat).toFixed(6)), Number((lng * 2 - gLng).toFixed(6))];
+    }
+
+    async function unpackKmzBuffer(buffer) {
+      const bytes = new Uint8Array(buffer);
+      const view = new DataView(buffer);
+      let offset = 0;
+      let kmlText = "";
+      const mediaFiles = [];
+      while (offset + 30 <= bytes.length) {
+        if (view.getUint32(offset, true) !== 0x04034b50) break;
+        const compression = view.getUint16(offset + 8, true);
+        const compSize = view.getUint32(offset + 18, true);
+        const nameLen = view.getUint16(offset + 26, true);
+        const extraLen = view.getUint16(offset + 28, true);
+        const entryName = new TextDecoder("utf-8").decode(bytes.subarray(offset + 30, offset + 30 + nameLen));
+        const dataStart = offset + 30 + nameLen + extraLen;
+        const slice = bytes.subarray(dataStart, dataStart + compSize);
+        if (entryName.toLowerCase().endsWith(".kml") && !kmlText) {
+          if (compression === 0) {
+            kmlText = new TextDecoder("utf-8").decode(slice);
+          } else if (compression === 8 && typeof DecompressionStream !== "undefined") {
+            const ds = new DecompressionStream("deflate-raw");
+            const writer = ds.writable.getWriter();
+            writer.write(slice);
+            writer.close();
+            const outBuf = await new Response(ds.readable).arrayBuffer();
+            kmlText = new TextDecoder("utf-8").decode(outBuf);
+          }
+        } else if (!entryName.endsWith("/")) {
+          mediaFiles.push(entryName);
+        }
+        offset = dataStart + compSize;
+      }
+      return { kmlText, mediaFiles };
+    }
+
+    async function parseYunnanOutdoorTrackFile(file) {
+      const fileName = file.name || "track.gpx";
+      const lower = fileName.toLowerCase();
+      let text = "";
+      let detectedFormat = "GPX格式";
+      let mediaFiles = [];
+
+      if (lower.endsWith(".kmz")) {
+        const res = await unpackKmzBuffer(await file.arrayBuffer());
+        text = res.kmlText;
+        mediaFiles = res.mediaFiles;
+        detectedFormat = "KMZ格式 (两步路完整轨迹包)";
+        if (!text) throw new Error("KMZ 文件中未找到内嵌的 .kml 轨迹数据");
+      } else {
+        text = await file.text();
+        if (lower.endsWith(".geojson") || lower.endsWith(".json") || text.trim().startsWith("{")) {
+          const gj = JSON.parse(text);
+          const rawPts = [];
+          const wpts = [];
+          const feats = gj.type === "FeatureCollection" ? (gj.features || []) : [gj];
+          feats.forEach(f => {
+            const g = f.geometry || f;
+            const pr = f.properties || {};
+            if (g.type === "LineString") (g.coordinates || []).forEach(c => rawPts.push([c[1], c[0], Math.round(c[2] || 0)]));
+            else if (g.type === "MultiLineString") (g.coordinates || []).flat().forEach(c => rawPts.push([c[1], c[0], Math.round(c[2] || 0)]));
+            else if (g.type === "Point" && Array.isArray(g.coordinates)) wpts.push({ name: pr.name || "路标", lat: g.coordinates[1], lng: g.coordinates[0], ele: Math.round(g.coordinates[2] || 0) });
+          });
+          return finalizeYunnanParsedTrack(gj.name || fileName.replace(/\.[^.]+$/, ""), fileName, "GeoJSON", rawPts, wpts, []);
+        }
+        detectedFormat = lower.endsWith(".gpx")
+          ? "GPX格式"
+          : ((text.includes("gx:Track") || text.includes("gx:coord")) ? "KML格式（轨迹）" : "KML格式（路径）");
+      }
+
+      const xml = new DOMParser().parseFromString(text, "text/xml");
+      const docName = xml.querySelector("trk > name, rte > name, Document > name, Folder > name, metadata > name")?.textContent?.trim() || fileName.replace(/\.[^.]+$/, "");
+      const rawPts = [];
+      const waypoints = [];
+
+      // 1. GPX <trkpt> / <rtept>
+      Array.from(xml.querySelectorAll("trkpt, rtept")).forEach(pt => {
+        const lat = parseFloat(pt.getAttribute("lat"));
+        const lon = parseFloat(pt.getAttribute("lon"));
+        const ele = parseFloat(pt.querySelector("ele")?.textContent || "0") || 0;
+        if (!isNaN(lat) && !isNaN(lon)) rawPts.push([lat, lon, Math.round(ele)]);
+      });
+
+      // 2. GPX <wpt>
+      Array.from(xml.querySelectorAll("wpt")).forEach(w => {
+        const lat = parseFloat(w.getAttribute("lat"));
+        const lon = parseFloat(w.getAttribute("lon"));
+        const name = w.querySelector("name")?.textContent?.trim() || "标注点";
+        const ele = parseFloat(w.querySelector("ele")?.textContent || "0") || 0;
+        if (!isNaN(lat) && !isNaN(lon)) waypoints.push({ name, lat: Number(lat.toFixed(5)), lng: Number(lon.toFixed(5)), ele: Math.round(ele) });
+      });
+
+      // 3. 2bulu KML格式（轨迹）: <gx:coord>lon lat ele</gx:coord> or <coord>
+      Array.from(xml.getElementsByTagName("*")).forEach(el => {
+        const ln = (el.localName || el.tagName || "").toLowerCase();
+        if (ln === "coord" || ln === "gx:coord") {
+          const parts = (el.textContent || "").trim().split(/\s+/);
+          if (parts.length >= 2) {
+            const lon = parseFloat(parts[0]);
+            const lat = parseFloat(parts[1]);
+            const ele = parts.length >= 3 ? parseFloat(parts[2]) : 0;
+            if (!isNaN(lat) && !isNaN(lon)) rawPts.push([lat, lon, Math.round(ele || 0)]);
+          }
+        }
+      });
+
+      // 4. 2bulu KML格式（路径）: <Placemark><Point> & <LineString><coordinates>
+      Array.from(xml.querySelectorAll("Placemark")).forEach(pm => {
+        const pmName = pm.querySelector("name")?.textContent?.trim() || "标注点";
+        const ptCoord = pm.querySelector("Point > coordinates")?.textContent?.trim();
+        if (ptCoord) {
+          const sp = ptCoord.split(",");
+          const lon = parseFloat(sp[0]), lat = parseFloat(sp[1]), ele = parseFloat(sp[2] || "0") || 0;
+          if (!isNaN(lat) && !isNaN(lon)) waypoints.push({ name: pmName, lat: Number(lat.toFixed(5)), lng: Number(lon.toFixed(5)), ele: Math.round(ele) });
+        }
+      });
+
+      if (rawPts.length === 0) {
+        Array.from(xml.querySelectorAll("LineString coordinates, MultiGeometry coordinates, Track coordinates, coordinates")).forEach(cNode => {
+          (cNode.textContent || "").trim().split(/\s+/).forEach(tok => {
+            const sp = tok.split(",");
+            if (sp.length >= 2) {
+              const lon = parseFloat(sp[0]), lat = parseFloat(sp[1]), ele = parseFloat(sp[2] || "0") || 0;
+              if (!isNaN(lat) && !isNaN(lon)) rawPts.push([lat, lon, Math.round(ele)]);
+            }
+          });
+        });
+      }
+
+      return finalizeYunnanParsedTrack(docName, fileName, detectedFormat, rawPts, waypoints, mediaFiles);
+    }
+
+    function finalizeYunnanParsedTrack(name, fileName, format, rawPts, waypoints, mediaFiles) {
+      const pts = rawPts.length > 0 ? rawPts : waypoints.map(w => [w.lat, w.lng, w.ele || 0]);
+      if (pts.length === 0) {
+        throw new Error("未检测到有效轨迹坐标，请确认文件为两步路导出的 KML(轨迹/路径)、KMZ 或 GPX 文件");
+      }
+      let distKm = 0, gainM = 0, maxE = -99999, minE = 99999;
+      for (let i = 0; i < pts.length; i++) {
+        const [lat, lng, ele] = pts[i];
+        if (ele > maxE) maxE = ele;
+        if (ele < minE) minE = ele;
+        if (i > 0) {
+          const dLat = (lat - pts[i - 1][0]) * YN_PI / 180.0;
+          const dLon = (lng - pts[i - 1][1]) * YN_PI / 180.0;
+          const a = Math.sin(dLat / 2) ** 2 + Math.cos(pts[i - 1][0] * YN_PI / 180.0) * Math.cos(lat * YN_PI / 180.0) * (Math.sin(dLon / 2) ** 2);
+          distKm += 6371.0 * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+          if (ele - pts[i - 1][2] > 1.5) gainM += (ele - pts[i - 1][2]);
+        }
+      }
+      if (maxE === -99999) maxE = 0;
+      if (minE === 99999) minE = 0;
+
+      const maxSamples = 110;
+      const step = pts.length <= maxSamples ? 1 : (pts.length - 1) / (maxSamples - 1);
+      const sampled = [];
+      if (pts.length <= maxSamples) {
+        sampled.push(...pts);
+      } else {
+        for (let i = 0; i < maxSamples - 1; i++) sampled.push(pts[Math.round(i * step)]);
+        sampled.push(pts[pts.length - 1]);
+      }
+
+      const coordsWgs84 = sampled.map(p => [Number(p[0].toFixed(5)), Number(p[1].toFixed(5)), p[2] || 0]);
+      const coordsGcj02 = sampled.map(p => {
+        const [gLat, gLng] = wgs84ToGcj02(p[0], p[1]);
+        return [Number(gLat.toFixed(5)), Number(gLng.toFixed(5)), p[2] || 0];
+      });
+
+      return {
+        id: "yn-track-" + Date.now(),
+        name: name || fileName,
+        fileName,
+        format,
+        rawPointCount: pts.length,
+        pointCount: coordsWgs84.length,
+        distanceKm: Number(distKm.toFixed(2)),
+        elevationGainM: Math.round(gainM),
+        maxElevM: Math.round(maxE),
+        minElevM: Math.round(minE),
+        coords: coordsWgs84,
+        coordsGcj02,
+        waypoints: waypoints.slice(0, 15),
+        mediaAttachments: (mediaFiles || []).slice(0, 10)
+      };
+    }
+
+    function escapeXmlYunnan(s) {
+      return String(s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    }
+
+    window.exportYunnanTrailGpx = function(trailId) {
+      const tr = getAllYunnanTrails().find(t => t.id === trailId) || BUILTIN_YUNNAN_TRAILS[1];
+      if (!tr) return;
+      const pts = (tr.coordsWgs84 && tr.coordsWgs84.length ? tr.coordsWgs84 : tr.coordsGcj02.map(c => {
+        const [wLat, wLng] = gcj02ToWgs84(c[0], c[1]);
+        return [wLat, wLng, c[2] || 3500];
+      }));
+      const sPt = pts[0], ePt = pts[pts.length - 1];
+      const trkpts = pts.map(p => `      <trkpt lat="${p[0]}" lon="${p[1]}"><ele>${p[2] || 3500}</ele></trkpt>`).join("\n");
+      const gpx = `<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="Yunnan2026-2bulu-Bridge" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata>
+    <name>${escapeXmlYunnan(tr.name)}</name>
+    <desc>${escapeXmlYunnan(tr.day + " | " + tr.distanceKm + " | 爬升 " + tr.elevationGain + " | " + tr.highlights)}</desc>
+  </metadata>
+  <wpt lat="${sPt[0]}" lon="${sPt[1]}"><ele>${sPt[2] || 3500}</ele><name>🟢 起点: ${escapeXmlYunnan(tr.trailheadName)}</name></wpt>
+  <wpt lat="${ePt[0]}" lon="${ePt[1]}"><ele>${ePt[2] || 3500}</ele><name>🏔️ 终点: ${escapeXmlYunnan(tr.endPointName)}</name></wpt>
+  <trk>
+    <name>${escapeXmlYunnan(tr.name)}</name>
+    <desc>${escapeXmlYunnan(tr.highlights)}</desc>
+    <trkseg>
+${trkpts}
+    </trkseg>
+  </trk>
+</gpx>`;
+      const blob = new Blob([gpx], { type: "application/gpx+xml;charset=utf-8" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = `${tr.id}_2bulu.gpx`;
+      a.click();
+    };
+
+    window.exportYunnanTrailKml = function(trailId) {
+      const tr = getAllYunnanTrails().find(t => t.id === trailId) || BUILTIN_YUNNAN_TRAILS[1];
+      if (!tr) return;
+      const pts = (tr.coordsWgs84 && tr.coordsWgs84.length ? tr.coordsWgs84 : tr.coordsGcj02.map(c => {
+        const [wLat, wLng] = gcj02ToWgs84(c[0], c[1]);
+        return [wLat, wLng, c[2] || 3500];
+      }));
+      const coordsStr = pts.map(p => `${p[1]},${p[0]},${p[2] || 3500}`).join(" ");
+      const sPt = pts[0], ePt = pts[pts.length - 1];
+      const kml = `<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>${escapeXmlYunnan(tr.name)} (两步路KML路径)</name>
+    <description>${escapeXmlYunnan(tr.day + " · " + tr.distanceKm + " · 爬升" + tr.elevationGain + " · " + tr.highlights)}</description>
+    <Placemark>
+      <name>🟢 起点: ${escapeXmlYunnan(tr.trailheadName)}</name>
+      <Point><coordinates>${sPt[1]},${sPt[0]},${sPt[2] || 3500}</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>🏔️ 终点: ${escapeXmlYunnan(tr.endPointName)}</name>
+      <Point><coordinates>${ePt[1]},${ePt[0]},${ePt[2] || 3500}</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>${escapeXmlYunnan(tr.name)}</name>
+      <description>${escapeXmlYunnan(tr.highlights)}</description>
+      <LineString>
+        <tessellate>1</tessellate>
+        <coordinates>${coordsStr}</coordinates>
+      </LineString>
+    </Placemark>
+  </Document>
+</kml>`;
+      const blob = new Blob([kml], { type: "application/vnd.google-earth.kml+xml;charset=utf-8" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = `${tr.id}_2bulu.kml`;
+      a.click();
+    };
+
+    window.open2buluGuideModal = function(trailId) {
+      const tr = getAllYunnanTrails().find(t => t.id === trailId) || BUILTIN_YUNNAN_TRAILS[1];
+      const searchUrl = `https://www.2bulu.com/track/track_search.htm?key=${encodeURIComponent(tr.twobuluKey || tr.name)}`;
+      document.getElementById("infoModalHeader").textContent = "🧭 两步路户外助手 (2bulu) · 轨迹互通与导入指南";
+      document.getElementById("infoModalBody").innerHTML = `
+        <div class="space-y-3 text-xs leading-relaxed">
+          <div class="p-3 rounded-2xl bg-emerald-500/10 border border-emerald-500/40 space-y-1.5">
+            <div class="font-black text-sm text-emerald-500">🥾 当前路线：${tr.name}</div>
+            <div class="text-[11px] text-[var(--muted-foreground)]">${tr.day} · 里程 ${tr.distanceKm} · 爬升 ${tr.elevationGain} · 最高 ${tr.maxAltitude}</div>
+            <div class="flex flex-wrap gap-2 pt-1">
+              <button onclick="exportYunnanTrailKml('${tr.id}')" class="px-3 py-1.5 rounded-xl bg-emerald-500 text-slate-950 font-black cursor-pointer">
+                📥 下载两步路 KML (路径格式)
+              </button>
+              <button onclick="exportYunnanTrailGpx('${tr.id}')" class="px-3 py-1.5 rounded-xl bg-sky-500 text-slate-950 font-black cursor-pointer">
+                📥 下载标准 GPX 轨迹
+              </button>
+              <a href="${searchUrl}" target="_blank" rel="noopener" class="px-3 py-1.5 rounded-xl bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] font-extrabold">
+                🔎 去两步路搜「${tr.twobuluKey}」实测轨迹 ↗
+              </a>
+            </div>
+          </div>
+
+          <div class="p-3 rounded-xl bg-[var(--content)]/70 border border-[var(--border)] space-y-1.5">
+            <div class="font-black text-amber-500">📲 方法一：把本路书轨迹导入「两步路户外助手」App 离线导航</div>
+            <ol class="list-decimal pl-4 space-y-1 text-[11px]">
+              <li>点击上方 <strong>「📥 下载两步路 KML」</strong> 或 <strong>「📥 下载标准 GPX」</strong>（已自动由高德 GCJ-02 还原为两步路标准 WGS-84 GPS 坐标）。</li>
+              <li>在手机浏览器下载完成后，点击<strong>「用其他应用打开」➔ 选择「两步路户外助手」</strong>（或发到微信文件传输助手后点用两步路打开），即可在山里无信号叠加卫星/等高线地图循迹跟走！</li>
+            </ol>
+          </div>
+
+          <div class="p-3 rounded-xl bg-[var(--content)]/70 border border-[var(--border)] space-y-1.5">
+            <div class="font-black text-sky-400">📂 方法二：从「两步路」导出轨迹上传回本路书 (支持全部 4 种格式)</div>
+            <ol class="list-decimal pl-4 space-y-1 text-[11px]">
+              <li>在两步路 App 打开任意驴友实测轨迹 ➔ 点击右上角/底部<strong>「导出轨迹文件」</strong>。</li>
+              <li>两步路提供 4 种导出格式，本路书<strong>100% 全部原生兼容</strong>：
+                <ul class="list-disc pl-4 mt-1 space-y-0.5 text-[var(--muted-foreground)]">
+                  <li><strong>KML格式（轨迹）</strong>：含时间和速度信息 (<code>&lt;gx:Track&gt;</code>)</li>
+                  <li><strong>KML格式（路径）</strong>：仅含经纬度和高度，最轻量通用 (<code>&lt;LineString&gt;</code>)</li>
+                  <li><strong>KMZ格式</strong>：完整 ZIP 压缩包，含标注点与多媒体附件</li>
+                  <li><strong>GPX格式</strong>：国际通用标准户外轨迹格式</li>
+                </ul>
+              </li>
+              <li>点击下方按钮打开 Vibe 舱上传文件，地图将<strong>秒级渲染实测轨迹并永久同步至云端路书</strong>！</li>
+            </ol>
+            <div class="pt-1">
+              <button onclick="closeInfoModal(); unlockAndOpenVibeModal();" class="w-full py-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-black text-xs cursor-pointer">
+                ✨ 打开 Vibe 舱上传两步路轨迹文件 (.kml / .kmz / .gpx)
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+      document.getElementById("infoModal").classList.remove("hidden");
+    };
+
+    window.toggleYunnanTrailsLayer = function() {
+      showTrailsOnMap = !showTrailsOnMap;
+      const btn = document.getElementById("btnToggleYunnanTrails");
+      if (btn) {
+        btn.className = showTrailsOnMap
+          ? "px-2 py-1 rounded-lg text-[11px] font-extrabold bg-emerald-500 text-slate-950 transition cursor-pointer"
+          : "px-2 py-1 rounded-lg text-[11px] font-semibold text-slate-200 hover:text-white transition cursor-pointer";
+      }
+      renderMap(false);
+    };
+
+    window.focusYunnanTrailOnMap = function(trailId) {
+      const tr = getAllYunnanTrails().find(t => t.id === trailId);
+      if (!tr || !tr.coordsGcj02 || !tr.coordsGcj02.length) return;
+      highlightedTrailId = trailId;
+      showTrailsOnMap = true;
+      const btn = document.getElementById("btnToggleYunnanTrails");
+      if (btn) btn.className = "px-2 py-1 rounded-lg text-[11px] font-extrabold bg-emerald-500 text-slate-950 transition cursor-pointer";
+      if (window.innerWidth < 1024 && typeof window.setMobileView === "function") {
+        window.setMobileView("explore");
+      }
+      renderMap(false);
+      if (lfMap && activeMapMode !== "vector") {
+        const latlngs = tr.coordsGcj02.map(c => [c[0], c[1]]);
+        lfMap.fitBounds(latlngs, { padding: [36, 36], maxZoom: 14 });
+      }
+      document.getElementById("mapHeroCard")?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    };
+
+    window.handleYunnanTrackFileUpload = async function(file) {
+      if (!file) return;
+      const labelEl = document.getElementById("ynVibeTrackFileLabel");
+      const previewEl = document.getElementById("ynVibeTrackPreviewBox");
+      const clearBtn = document.getElementById("btnClearYnVibeTrack");
+      try {
+        const parsed = await parseYunnanOutdoorTrackFile(file);
+        ynUploadedTrack = parsed;
+        saveCustomUploadedTrail({
+          ...parsed,
+          author: (document.getElementById("vibeAuthorInput")?.value || "同行旅伴").trim(),
+          scope: document.getElementById("vibeScopeSelect")?.value || "全环线徒步轨迹"
+        });
+        highlightedTrailId = parsed.id;
+        showTrailsOnMap = true;
+        renderMap(false);
+        renderDetailCard();
+        renderYunnanTrailsHubCard();
+
+        if (labelEl) labelEl.textContent = `✅ 已解析: ${parsed.fileName} (${parsed.format})`;
+        if (clearBtn) clearBtn.classList.remove("hidden");
+        if (previewEl) {
+          previewEl.classList.remove("hidden");
+          previewEl.innerHTML = `
+            <div class="flex items-center justify-between gap-2 flex-wrap">
+              <span class="font-black text-emerald-500">🥾 轨迹解析成功：《${parsed.name}》 (${parsed.format})</span>
+              <button type="button" onclick="closeVibeFeedbackModal(); focusYunnanTrailOnMap('${parsed.id}');" class="px-2 py-0.5 rounded bg-emerald-500 text-slate-950 font-black text-[10px] cursor-pointer">
+                🗺️ 在高德地图查看
+              </button>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 pt-1 text-[11px]">
+              <div>📏 距离：<strong>${parsed.distanceKm} km</strong></div>
+              <div>⛰️ 爬升：<strong>+${parsed.elevationGainM} m</strong></div>
+              <div>🏔️ 最高：<strong>${parsed.maxElevM} m</strong></div>
+              <div>📍 采样：<strong>${parsed.pointCount} 点 (原${parsed.rawPointCount}点)</strong></div>
+            </div>
+            ${parsed.waypoints.length ? `<div class="text-[10px] text-[var(--muted-foreground)]">🚩 含 ${parsed.waypoints.length} 个路标点：${parsed.waypoints.slice(0, 4).map(w => w.name).join("、")}</div>` : ""}
+            <div class="text-[10px] text-emerald-500 font-bold">✨ 已叠加至当前地图！点击下方「🚀 发送新 Vibe (含轨迹)」即可同步至 Cloudtop 永久写入全员路书。</div>
+          `;
+        }
+      } catch (err) {
+        ynUploadedTrack = null;
+        if (previewEl) {
+          previewEl.classList.remove("hidden");
+          previewEl.innerHTML = `<div class="text-rose-500 font-bold">❌ 轨迹解析失败：${err.message || err}</div>`;
+        }
+      }
+    };
+
+    window.clearYunnanUploadedTrack = function() {
+      ynUploadedTrack = null;
+      const inp = document.getElementById("ynVibeTrackFileInput");
+      if (inp) inp.value = "";
+      const lbl = document.getElementById("ynVibeTrackFileLabel");
+      if (lbl) lbl.textContent = "📂 点击选择轨迹文件 (.kml / .kmz / .gpx / .geojson)";
+      document.getElementById("btnClearYnVibeTrack")?.classList.add("hidden");
+      document.getElementById("ynVibeTrackPreviewBox")?.classList.add("hidden");
+    };
 
     // ==================== 1. ELEVATION CHART RENDERER ====================
     function renderElevationChart() {
@@ -1764,6 +2460,8 @@
 
       lfMarkers.forEach(m => lfMap.removeLayer(m));
       lfMarkers = [];
+      lfTrailLayers.forEach(tl => lfMap.removeLayer(tl));
+      lfTrailLayers = [];
       if (lfRouteLine) lfMap.removeLayer(lfRouteLine);
 
       const latlngs = list.map(p => [p.lat, p.lng]);
@@ -1776,7 +2474,48 @@
         }).addTo(lfMap);
       }
 
-      const popupMaxW = Math.min(220, Math.max(176, (window.innerWidth || 375) - 72));
+      const popupMaxW = Math.min(230, Math.max(185, (window.innerWidth || 375) - 68));
+
+      // Render Hiking Trails Polylines on Gaode / Leaflet Map
+      if (showTrailsOnMap) {
+        const trails = getAllYunnanTrails().filter(tr => activeLayer === "all" || activeLayer === "today" || tr.layer === "all" || tr.layer === activeLayer);
+        trails.forEach(tr => {
+          if (!Array.isArray(tr.coordsGcj02) || tr.coordsGcj02.length < 2) return;
+          const isHi = tr.id === highlightedTrailId;
+          const pts2d = tr.coordsGcj02.map(c => [c[0], c[1]]);
+          const casing = L.polyline(pts2d, {
+            color: "#ffffff",
+            weight: isHi ? 7.5 : 5,
+            opacity: 0.9
+          }).addTo(lfMap);
+          const poly = L.polyline(pts2d, {
+            color: tr.diffColor || "#10b981",
+            weight: isHi ? 4.8 : 3.2,
+            opacity: 0.96,
+            dashArray: isHi ? null : "7, 5"
+          }).addTo(lfMap);
+
+          const tPopHtml = `
+            <div class="space-y-1 text-xs">
+              <div class="font-black text-[10px]" style="color:${tr.diffColor}">🥾 ${tr.day} · ${tr.difficulty}</div>
+              <div class="font-black text-[11px] text-[var(--foreground)] leading-snug">${tr.name}</div>
+              <div class="grid grid-cols-2 gap-1 p-1.5 rounded bg-emerald-500/10 text-[10px]">
+                <div>📏 ${tr.distanceKm}</div>
+                <div>⛰️ ${tr.elevationGain}</div>
+                <div>🏔️ ${tr.maxAltitude}</div>
+                <div>⏱️ ${tr.duration}</div>
+              </div>
+              <div class="grid grid-cols-2 gap-1 pt-0.5">
+                <button onclick="exportYunnanTrailKml('${tr.id}')" class="py-1 px-1.5 rounded bg-emerald-500 text-slate-950 font-black text-[10px] cursor-pointer">📥 两步路KML</button>
+                <button onclick="exportYunnanTrailGpx('${tr.id}')" class="py-1 px-1.5 rounded bg-sky-500 text-slate-950 font-black text-[10px] cursor-pointer">📥 导出GPX</button>
+              </div>
+            </div>
+          `;
+          poly.bindPopup(tPopHtml, { maxWidth: popupMaxW, minWidth: 185 });
+          lfTrailLayers.push(casing, poly);
+        });
+      }
+
       let selectedMarkerRef = null;
       list.forEach(p => {
         const isSel = p.id === selectedPlaceId;
@@ -1836,6 +2575,14 @@
       const poly = pts.map(p => `${toX(p.lng).toFixed(1)},${toY(p.lat).toFixed(1)}`).join(" ");
       s += `<polyline points="${poly}" fill="none" stroke="#f59e0b" stroke-width="2.8" stroke-dasharray="6,4" opacity="0.85"/>`;
 
+      if (showTrailsOnMap) {
+        getAllYunnanTrails().forEach(tr => {
+          if (!Array.isArray(tr.coordsGcj02) || tr.coordsGcj02.length < 2) return;
+          const tPoly = tr.coordsGcj02.map(c => `${toX(c[1]).toFixed(1)},${toY(c[0]).toFixed(1)}`).join(" ");
+          s += `<polyline points="${tPoly}" fill="none" stroke="${tr.diffColor || '#10b981'}" stroke-width="${tr.id === highlightedTrailId ? '3.8' : '2.2'}" stroke-dasharray="4,2" opacity="0.92"/>`;
+        });
+      }
+
       pts.forEach(p => {
         const x = toX(p.lng), y = toY(p.lat);
         const isSel = p.id === selectedPlaceId;
@@ -1853,7 +2600,7 @@
       svg.innerHTML = s;
     }
 
-    // ==================== 3. CHINA DOMESTIC LINKS & DETAIL CARD ====================
+    // ==================== 3. CHINA DOMESTIC LINKS, DETAIL CARD & 2BULU TRAILS HUB ====================
     function getAmapMarkerUrl(p) {
       return `https://uri.amap.com/marker?position=${p.lng},${p.lat}&name=${encodeURIComponent(p.name)}&src=yunnan2026&coordinate=gaode&callnative=1`;
     }
@@ -1882,6 +2629,50 @@
       selectPlace(pool[nextIdx].id, true, true);
     };
 
+    function renderYunnanTrailsHubCard() {
+      const hub = document.getElementById("yunnanTrailsHubCard");
+      if (!hub) return;
+      const allTrails = getAllYunnanTrails();
+      hub.innerHTML = `
+        <div class="space-y-2.5">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <div class="flex items-center gap-1.5">
+                <span class="px-2 py-0.5 rounded-lg text-[10px] font-black bg-emerald-500 text-slate-950">2BULU · 两步路互通</span>
+                <h3 class="text-xs sm:text-sm font-black text-[var(--foreground)]">🥾 全环线 ${allTrails.length} 条户外徒步轨迹库 (支持两步路 KML/KMZ/GPX 导入与导出)</h3>
+              </div>
+              <p class="text-[11px] text-[var(--muted-foreground)] mt-0.5">
+                内置 WGS-84 ⇄ 高德 GCJ-02 自动坐标纠偏：一键导出 <code>.kml</code> / <code>.gpx</code> 直接用<strong>「两步路户外助手」</strong>打开循迹，或上传驴友实测轨迹文件！
+              </p>
+            </div>
+            <button onclick="unlockAndOpenVibeModal()" class="px-3 py-1.5 rounded-xl bg-emerald-500 text-slate-950 font-black text-xs cursor-pointer hover:opacity-95 shrink-0 flex items-center gap-1">
+              <span>📂 上传两步路轨迹 (.kml/.kmz/.gpx)</span>
+            </button>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+            ${allTrails.map(tr => `
+              <div class="p-2.5 rounded-xl bg-[var(--content)]/70 border ${tr.id === highlightedTrailId ? 'border-emerald-500 bg-emerald-500/10' : 'border-[var(--border)]'} flex flex-col justify-between gap-2 text-xs">
+                <div class="space-y-1">
+                  <div class="flex items-center justify-between gap-1.5 flex-wrap">
+                    <span class="px-2 py-0.5 rounded text-[10px] font-black text-slate-950" style="background:${tr.diffColor}">${tr.day}</span>
+                    <span class="text-[10px] font-bold text-emerald-500">${tr.distanceKm} · 爬升 ${tr.elevationGain} · 最高 ${tr.maxAltitude}</span>
+                  </div>
+                  <div class="font-black text-[var(--foreground)]">${tr.name}</div>
+                  <div class="text-[11px] text-[var(--muted-foreground)] line-clamp-2">${tr.highlights}</div>
+                </div>
+                <div class="flex flex-wrap items-center gap-1.5 pt-1 border-t border-[var(--border)]/60">
+                  <button onclick="focusYunnanTrailOnMap('${tr.id}')" class="px-2 py-1 rounded-lg bg-emerald-500 text-slate-950 font-black text-[11px] cursor-pointer">🗺️ 地图看轨迹</button>
+                  <button onclick="exportYunnanTrailKml('${tr.id}')" class="px-2 py-1 rounded-lg bg-[var(--card)] text-emerald-500 border border-emerald-500/40 font-extrabold text-[11px] cursor-pointer">📥 导出KML(两步路)</button>
+                  <button onclick="exportYunnanTrailGpx('${tr.id}')" class="px-2 py-1 rounded-lg bg-[var(--card)] text-sky-400 border border-sky-500/40 font-extrabold text-[11px] cursor-pointer">📥 导出GPX</button>
+                  <button onclick="open2buluGuideModal('${tr.id}')" class="px-2 py-1 rounded-lg bg-[var(--card)] text-[var(--foreground)] border border-[var(--border)] font-bold text-[11px] cursor-pointer">🧭 两步路指南</button>
+                </div>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+      `;
+    }
+
     function renderDetailCard() {
       const p = places.find(item => item.id === selectedPlaceId) || places[0];
       const box = document.getElementById("detailCard");
@@ -1893,6 +2684,33 @@
           : p.cat === "hike"
           ? `<span class="px-1.5 py-0.5 rounded-md text-[10px] font-extrabold bg-emerald-500/15 text-emerald-500 border border-emerald-500/30">🥾 秘境徒步</span>`
           : `<span class="px-1.5 py-0.5 rounded-md text-[10px] font-extrabold bg-amber-500/15 text-amber-500 border border-amber-500/30">📷 观景节点</span>`;
+
+      const matchingTrails = getAllYunnanTrails().filter(tr => Array.isArray(tr.placeIds) && tr.placeIds.includes(p.id));
+      const inlineTrailsHtml = matchingTrails.length > 0 ? `
+        <div class="p-3 rounded-2xl bg-emerald-500/10 border-2 border-emerald-500/35 space-y-2 text-xs">
+          <div class="flex items-center justify-between gap-2 flex-wrap">
+            <span class="font-black text-emerald-500 flex items-center gap-1">🥾 本站关联户外徒步轨迹 · 两步路 (2bulu) 互通 (${matchingTrails.length} 条)</span>
+            <button onclick="unlockAndOpenVibeModal()" class="px-2 py-0.5 rounded-lg bg-emerald-500 text-slate-950 font-black text-[10px] cursor-pointer">📂 上传实测轨迹 (.kml/.kmz/.gpx)</button>
+          </div>
+          <div class="space-y-2">
+            ${matchingTrails.map(tr => `
+              <div class="p-2.5 rounded-xl bg-[var(--card)] border border-[var(--border)] space-y-1.5">
+                <div class="flex items-center justify-between gap-1.5 flex-wrap">
+                  <span class="font-black text-[var(--foreground)]">${tr.name}</span>
+                  <span class="px-2 py-0.5 rounded text-[10px] font-black text-slate-950" style="background:${tr.diffColor}">${tr.distanceKm} · ${tr.elevationGain} · 最高 ${tr.maxAltitude}</span>
+                </div>
+                <div class="text-[11px] text-[var(--muted-foreground)]">${tr.highlights}</div>
+                <div class="flex flex-wrap items-center gap-1.5 pt-0.5">
+                  <button onclick="focusYunnanTrailOnMap('${tr.id}')" class="px-2.5 py-1 rounded-lg bg-emerald-500 text-slate-950 font-black text-[11px] cursor-pointer">🗺️ 地图高亮轨迹</button>
+                  <button onclick="exportYunnanTrailKml('${tr.id}')" class="px-2.5 py-1 rounded-lg bg-emerald-500/15 text-emerald-500 border border-emerald-500/40 font-extrabold text-[11px] cursor-pointer">📥 导出两步路 .KML</button>
+                  <button onclick="exportYunnanTrailGpx('${tr.id}')" class="px-2.5 py-1 rounded-lg bg-sky-500/15 text-sky-400 border border-sky-500/40 font-extrabold text-[11px] cursor-pointer">📥 导出 .GPX</button>
+                  <button onclick="open2buluGuideModal('${tr.id}')" class="px-2.5 py-1 rounded-lg bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] font-bold text-[11px] cursor-pointer">🧭 两步路实测库 & 导入指南</button>
+                </div>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+      ` : "";
 
       box.innerHTML = `
         <div class="flex flex-col gap-2.5">
@@ -1936,6 +2754,8 @@
               <div class="font-bold text-[var(--foreground)] mt-0.5 leading-relaxed text-[11px] sm:text-xs">${p.cameraSpot}</div>
             </div>
           </div>
+
+          ${inlineTrailsHtml}
 
           <!-- Spot Illustration Visual Banner (在地灵动风物插画) -->
           <div class="relative group rounded-xl overflow-hidden border border-[var(--border)] bg-slate-900 cursor-pointer shadow-xs" onclick="openBaikeModal(${p.id})">
@@ -2471,7 +3291,7 @@
 
     // ==================== 11.5 HIDDEN VIBE FEEDBACK, AUTO-UPDATE POLLING & VERSION HISTORY ENGINE ====================
     const VIBE_NTFY_URL = "https://ntfy.sh/yungapple_yunnan2026_vibe_9f8a7b6c";
-    const APP_BUILTIN_VERSION = "v1.9";
+    const APP_BUILTIN_VERSION = "v2.0";
     const YUNNAN_VIBE_PASSWORD = "applefriend";
     const YUNNAN_PW_STORAGE_KEY = "yunnan2026_vibe_pw";
     const YUNNAN_UNLOCK_STORAGE_KEY = "vibe_unlocked_yunnan-2026";
@@ -2481,6 +3301,22 @@
     let baselineVersionAtSubmit = null;
 
     const DEFAULT_VIBE_HISTORY = [
+      {
+        version: "v2.0",
+        title: "全面打通「两步路户外助手 (2bulu)」4大轨迹格式双向互通 & Vibe 轨迹上传引擎",
+        timestamp: "2026-10-05 23:42 CST",
+        author: "同行旅伴 & 随身AI定制师",
+        scope: "🥾 全环线 7 大徒步轨迹 & 两步路双向打通",
+        vibe_tags: ["两步路打通", "KML/KMZ/GPX四格式", "Vibe轨迹上传", "WGS84⇄GCJ02校准"],
+        vibe_prompt: "BTW，户外徒步轨迹需要两步路等app，不知道能不能打通，找到方法，也可以支持vibe反馈时上传轨迹文件",
+        summary: "全面打通两步路户外助手 (2bulu) 4大官方导出格式（KML轨迹/KML路径/KMZ压缩包/GPX标准格式）：内置滇西北 7 大核心徒步实测轨迹，支持一键导出导入两步路 App，并支持在 Vibe 调优舱直接上传轨迹文件实时渲染高德地图与同步云端。",
+        changes: [
+          "全面支持两步路「导出轨迹文件」全部 4 种官方格式：KML格式(轨迹 gx:Track)、KML格式(路径 LineString)、KMZ格式(浏览器端原生流式解压 doc.kml) 与 GPX格式，零外部依赖秒级解析",
+          "内置滇西北 7 大核心徒步实测轨迹库（中虎跳峡、哈巴黑海湖 17km +1000m、香格里拉无底湖、巴拉格宗佛塔、飞来寺—孔雀山心形湖、南极洛 1–5号湖小环线 & 1–9号湖大环线），支持一键导出 .KML / .GPX 直接用手机「两步路户外助手」打开实现离线语音防迷路",
+          "新增 WGS-84 (GPS原始坐标) ⇄ GCJ-02 (中国高德火星坐标) 双向自动纠偏算法：导入两步路轨迹自动对齐高德实景瓦片，导出给两步路自动还原标准 GPS 坐标，彻底消除 300–500米偏移",
+          "Vibe 实时迭代舱新增「📂 上传两步路轨迹文件 (.kml/.kmz/.gpx)」与链接投递：上传后立即在地图预览距离/爬升/最高海拔，并随 Vibe 反馈直连发送至 Cloudtop 守护进程持久化至全员路书"
+        ]
+      },
       {
         version: "v1.9",
         title: "D5 哈巴雪山黑海湖徒步参数精准校准 · 全程往返 17km & 垂直爬升 1000m",
@@ -2922,16 +3758,22 @@
       }
       const author = (document.getElementById("vibeAuthorInput")?.value || "同行旅伴").trim();
       const scope = document.getElementById("vibeScopeSelect")?.value || "🌟 整体行程 Vibe 与节奏";
-      const message = (document.getElementById("vibeMessageInput")?.value || "").trim();
+      let message = (document.getElementById("vibeMessageInput")?.value || "").trim();
+      const trackUrl = (document.getElementById("vibeTrackUrlInput")?.value || "").trim();
       const statusEl = document.getElementById("vibeSubmitStatusText");
       const btn = document.getElementById("btnSubmitVibeFeedback");
 
-      if (!message) {
+      if (!message && !ynUploadedTrack && !trackUrl) {
         if (statusEl) {
           statusEl.className = "text-xs font-bold text-rose-500";
-          statusEl.textContent = "⚠️ 请先输入你想调整的具体 Vibe 或行程想法！";
+          statusEl.textContent = "⚠️ 请先输入你想调整的具体 Vibe 想法，或上传两步路轨迹文件 (.kml/.kmz/.gpx)！";
         }
         return;
+      }
+      if (!message && ynUploadedTrack) {
+        message = `上传户外徒步轨迹：${ynUploadedTrack.name} (${ynUploadedTrack.format} · ${ynUploadedTrack.distance_km}km · +${ynUploadedTrack.gain_m}m)，请合入该赛段路书地图。`;
+      } else if (!message && trackUrl) {
+        message = `投递两步路/户外轨迹链接：${trackUrl}，请解析并合入该赛段路书地图。`;
       }
 
       await refreshVibeStatusJson();
@@ -2943,6 +3785,8 @@
         scope,
         vibe_tags: Array.from(selectedVibeTags),
         message,
+        gpx_track: ynUploadedTrack || null,
+        track_url: trackUrl || "",
         password_token: localStorage.getItem(YUNNAN_PW_STORAGE_KEY) || YUNNAN_VIBE_PASSWORD,
         timestamp: new Date().toISOString()
       };
@@ -2964,6 +3808,11 @@
         prev.unshift(payload);
         localStorage.setItem("yn2026_my_vibe_submissions", JSON.stringify(prev.slice(0, 20)));
         document.getElementById("vibeMessageInput").value = "";
+        const urlEl = document.getElementById("vibeTrackUrlInput");
+        if (urlEl) urlEl.value = "";
+        if (typeof window.clearYunnanUploadedTrack === "function") {
+          window.clearYunnanUploadedTrack();
+        }
         renderVibeHistory();
         startPostSubmitVersionWatch();
 
@@ -2986,8 +3835,11 @@
       const author = (document.getElementById("vibeAuthorInput")?.value || "同行旅伴").trim();
       const scope = document.getElementById("vibeScopeSelect")?.value || "🌟 整体行程 Vibe 与节奏";
       const message = (document.getElementById("vibeMessageInput")?.value || "").trim();
+      const trackUrl = (document.getElementById("vibeTrackUrlInput")?.value || "").trim();
       const tags = Array.from(selectedVibeTags).join("、") || "自由调优";
-      const cmd = `【Yunnan-2026 Vibe迭代请求】\n提交人：${author}\n赛段：${scope}\n标签：${tags}\n需求：${message}`;
+      const trackNote = ynUploadedTrack ? `\n轨迹附件：${ynUploadedTrack.name} (${ynUploadedTrack.format} · ${ynUploadedTrack.distance_km}km · +${ynUploadedTrack.gain_m}m)` : "";
+      const urlNote = trackUrl ? `\n轨迹链接：${trackUrl}` : "";
+      const cmd = `【Yunnan-2026 Vibe迭代请求】\n提交人：${author}\n赛段：${scope}\n标签：${tags}\n需求：${message}${trackNote}${urlNote}`;
       navigator.clipboard?.writeText(cmd);
       const statusEl = document.getElementById("vibeSubmitStatusText");
       if (statusEl) {
@@ -3197,12 +4049,62 @@
       // Initial render & live version status sync
       syncDecisionPillsUi();
       renderElevationChart();
+      renderYunnanTrailsHubCard();
       renderDetailCard();
       renderPlaceList();
       renderMap(true, urlParams.get("popup") === "1");
       loadAndRenderPhotos();
       renderGearChecklist();
       refreshVibeStatusJson();
+
+      // Load cloud custom_tracks.json if any companion uploaded tracks via Vibe
+      fetch("./custom_tracks.json?t=" + Date.now(), { cache: "no-store" })
+        .then(r => r.ok ? r.json() : null)
+        .then(cloudTracks => {
+          if (Array.isArray(cloudTracks) && cloudTracks.length > 0) {
+            let added = false;
+            cloudTracks.forEach(ct => {
+              if (ct && Array.isArray(ct.points) && ct.points.length >= 2) {
+                const cid = ct.id || ("cloud-tr-" + ct.name);
+                if (!ynCustomTrails.some(x => x.id === cid || x.nameZh === ct.name)) {
+                  const pts = ct.points.map(p => {
+                    const [gLat, gLng] = isInsideChinaBox(p[0], p[1]) ? wgs84ToGcj02(p[0], p[1]) : [p[0], p[1]];
+                    return [Number(gLat.toFixed(6)), Number(gLng.toFixed(6)), p[2] || 0];
+                  });
+                  ynCustomTrails.unshift({
+                    id: cid,
+                    placeIds: [selectedPlaceId || 7],
+                    dayLabel: ct.scope || "云端共享轨迹",
+                    nameZh: `${ct.name || "旅伴实测轨迹"} (${ct.format || "2bulu"})`,
+                    subRegion: `旅伴 ${ct.author || ""} 上传`,
+                    difficulty: "实测轨迹",
+                    diffColor: "#f43f5e",
+                    color: "#f43f5e",
+                    distanceKm: `${ct.distance_km || 0} km`,
+                    elevationGain: `+${ct.gain_m || 0} m`,
+                    maxAltitude: `${ct.max_ele_m || 0} m`,
+                    duration: "实测GPX/KML",
+                    trailheadName: "轨迹起点",
+                    endPointName: "轨迹终点",
+                    trailheadLat: pts[0][0],
+                    trailheadLng: pts[0][1],
+                    highlightsZh: `由 ${ct.author || "同行旅伴"} 通过 Vibe 舱上传的两步路/户外轨迹。`,
+                    twoBuluKeyword: ct.name || "滇西北徒步",
+                    coords: pts,
+                    isCustom: true
+                  });
+                  added = true;
+                }
+              }
+            });
+            if (added) {
+              renderYunnanTrailsHubCard();
+              renderDetailCard();
+              renderMap(false);
+            }
+          }
+        })
+        .catch(() => {});
 
       // Register Service Worker for Offline Plateau Resilience
       if ("serviceWorker" in navigator) {
