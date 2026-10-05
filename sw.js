@@ -1,8 +1,9 @@
-const CACHE_NAME = "yunnan-2026-bespoke-v1";
+const CACHE_NAME = "yunnan-2026-bespoke-v2";
 const CORE_ASSETS = [
   "./",
   "./index.html",
   "./manifest.webmanifest",
+  "./vibe_status.json",
   "./vendor/tailwindcss.min.js",
   "./vendor/leaflet.css",
   "./vendor/leaflet.js",
@@ -24,11 +25,18 @@ self.addEventListener("install", (event) => {
 });
 
 self.addEventListener("activate", (event) => {
-  event.waitUntil(self.clients.claim());
+  event.waitUntil(
+    caches.keys().then((keys) =>
+      Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)))
+    ).then(() => self.clients.claim())
+  );
 });
 
 self.addEventListener("fetch", (event) => {
+  if (event.request.url.includes("vibe_status.json") || event.request.url.includes("ntfy.sh")) {
+    return;
+  }
   event.respondWith(
-    caches.match(event.request).then((cached) => cached || fetch(event.request))
+    fetch(event.request).catch(() => caches.match(event.request))
   );
 });
