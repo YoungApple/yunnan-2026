@@ -1,0 +1,19 @@
+{
+  "app": "yunnan-2026",
+  "version": "v1.2 · Live Vibe Loop",
+  "updated_at": "2026-10-05T04:10:00Z",
+  "target_conversation_id": "4aa6fc13-048a-443a-9afe-a58b2bd7940d",
+  "latest_summary": "已上线隐藏式「AI 定制师 Vibe 实时迭代舱」（三击左上角「云境」图标、点击顶部/底部 ✦ 或访问 ?vibe=1 即可直连 Cloudtop 自动迭代）",
+  "recent_iterations": [
+    {
+      "version": "v1.2",
+      "scope": "🌟 整体行程 Vibe 与交互闭环",
+      "summary": "新增隐藏式「Vibe 实时迭代舱」，支持旅伴一键提交新 Vibe 直连 Cloudtop 唤醒专属会话 (4aa6fc13) 自动改版重发 GitHub Pages。"
+    },
+    {
+      "version": "v1.1",
+      "scope": "🏔️ 全环线 11日 (10.4–10.14)",
+      "summary": "上线高德 GCJ-02 双图层、离线等高线矢量路书、11日高爬低睡海拔曲线、四大雪山美宿与三大关键决策器。"
+    }
+  ]
+}
