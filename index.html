@@ -110,7 +110,7 @@
     <div class="max-w-7xl mx-auto px-3 py-2 flex flex-col gap-1.5">
       <div class="flex items-center justify-between gap-2">
         <div class="flex items-center gap-2.5 min-w-0 shrink-0">
-          <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 text-slate-950 flex items-center justify-center font-black text-sm shadow-sm shrink-0">
+          <div id="brandLogoBadge" title="连击 3 次或长按 1.2 秒开启隐藏「AI Vibe 实时迭代舱」" class="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 text-slate-950 flex items-center justify-center font-black text-sm shadow-sm shrink-0 cursor-pointer select-none active:scale-95 transition">
             云境
           </div>
           <div class="min-w-0">
@@ -121,6 +121,9 @@
               <span id="brandEditionBadge" class="hidden sm:inline-flex px-1.5 py-0.5 rounded-md text-[10px] font-extrabold bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30">
                 BESPOKE PRO · 中国大陆直连
               </span>
+              <button id="btnSecretVibeHeader" onclick="unlockAndOpenVibeModal()" title="定制师隐藏入口：Vibe 实时反馈与 AI 自动迭代" class="px-1.5 py-0.5 rounded-md text-[10px] font-black text-[var(--muted-foreground)] hover:text-amber-500 hover:bg-amber-500/10 transition cursor-pointer select-none">
+                ✦
+              </button>
             </div>
             <p id="brandSubtitleText" class="text-[11px] text-[var(--muted-foreground)] truncate">
               10.4–10.14 (11日) · 丽江 · 虎跳峡 · 哈巴黑海湖 · 香格里拉(无底湖/巴拉格宗) · 梅里飞来寺 · 南极洛
@@ -483,6 +486,125 @@
       </div>
     </div>
   </div>
+
+  <!-- ==================== MODAL 4: HIDDEN VIBE FEEDBACK & AUTO-ITERATION CABIN ==================== -->
+  <div id="vibeFeedbackModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-[var(--card)] border border-amber-500/40 rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col overflow-hidden shadow-2xl">
+      <div class="px-4 py-3 border-b border-[var(--border)] flex items-center justify-between bg-gradient-to-r from-amber-500/20 via-orange-500/10 to-sky-500/10">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-amber-500 text-slate-950">HIDDEN VIBE LOOP</span>
+            <h3 class="text-sm sm:text-base font-black text-[var(--foreground)]">✨ AI 定制师 · Vibe 实时反馈与自动迭代舱</h3>
+          </div>
+          <p class="text-[11px] text-[var(--muted-foreground)] mt-0.5">
+            提交后直连 Cloudtop 守护进程 ──► 自动通知 Google Chat 并唤醒专属会话 (`4aa6fc13`) 实时改版重发 GitHub Pages
+          </p>
+        </div>
+        <button onclick="closeVibeFeedbackModal()" class="w-8 h-8 rounded-full bg-[var(--content)] text-[var(--foreground)] font-bold cursor-pointer">✕</button>
+      </div>
+
+      <div class="p-4 overflow-y-auto space-y-3.5 text-xs">
+        <!-- Live Cloudtop & Iteration Status Banner -->
+        <div class="p-3 rounded-xl bg-[var(--content)]/70 border border-[var(--border)] flex flex-wrap items-center justify-between gap-2">
+          <div class="space-y-0.5">
+            <div class="flex items-center gap-1.5 font-extrabold text-[var(--foreground)]">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping inline-block"></span>
+              <span id="vibeLiveVersionBadge">📡 云端 AI 迭代引擎在线 (v1.2 · Live Vibe Loop)</span>
+            </div>
+            <div id="vibeLatestChangelog" class="text-[11px] text-[var(--muted-foreground)]">
+              最近更新：已上线 11 日高爬低睡曲线、四大美宿卡片与隐藏 Vibe 实时反馈闭环
+            </div>
+          </div>
+          <button onclick="refreshVibeStatusJson()" class="px-2.5 py-1 rounded-lg bg-[var(--card)] border border-[var(--border)] text-[11px] font-bold hover:border-amber-500 cursor-pointer">
+            🔄 刷新状态
+          </button>
+        </div>
+
+        <!-- Author & Target Day/Stop Scope -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold mb-1 text-[var(--foreground)]">👤 你的昵称 / 身份 (选填)</label>
+            <input id="vibeAuthorInput" type="text" placeholder="如：Shuguo / 同行老友 / 领队" class="w-full px-3 py-2 rounded-xl bg-[var(--content)] border border-[var(--border)] text-xs font-bold focus:outline-none focus:border-amber-500" />
+          </div>
+          <div>
+            <label class="block font-bold mb-1 text-[var(--foreground)]">🎯 针对哪天或哪个赛段？</label>
+            <select id="vibeScopeSelect" class="w-full px-3 py-2 rounded-xl bg-[var(--content)] border border-[var(--border)] text-xs font-bold focus:outline-none focus:border-amber-500">
+              <option value="🌟 整体行程 Vibe 与节奏">🌟 整体行程 Vibe 与节奏</option>
+              <option value="D1 (10.4) 北京-丽江">D1 (10.4) 北京-丽江</option>
+              <option value="D2 (10.5) 丽江·束河·白沙·香巴拉or云栖">D2 (10.5) 丽江·束河·白沙·香巴拉or云栖</option>
+              <option value="D3 (10.6) 老药山徒步·虎跳峡新茶马美宿">D3 (10.6) 老药山徒步·虎跳峡新茶马美宿</option>
+              <option value="D4 (10.7) 哈巴雪山黑海湖徒步·住哈巴">D4 (10.7) 哈巴雪山黑海湖徒步·住哈巴</option>
+              <option value="D5 (10.8) 哈巴-香格里拉独克宗·格雅雪印梵境">D5 (10.8) 哈巴-香格里拉独克宗·格雅雪印梵境</option>
+              <option value="D6 (10.9) 香格里拉-无底湖轻徒步">D6 (10.9) 香格里拉-无底湖轻徒步</option>
+              <option value="D7 (10.10) 香格里拉-巴拉格宗大峡谷">D7 (10.10) 香格里拉-巴拉格宗大峡谷</option>
+              <option value="D8 (10.11) 香格里拉(14:30出发)-德钦飞来寺">D8 (10.11) 香格里拉(14:30出发)-德钦飞来寺</option>
+              <option value="D9 (10.12) 飞来寺日照金山-孔雀山-南极洛御景园">D9 (10.12) 飞来寺日照金山-孔雀山-南极洛御景园</option>
+              <option value="D10 (10.13) 南极洛核心徒步 & 返丽江拼车决策">D10 (10.13) 南极洛核心徒步 & 返丽江拼车决策</option>
+              <option value="D11 (10.14) 南极洛-澜沧江峡谷-丽江收官">D11 (10.14) 南极洛-澜沧江峡谷-丽江收官</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Multi-select Vibe Shift Chips -->
+        <div>
+          <label class="block font-bold mb-1.5 text-[var(--foreground)]">✨ 期望调整的 Vibe 方向（可多选）：</label>
+          <div class="flex flex-wrap gap-1.5" id="vibeTagChips">
+            <button type="button" data-vtag="🥾 降低徒步强度 / 更松弛" class="vibe-tag-btn px-2.5 py-1.5 rounded-xl bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] font-bold cursor-pointer transition">🥾 降低徒步强度 / 更松弛</button>
+            <button type="button" data-vtag="🏔️ 增加硬核徒步 / 秘境探索" class="vibe-tag-btn px-2.5 py-1.5 rounded-xl bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] font-bold cursor-pointer transition">🏔️ 增加硬核徒步 / 秘境探索</button>
+            <button type="button" data-vtag="📸 强化日照金山 / 摄影机位" class="vibe-tag-btn px-2.5 py-1.5 rounded-xl bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] font-bold cursor-pointer transition">📸 强化日照金山 / 摄影机位</button>
+            <button type="button" data-vtag="🍲 增加地道藏餐 / 菌子美食推荐" class="vibe-tag-btn px-2.5 py-1.5 rounded-xl bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] font-bold cursor-pointer transition">🍲 增加地道藏餐 / 菌子美食推荐</button>
+            <button type="button" data-vtag="🏨 敲定或更换民宿方案" class="vibe-tag-btn px-2.5 py-1.5 rounded-xl bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] font-bold cursor-pointer transition">🏨 敲定或更换民宿方案</button>
+            <button type="button" data-vtag="🚗 更新包车 / 拼车 / 出发时间" class="vibe-tag-btn px-2.5 py-1.5 rounded-xl bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] font-bold cursor-pointer transition">🚗 更新包车 / 拼车 / 出发时间</button>
+          </div>
+        </div>
+
+        <!-- Freeform Vibe Prompt + 1-Tap Examples -->
+        <div>
+          <div class="flex flex-wrap items-center justify-between gap-1 mb-1">
+            <label class="font-bold text-[var(--foreground)]">💬 具体想法或新的 Vibe 描述：</label>
+            <div class="flex items-center gap-1 text-[11px]">
+              <span class="text-[var(--muted-foreground)]">快速示例：</span>
+              <button type="button" onclick="fillVibeSample('10.5 下午我们敲定去云栖壹号院喝下午茶看雪山倒影，把默认推荐改成云栖壹号院，并补充点单攻略！', 'D2 (10.5) 丽江·束河·白沙·香巴拉or云栖')" class="px-2 py-0.5 rounded bg-amber-500/15 text-amber-500 font-bold cursor-pointer">示例1：敲定云栖壹号院</button>
+              <button type="button" onclick="fillVibeSample('10.9 无底湖我们想走最轻松的摄影环湖线，帮我补充沿途最佳咖啡/下午茶补给点和具体穿搭颜色建议！', 'D6 (10.9) 香格里拉-无底湖轻徒步')" class="px-2 py-0.5 rounded bg-sky-500/15 text-sky-500 font-bold cursor-pointer">示例2：无底湖松弛摄影</button>
+            </div>
+          </div>
+          <textarea id="vibeMessageInput" rows="3" placeholder="直接写下你想调整的行程细节、节奏偏好、新增机位或餐厅需求，提交后后台将自动唤醒云南专属 Agent 会话进行迭代并重新发布到 GitHub Pages..." class="w-full p-3 rounded-xl bg-[var(--content)] border border-[var(--border)] text-xs text-[var(--foreground)] focus:outline-none focus:border-amber-500 leading-relaxed"></textarea>
+        </div>
+
+        <!-- Submit & Backup Copy Actions -->
+        <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
+          <div class="flex flex-wrap items-center gap-2">
+            <button type="button" id="btnSubmitVibeFeedback" onclick="submitVibeFeedback()" class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-black text-xs shadow-sm hover:opacity-95 cursor-pointer flex items-center gap-1.5">
+              <span>🚀 发送新 Vibe 并唤醒 AI 自动迭代</span>
+            </button>
+            <button type="button" onclick="copyVibeCommandBackup()" class="px-3 py-2 rounded-xl bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] font-bold text-xs hover:border-amber-500 cursor-pointer">
+              📋 复制反馈口令 (备用)
+            </button>
+          </div>
+          <span id="vibeSubmitStatusText" class="text-xs font-bold text-emerald-500"></span>
+        </div>
+
+        <!-- Submitted Feedback History & Cloud Iteration Log -->
+        <div class="pt-2 border-t border-[var(--border)] space-y-2">
+          <div class="text-[11px] font-extrabold text-[var(--muted-foreground)]">📜 本机已提交的 Vibe 需求 & 云端迭代记录：</div>
+          <div id="vibeHistoryList" class="space-y-1.5 max-h-40 overflow-y-auto"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Vibe Pill (Visible once unlocked via triple-tap, ?vibe=1, or ✦ button) -->
+  <button id="floatingVibeBtn" onclick="openVibeFeedbackModal()" class="hidden fixed bottom-16 lg:bottom-5 right-4 z-40 px-3.5 py-2 rounded-full bg-gradient-to-r from-amber-500 to-orange-600 text-slate-950 font-black text-xs shadow-xl border-2 border-white/80 cursor-pointer flex items-center gap-1.5 hover:scale-105 transition">
+    <span>✨ Vibe 实时调优</span>
+  </button>
+
+  <!-- Subtle Footer with Discreet Entrance -->
+  <footer class="max-w-7xl mx-auto px-4 pt-6 pb-8 text-center text-[11px] text-[var(--muted-foreground)] flex flex-wrap items-center justify-center gap-3">
+    <span>🏔️ 2026 滇西北·雪山秘境奢野环线 · 100% 中国大陆原生直连 (高德 GCJ-02 · 百度百科 · 小红书)</span>
+    <button onclick="unlockAndOpenVibeModal()" class="px-2 py-0.5 rounded-md bg-[var(--content)]/60 hover:bg-amber-500/15 hover:text-amber-500 border border-[var(--border)] text-[10px] font-mono-code cursor-pointer transition" title="打开隐藏的实时反馈与 AI 迭代舱">
+      ✦ v1.2 · 定制师 Vibe 调优入口
+    </button>
+  </footer>
 
   <!-- ==================== MOBILE BOTTOM NAVIGATION ==================== -->
   <nav id="mobileBottomBar" class="lg:hidden fixed bottom-0 inset-x-0 z-30 bg-[var(--card)]/95 backdrop-blur-md border-t border-[var(--border)] grid grid-cols-4 py-1.5 px-2">
@@ -2041,6 +2163,172 @@
       a.click();
     });
 
+    // ==================== 11.5 HIDDEN VIBE FEEDBACK & AUTO-ITERATION ENGINE ====================
+    const VIBE_NTFY_URL = "https://ntfy.sh/yungapple_yunnan2026_vibe_9f8a7b6c";
+    let selectedVibeTags = new Set();
+    let cloudVibeStatus = null;
+
+    window.unlockAndOpenVibeModal = function() {
+      localStorage.setItem("yn2026_vibe_unlocked", "1");
+      document.getElementById("floatingVibeBtn")?.classList.remove("hidden");
+      openVibeFeedbackModal();
+    };
+
+    window.openVibeFeedbackModal = function() {
+      document.getElementById("vibeFeedbackModal")?.classList.remove("hidden");
+      const savedAuthor = localStorage.getItem("yn2026_vibe_author") || "";
+      const authorEl = document.getElementById("vibeAuthorInput");
+      if (authorEl && !authorEl.value && savedAuthor) authorEl.value = savedAuthor;
+      refreshVibeStatusJson();
+      renderVibeHistory();
+    };
+
+    window.closeVibeFeedbackModal = function() {
+      document.getElementById("vibeFeedbackModal")?.classList.add("hidden");
+    };
+
+    window.fillVibeSample = function(msg, scope) {
+      const mEl = document.getElementById("vibeMessageInput");
+      if (mEl) mEl.value = msg;
+      const sEl = document.getElementById("vibeScopeSelect");
+      if (sEl && scope) sEl.value = scope;
+    };
+
+    window.refreshVibeStatusJson = async function() {
+      try {
+        const res = await fetch("./vibe_status.json?t=" + Date.now());
+        if (res.ok) {
+          cloudVibeStatus = await res.json();
+          const badge = document.getElementById("vibeLiveVersionBadge");
+          const logEl = document.getElementById("vibeLatestChangelog");
+          if (badge && cloudVibeStatus.version) {
+            badge.textContent = `📡 云端 AI 迭代引擎在线 (${cloudVibeStatus.version} · 更新于 ${cloudVibeStatus.updated_at || '刚刚'})`;
+          }
+          if (logEl && cloudVibeStatus.latest_summary) {
+            logEl.textContent = `最近已上线 Vibe：${cloudVibeStatus.latest_summary}`;
+          }
+          renderVibeHistory();
+        }
+      } catch (e) {}
+    };
+
+    function getLocalVibeSubmissions() {
+      try {
+        return JSON.parse(localStorage.getItem("yn2026_my_vibe_submissions") || "[]");
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function renderVibeHistory() {
+      const box = document.getElementById("vibeHistoryList");
+      if (!box) return;
+      const localItems = getLocalVibeSubmissions();
+      const cloudItems = (cloudVibeStatus && cloudVibeStatus.recent_iterations) || [];
+      let html = "";
+
+      localItems.slice(0, 5).forEach(it => {
+        html += `
+          <div class="p-2 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-start justify-between gap-2">
+            <div class="min-w-0">
+              <div class="font-extrabold text-amber-500">[已推送云端守护进程] ${it.scope} · ${it.author || '旅伴'}</div>
+              <div class="text-[var(--foreground)] truncate">${it.message}</div>
+            </div>
+            <span class="shrink-0 px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-500 font-bold text-[10px]">🚀 AI迭代中</span>
+          </div>
+        `;
+      });
+
+      cloudItems.slice(0, 5).forEach(cit => {
+        html += `
+          <div class="p-2 rounded-xl bg-[var(--content)]/60 border border-[var(--border)] flex items-start justify-between gap-2">
+            <div class="min-w-0">
+              <div class="font-bold text-sky-500">[已上线 ${cit.version || ''}] ${cit.scope || '全环线'}</div>
+              <div class="text-[var(--muted-foreground)]">${cit.summary || ''}</div>
+            </div>
+            <span class="shrink-0 px-2 py-0.5 rounded bg-sky-500/20 text-sky-500 font-bold text-[10px]">✅ 已生效</span>
+          </div>
+        `;
+      });
+
+      box.innerHTML = html || `<div class="text-[11px] text-[var(--muted-foreground)]">暂无记录，在上方输入你的新 Vibe 即可一键唤醒云端 AI 实时改版！</div>`;
+    }
+
+    window.submitVibeFeedback = async function() {
+      const author = (document.getElementById("vibeAuthorInput")?.value || "同行旅伴").trim();
+      const scope = document.getElementById("vibeScopeSelect")?.value || "🌟 整体行程 Vibe 与节奏";
+      const message = (document.getElementById("vibeMessageInput")?.value || "").trim();
+      const statusEl = document.getElementById("vibeSubmitStatusText");
+      const btn = document.getElementById("btnSubmitVibeFeedback");
+
+      if (!message) {
+        if (statusEl) {
+          statusEl.className = "text-xs font-bold text-rose-500";
+          statusEl.textContent = "⚠️ 请先输入你想调整的具体 Vibe 或行程想法！";
+        }
+        return;
+      }
+
+      localStorage.setItem("yn2026_vibe_author", author);
+      const payload = {
+        app: "yunnan-2026",
+        id: "vibe-" + Date.now() + "-" + Math.random().toString(36).slice(2, 7),
+        author,
+        scope,
+        vibe_tags: Array.from(selectedVibeTags),
+        message,
+        timestamp: new Date().toISOString()
+      };
+
+      if (btn) btn.disabled = true;
+      if (statusEl) {
+        statusEl.className = "text-xs font-bold text-amber-500";
+        statusEl.textContent = "📡 正在直连 Cloudtop 守护进程...";
+      }
+
+      try {
+        // Simple CORS POST (text/plain avoids preflight OPTIONS blocking in China mobile webviews)
+        const resp = await fetch(VIBE_NTFY_URL, {
+          method: "POST",
+          body: JSON.stringify(payload)
+        });
+        if (!resp.ok) throw new Error("HTTP " + resp.status);
+
+        const prev = getLocalVibeSubmissions();
+        prev.unshift(payload);
+        localStorage.setItem("yn2026_my_vibe_submissions", JSON.stringify(prev.slice(0, 20)));
+        document.getElementById("vibeMessageInput").value = "";
+        renderVibeHistory();
+
+        if (statusEl) {
+          statusEl.className = "text-xs font-bold text-emerald-500";
+          statusEl.textContent = "✅ 已送达 Cloudtop！Google Chat 已收到提醒，AI 正在实时迭代并重发页面！";
+        }
+      } catch (err) {
+        if (statusEl) {
+          statusEl.className = "text-xs font-bold text-rose-500";
+          statusEl.textContent = "⚠️ 当前处于高原弱网区，已为你复制反馈口令，可直接粘贴至微信/Chat！";
+        }
+        copyVibeCommandBackup();
+      } finally {
+        if (btn) btn.disabled = false;
+      }
+    };
+
+    window.copyVibeCommandBackup = function() {
+      const author = (document.getElementById("vibeAuthorInput")?.value || "同行旅伴").trim();
+      const scope = document.getElementById("vibeScopeSelect")?.value || "🌟 整体行程 Vibe 与节奏";
+      const message = (document.getElementById("vibeMessageInput")?.value || "").trim();
+      const tags = Array.from(selectedVibeTags).join("、") || "自由调优";
+      const cmd = `【Yunnan-2026 Vibe迭代请求】\n提交人：${author}\n赛段：${scope}\n标签：${tags}\n需求：${message}`;
+      navigator.clipboard?.writeText(cmd);
+      const statusEl = document.getElementById("vibeSubmitStatusText");
+      if (statusEl) {
+        statusEl.className = "text-xs font-bold text-emerald-500";
+        statusEl.textContent = "📋 已复制反馈口令到剪贴板！";
+      }
+    };
+
     // ==================== 12. EVENT BINDINGS & INITIALIZATION ====================
     function switchSubTab(tab) {
       ["list", "photos", "gear", "ai"].forEach(t => {
@@ -2158,6 +2446,57 @@
       document.getElementById("btnToggleApiKeyDrawer")?.addEventListener("click", () => {
         document.getElementById("apiKeyDrawer")?.classList.toggle("hidden");
       });
+
+      // Vibe Tag multi-select chips
+      document.querySelectorAll(".vibe-tag-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const tag = btn.getAttribute("data-vtag");
+          if (!tag) return;
+          if (selectedVibeTags.has(tag)) {
+            selectedVibeTags.delete(tag);
+            btn.className = "vibe-tag-btn px-2.5 py-1.5 rounded-xl bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] font-bold cursor-pointer transition";
+          } else {
+            selectedVibeTags.add(tag);
+            btn.className = "vibe-tag-btn px-2.5 py-1.5 rounded-xl bg-amber-500 text-slate-950 border border-amber-500 font-black cursor-pointer transition";
+          }
+        });
+      });
+
+      // Hidden Vibe Entrance: Triple-click or 1.2s long-press on #brandLogoBadge ("云境")
+      const logoBadge = document.getElementById("brandLogoBadge");
+      let tapCount = 0;
+      let tapTimer = null;
+      let pressTimer = null;
+      if (logoBadge) {
+        logoBadge.addEventListener("click", () => {
+          tapCount += 1;
+          if (tapTimer) clearTimeout(tapTimer);
+          if (tapCount >= 3) {
+            tapCount = 0;
+            unlockAndOpenVibeModal();
+          } else {
+            tapTimer = setTimeout(() => { tapCount = 0; }, 900);
+          }
+        });
+        logoBadge.addEventListener("pointerdown", () => {
+          pressTimer = setTimeout(() => {
+            unlockAndOpenVibeModal();
+          }, 1200);
+        });
+        ["pointerup", "pointerleave", "pointercancel"].forEach(ev => {
+          logoBadge.addEventListener(ev, () => {
+            if (pressTimer) clearTimeout(pressTimer);
+          });
+        });
+      }
+
+      // Check URL ?vibe=1 or #vibe or previously unlocked state
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get("vibe") === "1" || window.location.hash === "#vibe") {
+        unlockAndOpenVibeModal();
+      } else if (localStorage.getItem("yn2026_vibe_unlocked") === "1") {
+        document.getElementById("floatingVibeBtn")?.classList.remove("hidden");
+      }
 
       // Initial render
       syncDecisionPillsUi();
