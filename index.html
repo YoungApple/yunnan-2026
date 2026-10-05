@@ -181,7 +181,7 @@
               </span>
               <button id="btnOpenVersionHistory" onclick="openVersionHistoryModal()" title="查看路书版本更新记录与 Vibe 迭代历史" class="px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-sky-500/15 text-sky-500 border border-sky-500/30 hover:bg-sky-500/25 transition cursor-pointer flex items-center gap-1 shrink-0">
                 <span>📜</span>
-                <span id="headerVersionLabel">v1.8 · 版本记录</span>
+                <span id="headerVersionLabel">v1.9 · 版本记录</span>
               </button>
             </div>
             <p id="brandSubtitleText" class="text-[11px] text-[var(--muted-foreground)] truncate">
@@ -696,7 +696,7 @@
       <div class="px-3.5 sm:px-4 py-2.5 border-b border-[var(--border)] flex items-center justify-between gap-2 bg-gradient-to-r from-sky-500/20 via-amber-500/10 to-emerald-500/10 shrink-0">
         <div class="min-w-0">
           <div class="flex items-center gap-1.5">
-            <span id="vhCurrentVersionPill" class="px-2 py-0.5 rounded-full text-[10px] font-black bg-sky-500 text-slate-950 shrink-0">v1.8</span>
+            <span id="vhCurrentVersionPill" class="px-2 py-0.5 rounded-full text-[10px] font-black bg-sky-500 text-slate-950 shrink-0">v1.9</span>
             <h3 class="text-xs sm:text-base font-black text-[var(--foreground)] truncate">📜 路书版本演进与 Vibe 自动迭代记录</h3>
           </div>
           <p class="text-[10px] sm:text-[11px] text-[var(--muted-foreground)] truncate mt-0.5">
@@ -821,7 +821,7 @@
       💡 使用指南
     </button>
     <button onclick="openVersionHistoryModal()" class="px-2 py-0.5 rounded-md bg-sky-500/10 text-sky-500 border border-sky-500/30 text-[10px] font-mono-code font-bold cursor-pointer">
-      📜 <span id="footerVersionText">v1.8 · 版本记录</span>
+      📜 <span id="footerVersionText">v1.9 · 版本记录</span>
     </button>
     <button onclick="unlockAndOpenVibeModal()" class="px-2 py-0.5 rounded-md bg-[var(--content)]/60 hover:bg-amber-500/15 hover:text-amber-500 border border-[var(--border)] text-[10px] font-mono-code cursor-pointer">
       ✦ Vibe 调优舱
@@ -1294,10 +1294,10 @@
         photoUrl: "./photos/d4_haba_black_lake.svg",
         baikeTerm: "哈巴雪山自然保护区",
         xhsKeyword: "哈巴雪山黑海湖徒步攻略",
-        hikeInfo: "🥾 徒步 10–12km | 最高海拔 4,100m | 爬升 ~750m | 耗时 5–6h (可骑马辅助)",
+        hikeInfo: "🥾 徒步往返全程 17km | 累计垂直爬升 1,000m | 最高海拔 4,100m | 耗时约 6.5–8h (可单程骑马/向导保障)",
         cameraSpot: "📷 1) 绿野仙踪挂满长松萝的冷杉林；2) 黑海湖畔玛尼堆、五彩经幡与墨玉湖面雪山倒影",
-        desc: "D5 清晨从哈巴大本营向导站出发，深入哈巴雪山海拔 3200m–4100m 的千年冷杉林与垂挂松萝秘境，终抵深邃神秘的冰碛湖「黑海湖」。湖水墨黑如镜，映照哈巴绝壁，传说在湖畔呼喊便会云雾翻涌！",
-        tips: "三层穿衣法防风保暖；下午 14:00–14:30 顺利下撤返回哈巴村换装，随即启程奔赴香格里拉！"
+        desc: "D5 清晨从哈巴大本营出发，开启往返 17 公里、垂直爬升 1,000 米的高海拔硬核拉练！穿越海拔 3100m–4100m 的原始冷杉林与飘逸松萝林，终抵深邃神秘的冰碛湖「黑海湖」。墨玉般深邃的湖面倒映哈巴雪山绝壁，震撼至极！",
+        tips: "全程 17km 爬升 1000m 属于中高强度挑战：建议体力一般者选择单程上山骑马托包辅助（约 ¥200–300）、徒步下撤；穿专业防滑中高帮登山鞋，备足温水与高能路餐；下午下撤后换干爽衣物，驱车奔赴香格里拉独克宗古城开启连住3晚大本营！"
       },
       {
         id: 13,
@@ -1556,7 +1556,7 @@
       { id: "c4", group: "🧥 核心穿衣与徒步装备 (哈巴4100m / 南极洛4380m)", text: "双登山杖 + 防水雪套/鞋套（可在丽江或哈巴村借用/购买，护膝省力30%）", done: false },
       { id: "c5", group: "🫁 高原健康与能量补给", text: "便携指尖血氧仪 + 保温杯（随时监测血氧，全程喝温热葡萄糖水）", done: false },
       { id: "c6", group: "🫁 高原健康与能量补给", text: "布洛芬缓释胶囊（应对偶发高反头痛最有效）+ 晕车药/晕车贴（南极洛越野车山路必备）", done: false },
-      { id: "c7", group: "🫁 高原健康与能量补给", text: "高热量路餐：士力架、能量胶、牛肉干、自热米饭（D4黑海湖与D10南极洛山中无餐厅）", done: false },
+      { id: "c7", group: "🫁 高原健康与能量补给", text: "高热量路餐：士力架、能量胶、电解质水、牛肉干（D5黑海湖17km徒步与D10南极洛山中无餐厅）", done: false },
       { id: "c8", group: "📷 摄影与行程关键动作", text: "SPF50+ 高原防晒霜 + 偏振太阳镜 + 润唇膏（3800m+紫外线极强）", done: false },
       { id: "c9", group: "📷 摄影与行程关键动作", text: "【10.11 D8】调好14:00提醒：14:30准时从香格里拉出发赴德钦飞来寺", done: false },
       { id: "c10", group: "📷 摄影与行程关键动作", text: "【10.12 D9】入住德钦御景园民宿当晚，请老板订好10.13早7点南极洛进山越野车", done: false },
@@ -2358,9 +2358,10 @@
         return `
           <div class="font-black text-emerald-500">🥾 哈巴雪山黑海湖徒步 (10.8 · D5) 专家锦囊：</div>
           <ul class="list-disc pl-4 space-y-1">
-            <li><strong>核心数据：</strong>往返约 10–12km，最高海拔 <strong>4,100m</strong>（黑海湖畔），累计爬升约 750m，耗时 5–6.5 小时。</li>
-            <li><strong>路况与穿衣：</strong>前半段穿越挂满松萝的原始冷杉林，后半段为高山杜鹃林与草甸；10月气温 2°C–10°C，必穿<strong>防滑中帮徒步鞋 + 冲锋衣 + 轻羽绒内胆</strong>。</li>
-            <li><strong>省力方案：</strong>哈巴村向导可安排骡马随行，若在 3700m 以上感觉气喘可骑马上下；当晚下撤回海拔仅 <strong>2,650m 的哈巴村</strong>睡眠，绝不会高反失眠！</li>
+            <li><strong>核心数据：</strong>往返全程 <strong>17 公里</strong>，累计垂直爬升 <strong>1,000 米</strong>，最高海拔 <strong>4,100m</strong>（黑海湖畔），徒步耗时约 6.5–8 小时。</li>
+            <li><strong>路况与穿衣：</strong>前半段穿越挂满松萝的原始冷杉林，后半段为高山杜鹃林与草甸流石滩；必穿<strong>专业防滑中高帮徒步鞋 + 冲锋衣 + 轻羽绒内胆</strong>。</li>
+            <li><strong>骑马保障方案：</strong>17km 爬升 1000m 强度较大，若想保留充沛体力，强烈推荐在哈巴村向导站预约<strong>单程上山骑马托包</strong>，步行下山体验完整风景！</li>
+            <li><strong>下撤与入住：</strong>下午 14:00–14:30 顺利下撤后换装，驱车前往香格里拉独克宗古城入住「格雅·雪印梵境」开启连住 3 晚！身体已完成 4100m 高原洗礼，夜宿 3300m 更加轻松舒适！</li>
           </ul>
         `;
       }
@@ -2470,7 +2471,7 @@
 
     // ==================== 11.5 HIDDEN VIBE FEEDBACK, AUTO-UPDATE POLLING & VERSION HISTORY ENGINE ====================
     const VIBE_NTFY_URL = "https://ntfy.sh/yungapple_yunnan2026_vibe_9f8a7b6c";
-    const APP_BUILTIN_VERSION = "v1.8";
+    const APP_BUILTIN_VERSION = "v1.9";
     const YUNNAN_VIBE_PASSWORD = "applefriend";
     const YUNNAN_PW_STORAGE_KEY = "yunnan2026_vibe_pw";
     const YUNNAN_UNLOCK_STORAGE_KEY = "vibe_unlocked_yunnan-2026";
@@ -2480,6 +2481,22 @@
     let baselineVersionAtSubmit = null;
 
     const DEFAULT_VIBE_HISTORY = [
+      {
+        version: "v1.9",
+        title: "D5 哈巴雪山黑海湖徒步参数精准校准 · 全程往返 17km & 垂直爬升 1000m",
+        timestamp: "2026-10-05 23:15 CST",
+        author: "同行旅伴 & 随身AI定制师",
+        scope: "🌟 整体行程 Vibe 与节奏",
+        vibe_tags: ["通用调优", "徒步参数校准", "哈巴黑海湖"],
+        vibe_prompt: "D5哈巴黑海湖 徒步行程17公里 爬升1000米",
+        summary: "根据同行旅伴一线最新实测，将 D5 哈巴黑海湖徒步参数全面修正为专业级：全程往返 17 公里、垂直爬升 1,000 米、耗时 6.5–8 小时，并补充骑马辅助与能量补给保障方案。",
+        changes: [
+          "修正 D5 哈巴黑海湖徒步关键指标：全线往返里程精准校正为 17km，累计垂直爬升标定为 1,000m（海拔 3100m–4100m），耗时 6.5–8h",
+          "完善景点卡片与 AI 领队专家锦囊：补充单程上山骑马托包/徒步下撤的体能分配方案、高能量路餐与防水登山鞋装备提示",
+          "更新 11 日行程总表与准备清单：同步标记 D5 黑海湖 17km 徒步强度等级，确保同行旅伴提前做好心理与体能预期管理",
+          "Service Worker 升级至 yunnan-2026-bespoke-v9，离线路书、高德导航与司机卡即时秒刷更新"
+        ]
+      },
       {
         version: "v1.8",
         title: "上线「🔒 旅伴专属 Vibe 口令认证 (applefriend)」防误触门禁与设备自动记忆",
