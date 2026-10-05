@@ -1,10 +1,24 @@
 {
   "app": "yunnan-2026",
-  "version": "v1.7",
-  "updated_at": "2026-10-05 22:50 CST",
+  "version": "v1.8",
+  "updated_at": "2026-10-05 22:58 CST",
+  "password_protected": true,
   "target_conversation_id": "4aa6fc13-048a-443a-9afe-a58b2bd7940d",
-  "latest_summary": "已重排D3-D5节奏：D3老药山后虎跳峡新茶马休整/D4徒步中虎跳住哈巴大本营/D5徒步黑海湖住香格里拉独克宗",
+  "latest_summary": "已上线旅伴专属 Vibe 口令认证门禁 (applefriend) 与设备自动记忆，防止公开链接误触改版",
   "history": [
+    {
+      "version": "v1.8",
+      "title": "上线「🔒 旅伴专属 Vibe 口令认证 (applefriend)」防误触门禁与设备自动记忆",
+      "timestamp": "2026-10-05 22:58 CST",
+      "author": "Shuguo & 随身AI定制师",
+      "scope": "🔒 全站安全护栏与 Vibe 自动迭代闭环",
+      "vibe_prompt": "Let's extract the vibe feedback-newversion-loop into a premium feature in the travel-studio, also make it in my south-americ trip side as well. Let's put some passwords before anyone can vibe the site. For yunnan: password is: applefriend, south americ: sa26, all others: applefriend",
+      "changes": [
+        "在「✨ AI 定制师 · 实时反馈与自动迭代舱」顶部新增专属口令认证门禁（口令：applefriend），防止公开路书链接被非同行人员误触改版",
+        "支持设备级口令记忆（验证通过一次后自动保存在本机 localStorage，后续打开直接展示 🔓 已通过口令认证状态条）",
+        "后端 Cloudtop vibe_bridge.py 同步开启多项目口令强校验（password_token），Service Worker 升级至 yunnan-2026-bespoke-v8"
+      ]
+    },
     {
       "version": "v1.7",
       "title": "D3/D4/D5 节奏精准重排 · D3休整看雪山/D4徒步中虎跳住哈巴/D5徒步黑海湖住香格里拉",
