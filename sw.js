@@ -1,9 +1,8 @@
-const CACHE_NAME = "yunnan-2026-bespoke-v2";
+const CACHE_NAME = "yunnan-2026-bespoke-v3";
 const CORE_ASSETS = [
   "./",
   "./index.html",
   "./manifest.webmanifest",
-  "./vibe_status.json",
   "./vendor/tailwindcss.min.js",
   "./vendor/leaflet.css",
   "./vendor/leaflet.js",
