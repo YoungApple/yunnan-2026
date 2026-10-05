@@ -242,9 +242,13 @@
 
         <!-- Compact Right Action Pills (Never overflows 375px) -->
         <div class="flex items-center gap-1 shrink-0">
+          <button id="btnOpenPartnerModal" onclick="window.openPartnerModal()" class="px-2 py-1 rounded-lg text-[11px] font-black bg-gradient-to-r from-amber-500 to-rose-500 text-slate-950 shadow-2xs hover:opacity-95 transition cursor-pointer flex items-center gap-0.5" title="携程私家团/定制游/户外俱乐部合作 & 小红书同款路书定制">
+            <span>🤝</span>
+            <span>合作/定制</span>
+          </button>
           <button id="btnOpenUserGuide" onclick="openUserGuideModal()" class="px-2 py-1 rounded-lg text-[11px] font-black bg-amber-500 text-slate-950 shadow-2xs hover:opacity-95 transition cursor-pointer flex items-center gap-0.5" title="查看路书功能介绍与使用指南">
             <span>💡</span>
-            <span>指南</span>
+            <span class="hidden sm:inline">指南</span>
           </button>
           <button id="btnOpenScheduleModal" class="px-2 py-1 rounded-lg text-[11px] font-extrabold bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] hover:border-amber-500/50 transition cursor-pointer flex items-center gap-0.5" title="11日行程总表">
             <span>📅</span>
@@ -262,6 +266,18 @@
             <span>🎙️✨</span>
             <span class="hidden sm:inline">语音改</span>
           </button>
+        </div>
+      </div>
+
+      <!-- Compact Partner & Xiaohongshu Co-op Ad Strip -->
+      <div class="px-2.5 py-1 rounded-lg bg-gradient-to-r from-amber-500/15 via-rose-500/15 to-sky-500/15 border border-amber-500/35 flex items-center justify-between gap-2 text-[11px]">
+        <div class="truncate font-bold text-[var(--foreground)]">
+          <span class="px-1.5 py-0.5 rounded bg-amber-500 text-slate-950 font-black text-[10px] mr-1">欢迎合作</span>
+          <span>携程私家团 / 定制游 / 户外俱乐部：前20家免费把您的王牌线路升级为同款 AI 交互路书！</span>
+        </div>
+        <div class="flex items-center gap-1.5 shrink-0">
+          <button type="button" onclick="window.openPartnerModal()" class="px-2 py-0.5 rounded bg-amber-500 text-slate-950 font-black text-[10px] cursor-pointer">🤝 立即对接</button>
+          <a href="https://youngapple.github.io/travel-studio/#bp" target="_blank" rel="noopener" class="hidden sm:inline-block px-2 py-0.5 rounded bg-[var(--content)] border border-amber-500/40 text-amber-400 font-extrabold text-[10px]">📊 商业BP ↗</a>
         </div>
       </div>
 
@@ -4571,7 +4587,7 @@ ${trkpts}
         <div class="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/35 space-y-1.5">
           <div class="flex items-center justify-between gap-2 flex-wrap">
             <span class="font-black text-amber-500">🎁 为什么升级 Travel Studio 智能私家团路书？</span>
-            <a href="https://youngapple.github.io/travel-studio/bp.html" target="_blank" rel="noopener" class="px-2 py-0.5 rounded bg-amber-500 text-slate-950 font-black text-[10px]">📊 查看完整商业BP & 小红书套件 ↗</a>
+            <a href="https://youngapple.github.io/travel-studio/#bp" target="_blank" rel="noopener" class="px-2 py-0.5 rounded bg-amber-500 text-slate-950 font-black text-[10px]">📊 查看完整商业BP & 小红书套件 ↗</a>
           </div>
           <p class="text-[11px] text-[var(--foreground)] leading-relaxed">
             • <strong>售前逼单利器</strong>：高德实景地图 + 每日高光卡片 + 冠名您的旅行社/定制师品牌，询单转化率提升 30%+<br/>
