@@ -121,6 +121,10 @@
               <span id="brandEditionBadge" class="hidden sm:inline-flex px-1.5 py-0.5 rounded-md text-[10px] font-extrabold bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30">
                 BESPOKE PRO · 中国大陆直连
               </span>
+              <button id="btnOpenVersionHistory" onclick="openVersionHistoryModal()" title="查看路书版本更新记录与 Vibe 迭代历史" class="px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-sky-500/15 text-sky-600 dark:text-sky-400 border border-sky-500/30 hover:bg-sky-500/25 transition cursor-pointer flex items-center gap-1 shrink-0">
+                <span>📜</span>
+                <span id="headerVersionLabel">v1.3 · 版本记录</span>
+              </button>
               <button id="btnSecretVibeHeader" onclick="unlockAndOpenVibeModal()" title="定制师隐藏入口：Vibe 实时反馈与 AI 自动迭代" class="px-1.5 py-0.5 rounded-md text-[10px] font-black text-[var(--muted-foreground)] hover:text-amber-500 hover:bg-amber-500/10 transition cursor-pointer select-none">
                 ✦
               </button>
@@ -146,6 +150,14 @@
             <span class="hidden sm:inline">路书定制/导出</span>
           </button>
         </div>
+      </div>
+
+      <!-- Live Auto-Update Release Notification Banner (Hidden until new version detected) -->
+      <div id="vibeNewReleaseBanner" class="hidden px-3 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white text-xs font-extrabold flex items-center justify-between gap-2 shadow-md">
+        <span id="vibeNewReleaseBannerText">🎉 新版本已根据你的 Vibe 自动编译上线！</span>
+        <button onclick="forceReloadFreshVersion()" class="px-3 py-1 rounded-lg bg-white text-slate-950 font-black text-[11px] cursor-pointer hover:opacity-95 shrink-0">
+          🔄 立即刷新查看最新路书
+        </button>
       </div>
 
       <!-- Stage / Region Filter Chips -->
@@ -577,19 +589,62 @@
             <button type="button" id="btnSubmitVibeFeedback" onclick="submitVibeFeedback()" class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-black text-xs shadow-sm hover:opacity-95 cursor-pointer flex items-center gap-1.5">
               <span>🚀 发送新 Vibe 并唤醒 AI 自动迭代</span>
             </button>
+            <button type="button" onclick="openVersionHistoryModal()" class="px-3 py-2 rounded-xl bg-sky-500/15 text-sky-500 border border-sky-500/30 font-extrabold text-xs hover:bg-sky-500/25 cursor-pointer">
+              📜 查看完整版本记录
+            </button>
             <button type="button" onclick="copyVibeCommandBackup()" class="px-3 py-2 rounded-xl bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] font-bold text-xs hover:border-amber-500 cursor-pointer">
-              📋 复制反馈口令 (备用)
+              📋 复制口令
             </button>
           </div>
           <span id="vibeSubmitStatusText" class="text-xs font-bold text-emerald-500"></span>
         </div>
 
+        <!-- Live Post-Submit Auto-Compile Progress Stepper -->
+        <div id="vibeAutoWatchBox" class="hidden p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 space-y-1.5">
+          <div class="flex items-center justify-between gap-2">
+            <span id="vibeAutoWatchTitle" class="font-black text-emerald-500 text-xs">📡 1. 已投递至公网信箱 ──► 🧠 2. Cloudtop AI 正在实时编译新版本 (每8秒自动检测)...</span>
+            <button onclick="forceReloadFreshVersion()" id="btnModalReloadFresh" class="hidden px-3 py-1 rounded-lg bg-emerald-500 text-slate-950 font-black text-[11px] cursor-pointer">
+              🔄 立即刷新看新版
+            </button>
+          </div>
+          <div id="vibeAutoWatchSub" class="text-[11px] text-[var(--muted-foreground)]">
+            当云端会话 (4aa6fc13) 完成改版并推送到 GitHub Pages 后，此处将自动弹出新版本升级提示，无需手动盯屏。
+          </div>
+        </div>
+
         <!-- Submitted Feedback History & Cloud Iteration Log -->
         <div class="pt-2 border-t border-[var(--border)] space-y-2">
-          <div class="text-[11px] font-extrabold text-[var(--muted-foreground)]">📜 本机已提交的 Vibe 需求 & 云端迭代记录：</div>
-          <div id="vibeHistoryList" class="space-y-1.5 max-h-40 overflow-y-auto"></div>
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-extrabold text-[var(--muted-foreground)]">📜 本机已提交的 Vibe 需求 & 云端版本演进记录：</span>
+            <button onclick="openVersionHistoryModal()" class="text-[11px] font-bold text-sky-500 hover:underline cursor-pointer">展开全部版本详情 ➔</button>
+          </div>
+          <div id="vibeHistoryList" class="space-y-1.5 max-h-44 overflow-y-auto"></div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL 5: FULL VERSION HISTORY & VIBE CHANGELOG ==================== -->
+  <div id="versionHistoryModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-[var(--card)] border border-sky-500/40 rounded-2xl max-w-3xl w-full max-h-[88vh] flex flex-col overflow-hidden shadow-2xl">
+      <div class="px-4 py-3 border-b border-[var(--border)] flex items-center justify-between bg-gradient-to-r from-sky-500/20 via-amber-500/10 to-emerald-500/10">
+        <div>
+          <div class="flex items-center gap-2">
+            <span id="vhCurrentVersionPill" class="px-2 py-0.5 rounded-full text-[10px] font-black bg-sky-500 text-slate-950">v1.3</span>
+            <h3 class="text-sm sm:text-base font-black text-[var(--foreground)]">📜 路书版本演进与 Vibe 自动迭代记录 (Version Changelog)</h3>
+          </div>
+          <p class="text-[11px] text-[var(--muted-foreground)] mt-0.5">
+            每次通过隐藏入口提交新 Vibe，云端 AI 自动修改路书、递增版本号并记录详细变更清单
+          </p>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <button onclick="unlockAndOpenVibeModal(); closeVersionHistoryModal();" class="px-2.5 py-1 rounded-lg bg-amber-500 text-slate-950 font-black text-xs cursor-pointer">
+            ✨ 提交新 Vibe
+          </button>
+          <button onclick="closeVersionHistoryModal()" class="w-8 h-8 rounded-full bg-[var(--content)] text-[var(--foreground)] font-bold cursor-pointer">✕</button>
+        </div>
+      </div>
+      <div id="versionHistoryModalBody" class="p-4 overflow-y-auto space-y-3 text-xs"></div>
     </div>
   </div>
 
@@ -601,8 +656,11 @@
   <!-- Subtle Footer with Discreet Entrance -->
   <footer class="max-w-7xl mx-auto px-4 pt-6 pb-8 text-center text-[11px] text-[var(--muted-foreground)] flex flex-wrap items-center justify-center gap-3">
     <span>🏔️ 2026 滇西北·雪山秘境奢野环线 · 100% 中国大陆原生直连 (高德 GCJ-02 · 百度百科 · 小红书)</span>
+    <button onclick="openVersionHistoryModal()" class="px-2 py-0.5 rounded-md bg-sky-500/10 text-sky-500 border border-sky-500/30 text-[10px] font-mono-code font-bold cursor-pointer transition">
+      📜 <span id="footerVersionText">v1.3 · 版本更新记录</span>
+    </button>
     <button onclick="unlockAndOpenVibeModal()" class="px-2 py-0.5 rounded-md bg-[var(--content)]/60 hover:bg-amber-500/15 hover:text-amber-500 border border-[var(--border)] text-[10px] font-mono-code cursor-pointer transition" title="打开隐藏的实时反馈与 AI 迭代舱">
-      ✦ v1.2 · 定制师 Vibe 调优入口
+      ✦ 定制师 Vibe 调优入口
     </button>
   </footer>
 
@@ -2163,10 +2221,67 @@
       a.click();
     });
 
-    // ==================== 11.5 HIDDEN VIBE FEEDBACK & AUTO-ITERATION ENGINE ====================
+    // ==================== 11.5 HIDDEN VIBE FEEDBACK, AUTO-UPDATE POLLING & VERSION HISTORY ENGINE ====================
     const VIBE_NTFY_URL = "https://ntfy.sh/yungapple_yunnan2026_vibe_9f8a7b6c";
+    const APP_BUILTIN_VERSION = "v1.3";
     let selectedVibeTags = new Set();
     let cloudVibeStatus = null;
+    let postSubmitWatchTimer = null;
+    let baselineVersionAtSubmit = null;
+
+    const DEFAULT_VIBE_HISTORY = [
+      {
+        version: "v1.3",
+        title: "自动 Vibe 闭环编译状态轮询 & 路书版本演进记录舱",
+        timestamp: "2026-10-05 17:45 CST",
+        author: "Shuguo & 随身AI定制师",
+        scope: "🌟 全环线自动迭代闭环 & 版本记录系统",
+        vibe_prompt: "懂了，有点儿意思，那岂不是可以完成自动vibe反馈然后自动更新了？加上更新版本记录",
+        changes: [
+          "新增「📜 v1.3 · 版本记录」顶部徽章与完整版本演进弹窗 (#versionHistoryModal)，完整展示每次迭代的版本号、提交人、Vibe 原话与变更细项",
+          "新增提交 Vibe 后的「8秒实时自动检测新版本」轮询引擎 (#vibeAutoWatchBox)，检测到云端新版本上线后自动清理缓存并弹出「🎉 新版本已上线 · 立即刷新」横幅",
+          "升级 Cloudtop 守护进程 vibe_bridge.py 为 5 步全自动「改代码 ➔ 递增版本号写 Changelog ➔ 重建产物 ➔ 4秒极速发布 GitHub Pages ➔ 双端通知」闭环"
+        ]
+      },
+      {
+        version: "v1.2",
+        title: "上线隐藏式「AI 定制师 Vibe 实时反馈与自动迭代舱」",
+        timestamp: "2026-10-05 12:10 CST",
+        author: "Shuguo",
+        scope: "🌟 整体行程 Vibe 与交互闭环",
+        vibe_prompt: "在网页加一个隐藏入口，同行旅伴随时输入新的 Vibe，自动通知 Cloudtop 上的守护进程并唤醒专属会话迭代重发页面",
+        changes: [
+          "新增三击左上角「云境」徽章、点击 ✦ 按钮或访问 ?vibe=1 唤醒隐藏式「Vibe 实时迭代舱」",
+          "打通国内手机浏览器免翻墙直连公网信箱 (ntfy.sh) ──► Cloudtop 守护进程 8 秒轮询 ──► 自动唤醒专属会话 (4aa6fc13) 改版闭环",
+          "内置高原弱网兜底：断网时自动复制结构化 Vibe 反馈口令至剪贴板"
+        ]
+      },
+      {
+        version: "v1.1",
+        title: "商业奢野定妆版：四大雪山美宿、三大行程决策器与百度百科实景图鉴",
+        timestamp: "2026-10-05 09:30 CST",
+        author: "Shuguo",
+        scope: "🏔️ 全环线 11日 (10.4–10.14)",
+        vibe_prompt: "把10.4到10.14的完整行程、四大必住雪山美宿、10.5二选一、10.11下午14:30出发、10.13南极洛拼车决策全部做成可交互商业路书",
+        changes: [
+          "上线 11 日高爬低睡海拔阶梯图（峰值孔雀山垭口 3950m、南极洛 5 号湖 3920m，住宿严格控制在 1980m–3400m）",
+          "内置 10.5 香巴拉/云栖壹号院、10.10 巴拉格宗路线、10.13 南极洛 1-5/1-9 号湖及拼车返丽江三大交互式决策器",
+          "接入百度百科直连词条、小红书机位攻略、司机藏地双语问路卡与定制师白标海报/KML/CSV 导出"
+        ]
+      },
+      {
+        version: "v1.0",
+        title: "2026 滇西北·雪山秘境环线初代路书上线",
+        timestamp: "2026-10-04 20:00 CST",
+        author: "Shuguo",
+        scope: "🗺️ 基础地图与行程框架",
+        vibe_prompt: "生成云南丽江-虎跳峡-哈巴雪山-香格里拉-梅里雪山-南极洛 11 日环线地图",
+        changes: [
+          "构建 100% 中国大陆原生直连架构（高德 GCJ-02 实景瓦片 + 离线矢量等高线双引擎，零海外阻塞依赖）",
+          "完成丽江、虎跳峡、哈巴黑海湖、香格里拉无底湖、巴拉格宗、飞来寺、南极洛 12 大核心节点坐标校准"
+        ]
+      }
+    ];
 
     window.unlockAndOpenVibeModal = function() {
       localStorage.setItem("yn2026_vibe_unlocked", "1");
@@ -2187,6 +2302,16 @@
       document.getElementById("vibeFeedbackModal")?.classList.add("hidden");
     };
 
+    window.openVersionHistoryModal = function() {
+      document.getElementById("versionHistoryModal")?.classList.remove("hidden");
+      refreshVibeStatusJson();
+      renderVersionHistoryModal();
+    };
+
+    window.closeVersionHistoryModal = function() {
+      document.getElementById("versionHistoryModal")?.classList.add("hidden");
+    };
+
     window.fillVibeSample = function(msg, scope) {
       const mEl = document.getElementById("vibeMessageInput");
       if (mEl) mEl.value = msg;
@@ -2194,22 +2319,100 @@
       if (sEl && scope) sEl.value = scope;
     };
 
+    function getNormalizedVersionCode(verStr) {
+      if (!verStr) return APP_BUILTIN_VERSION;
+      const m = String(verStr).match(/v\d+\.\d+/i);
+      return m ? m[0] : String(verStr).split(" ")[0];
+    }
+
     window.refreshVibeStatusJson = async function() {
       try {
-        const res = await fetch("./vibe_status.json?t=" + Date.now());
+        const res = await fetch("./vibe_status.json?t=" + Date.now(), { cache: "no-store" });
         if (res.ok) {
           cloudVibeStatus = await res.json();
+          const verCode = getNormalizedVersionCode(cloudVibeStatus.version);
           const badge = document.getElementById("vibeLiveVersionBadge");
           const logEl = document.getElementById("vibeLatestChangelog");
+          const headerVer = document.getElementById("headerVersionLabel");
+          const footerVer = document.getElementById("footerVersionText");
+          const vhPill = document.getElementById("vhCurrentVersionPill");
+
           if (badge && cloudVibeStatus.version) {
             badge.textContent = `📡 云端 AI 迭代引擎在线 (${cloudVibeStatus.version} · 更新于 ${cloudVibeStatus.updated_at || '刚刚'})`;
           }
           if (logEl && cloudVibeStatus.latest_summary) {
             logEl.textContent = `最近已上线 Vibe：${cloudVibeStatus.latest_summary}`;
           }
+          if (headerVer) headerVer.textContent = `${verCode} · 版本记录`;
+          if (footerVer) footerVer.textContent = `${verCode} · 版本更新记录`;
+          if (vhPill) vhPill.textContent = verCode;
+
           renderVibeHistory();
+          renderVersionHistoryModal();
+          return cloudVibeStatus;
         }
       } catch (e) {}
+      return null;
+    };
+
+    function getMergedVersionHistory() {
+      const cloudHistory = (cloudVibeStatus && Array.isArray(cloudVibeStatus.history) && cloudVibeStatus.history.length > 0)
+        ? cloudVibeStatus.history
+        : null;
+      if (cloudHistory) return cloudHistory;
+      return DEFAULT_VIBE_HISTORY;
+    }
+
+    window.renderVersionHistoryModal = function() {
+      const body = document.getElementById("versionHistoryModalBody");
+      if (!body) return;
+      const historyList = getMergedVersionHistory();
+      const localItems = getLocalVibeSubmissions();
+
+      let pendingHtml = "";
+      if (localItems.length > 0) {
+        const latestLocal = localItems[0];
+        pendingHtml = `
+          <div class="p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/40 space-y-1.5">
+            <div class="flex items-center justify-between gap-2">
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-amber-500 text-slate-950">🚀 本机最近提交的 Vibe 需求</span>
+              <span class="text-[11px] text-amber-500 font-bold">${latestLocal.author || '旅伴'} · ${latestLocal.scope || '全环线'}</span>
+            </div>
+            <div class="text-xs font-bold text-[var(--foreground)]">“${latestLocal.message}”</div>
+            <div class="text-[11px] text-[var(--muted-foreground)]">状态：已直连投递至 Cloudtop 守护进程，完成后将自动生成新版本记录并排入下方列表顶部。</div>
+          </div>
+        `;
+      }
+
+      const cardsHtml = historyList.map((entry, idx) => {
+        const isLatest = idx === 0;
+        const changesArr = Array.isArray(entry.changes)
+          ? entry.changes
+          : (entry.summary ? [entry.summary] : []);
+        const bullets = changesArr.map(c => `<li class="flex items-start gap-1.5"><span class="text-sky-500 font-black">•</span><span>${c}</span></li>`).join("");
+        return `
+          <div class="p-4 rounded-2xl ${isLatest ? 'bg-sky-500/10 border-2 border-sky-500/40' : 'bg-[var(--content)]/60 border border-[var(--border)]'} space-y-2">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <div class="flex items-center gap-2">
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-black ${isLatest ? 'bg-sky-500 text-slate-950' : 'bg-[var(--card)] text-[var(--foreground)] border border-[var(--border)]'}">${entry.version || 'v1.x'}</span>
+                ${isLatest ? '<span class="px-2 py-0.5 rounded-md text-[10px] font-black bg-emerald-500/20 text-emerald-500">当前在线版本 (LIVE)</span>' : ''}
+                <span class="font-black text-xs sm:text-sm text-[var(--foreground)]">${entry.title || entry.scope || '版本迭代更新'}</span>
+              </div>
+              <span class="text-[11px] font-mono-code text-[var(--muted-foreground)]">${entry.timestamp || ''}</span>
+            </div>
+            <div class="flex flex-wrap items-center gap-2 text-[11px]">
+              <span class="px-2 py-0.5 rounded bg-[var(--card)] border border-[var(--border)] font-bold text-[var(--foreground)]">👤 发起人：${entry.author || 'Shuguo'}</span>
+              <span class="px-2 py-0.5 rounded bg-[var(--card)] border border-[var(--border)] font-bold text-amber-500">🎯 赛段：${entry.scope || '全环线'}</span>
+            </div>
+            ${entry.vibe_prompt ? `<div class="p-2.5 rounded-xl bg-[var(--card)]/80 border border-[var(--border)] text-[11px] text-[var(--muted-foreground)]"><span class="font-extrabold text-[var(--foreground)]">💬 触发 Vibe 原话：</span>“${entry.vibe_prompt}”</div>` : ''}
+            <ul class="space-y-1 text-xs text-[var(--foreground)] leading-relaxed pt-0.5">
+              ${bullets}
+            </ul>
+          </div>
+        `;
+      }).join("");
+
+      body.innerHTML = pendingHtml + cardsHtml;
     };
 
     function getLocalVibeSubmissions() {
@@ -2224,35 +2427,94 @@
       const box = document.getElementById("vibeHistoryList");
       if (!box) return;
       const localItems = getLocalVibeSubmissions();
-      const cloudItems = (cloudVibeStatus && cloudVibeStatus.recent_iterations) || [];
+      const cloudHistory = getMergedVersionHistory();
       let html = "";
 
-      localItems.slice(0, 5).forEach(it => {
+      localItems.slice(0, 3).forEach(it => {
         html += `
           <div class="p-2 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-start justify-between gap-2">
             <div class="min-w-0">
-              <div class="font-extrabold text-amber-500">[已推送云端守护进程] ${it.scope} · ${it.author || '旅伴'}</div>
+              <div class="font-extrabold text-amber-500">[本机已投递] ${it.scope} · ${it.author || '旅伴'}</div>
               <div class="text-[var(--foreground)] truncate">${it.message}</div>
             </div>
-            <span class="shrink-0 px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-500 font-bold text-[10px]">🚀 AI迭代中</span>
+            <span class="shrink-0 px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-500 font-bold text-[10px]">🚀 AI自动编译中</span>
           </div>
         `;
       });
 
-      cloudItems.slice(0, 5).forEach(cit => {
+      cloudHistory.slice(0, 5).forEach(cit => {
+        const firstChange = (Array.isArray(cit.changes) && cit.changes[0]) || cit.title || cit.summary || "";
         html += `
-          <div class="p-2 rounded-xl bg-[var(--content)]/60 border border-[var(--border)] flex items-start justify-between gap-2">
+          <div onclick="openVersionHistoryModal()" class="p-2 rounded-xl bg-[var(--content)]/60 hover:bg-sky-500/10 border border-[var(--border)] flex items-start justify-between gap-2 cursor-pointer transition">
             <div class="min-w-0">
-              <div class="font-bold text-sky-500">[已上线 ${cit.version || ''}] ${cit.scope || '全环线'}</div>
-              <div class="text-[var(--muted-foreground)]">${cit.summary || ''}</div>
+              <div class="font-bold text-sky-500">[已上线 ${cit.version || ''}] ${cit.title || cit.scope || '全环线'}</div>
+              <div class="text-[var(--muted-foreground)] truncate">${firstChange}</div>
             </div>
-            <span class="shrink-0 px-2 py-0.5 rounded bg-sky-500/20 text-sky-500 font-bold text-[10px]">✅ 已生效</span>
+            <span class="shrink-0 px-2 py-0.5 rounded bg-sky-500/20 text-sky-500 font-bold text-[10px]">📜 详情</span>
           </div>
         `;
       });
 
       box.innerHTML = html || `<div class="text-[11px] text-[var(--muted-foreground)]">暂无记录，在上方输入你的新 Vibe 即可一键唤醒云端 AI 实时改版！</div>`;
     }
+
+    function startPostSubmitVersionWatch() {
+      baselineVersionAtSubmit = getNormalizedVersionCode((cloudVibeStatus && cloudVibeStatus.version) || APP_BUILTIN_VERSION);
+      const watchBox = document.getElementById("vibeAutoWatchBox");
+      const watchTitle = document.getElementById("vibeAutoWatchTitle");
+      const watchSub = document.getElementById("vibeAutoWatchSub");
+      const btnReload = document.getElementById("btnModalReloadFresh");
+
+      if (watchBox) watchBox.classList.remove("hidden");
+      if (btnReload) btnReload.classList.add("hidden");
+      if (watchTitle) {
+        watchTitle.textContent = `📡 1. 已投递至公网信箱 ──► 🧠 2. Cloudtop AI 正在基于 ${baselineVersionAtSubmit} 实时编译新版本 (每8秒自动轮询)...`;
+      }
+      if (watchSub) {
+        watchSub.textContent = "当云端专属会话 (4aa6fc13) 完成代码修改、版本记录更新并发布到 GitHub Pages 后，本页将自动弹出升级横幅。";
+      }
+
+      if (postSubmitWatchTimer) clearInterval(postSubmitWatchTimer);
+      postSubmitWatchTimer = setInterval(async () => {
+        const latest = await refreshVibeStatusJson();
+        if (!latest || !latest.version) return;
+        const liveVer = getNormalizedVersionCode(latest.version);
+        if (liveVer && baselineVersionAtSubmit && liveVer !== baselineVersionAtSubmit) {
+          clearInterval(postSubmitWatchTimer);
+          postSubmitWatchTimer = null;
+          // Clear SW cache in background so reload is guaranteed fresh
+          if ("caches" in window) {
+            caches.keys().then(keys => keys.forEach(k => caches.delete(k))).catch(() => {});
+          }
+          if (watchTitle) {
+            watchTitle.textContent = `🎉 3. 新版本 ${latest.version} 已编译上线！${latest.latest_summary || ''}`;
+          }
+          if (btnReload) btnReload.classList.remove("hidden");
+          const topBanner = document.getElementById("vibeNewReleaseBanner");
+          const topBannerText = document.getElementById("vibeNewReleaseBannerText");
+          if (topBannerText) {
+            topBannerText.textContent = `🎉 新版本 ${latest.version} 已根据你的 Vibe 自动编译上线！(${latest.latest_summary || '点击右侧按钮立即刷新'})`;
+          }
+          if (topBanner) topBanner.classList.remove("hidden");
+        }
+      }, 8000);
+    }
+
+    window.forceReloadFreshVersion = async function() {
+      try {
+        if ("caches" in window) {
+          const keys = await caches.keys();
+          await Promise.all(keys.map(k => caches.delete(k)));
+        }
+        if ("serviceWorker" in navigator) {
+          const regs = await navigator.serviceWorker.getRegistrations();
+          await Promise.all(regs.map(r => r.update()));
+        }
+      } catch (e) {}
+      const url = new URL(window.location.href);
+      url.searchParams.set("v", Date.now().toString());
+      window.location.replace(url.toString());
+    };
 
     window.submitVibeFeedback = async function() {
       const author = (document.getElementById("vibeAuthorInput")?.value || "同行旅伴").trim();
@@ -2269,6 +2531,7 @@
         return;
       }
 
+      await refreshVibeStatusJson();
       localStorage.setItem("yn2026_vibe_author", author);
       const payload = {
         app: "yunnan-2026",
@@ -2299,10 +2562,11 @@
         localStorage.setItem("yn2026_my_vibe_submissions", JSON.stringify(prev.slice(0, 20)));
         document.getElementById("vibeMessageInput").value = "";
         renderVibeHistory();
+        startPostSubmitVersionWatch();
 
         if (statusEl) {
           statusEl.className = "text-xs font-bold text-emerald-500";
-          statusEl.textContent = "✅ 已送达 Cloudtop！Google Chat 已收到提醒，AI 正在实时迭代并重发页面！";
+          statusEl.textContent = "✅ 已送达 Cloudtop！AI 正在自动改版并更新版本记录，下方已开启每 8 秒新版本自动检测！";
         }
       } catch (err) {
         if (statusEl) {
@@ -2490,15 +2754,17 @@
         });
       }
 
-      // Check URL ?vibe=1 or #vibe or previously unlocked state
+      // Check URL ?vibe=1 or #vibe or ?changelog=1 or previously unlocked state
       const urlParams = new URLSearchParams(window.location.search);
       if (urlParams.get("vibe") === "1" || window.location.hash === "#vibe") {
         unlockAndOpenVibeModal();
+      } else if (urlParams.get("changelog") === "1" || window.location.hash === "#changelog") {
+        openVersionHistoryModal();
       } else if (localStorage.getItem("yn2026_vibe_unlocked") === "1") {
         document.getElementById("floatingVibeBtn")?.classList.remove("hidden");
       }
 
-      // Initial render
+      // Initial render & live version status sync
       syncDecisionPillsUi();
       renderElevationChart();
       renderDetailCard();
@@ -2506,6 +2772,7 @@
       renderMap(true);
       loadAndRenderPhotos();
       renderGearChecklist();
+      refreshVibeStatusJson();
 
       // Register Service Worker for Offline Plateau Resilience
       if ("serviceWorker" in navigator) {
