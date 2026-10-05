@@ -1,4 +1,4 @@
-const CACHE_NAME = "yunnan-2026-bespoke-v9";
+const CACHE_NAME = "yunnan-2026-bespoke-v10";
 const CORE_ASSETS = [
   "./",
   "./index.html",
@@ -32,7 +32,7 @@ self.addEventListener("activate", (event) => {
 });
 
 self.addEventListener("fetch", (event) => {
-  if (event.request.url.includes("vibe_status.json") || event.request.url.includes("ntfy.sh")) {
+  if (event.request.url.includes("vibe_status.json") || event.request.url.includes("custom_tracks.json") || event.request.url.includes("ntfy.sh")) {
     return;
   }
   event.respondWith(
