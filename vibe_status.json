@@ -1,10 +1,23 @@
 {
   "app": "yunnan-2026",
-  "version": "v1.5",
-  "updated_at": "2026-10-05 21:45 CST",
+  "version": "v1.6",
+  "updated_at": "2026-10-05 22:35 CST",
   "target_conversation_id": "4aa6fc13-048a-443a-9afe-a58b2bd7940d",
-  "latest_summary": "已全面重构手机端一屏双核体验（对齐南美路书）与全站底部抽屉弹窗/地图气泡宽度自适应",
+  "latest_summary": "已全面上线纳西藏族在地风物灵动插画（大水车/萌宠羊驼/猛虎越涧/经幡/黑牦牛/日照金山）与卡片交互增强",
   "history": [
+    {
+      "version": "v1.6",
+      "title": "纳西藏族在地风物灵动插画重塑 · 萌趣与视觉盛宴升级",
+      "timestamp": "2026-10-05 22:35 CST",
+      "author": "Shuguo Test & 随身AI定制师",
+      "scope": "🌟 整体行程 Vibe 与节奏",
+      "vibe_prompt": "I hope the illustration could be more fun and delightful according to the local elements. Optimze the visual to make it beyond awesome!",
+      "changes": [
+        "全面重塑全环线 8 大手绘矢量风物插画（Photos/SVG）：融入纳西东巴大水车与红灯笼、白沙扎染与萌宠小羊驼、虎跳峡金沙狂澜猛虎腾跃、哈巴黑海湖五彩经幡与玛尼堆、香格里拉无底湖静谧黑牦牛与牧人木屋、巴拉格宗千年菩提手印与天然佛塔、飞来寺八塔煨桑与日照金山盛典、南极洛绝壁双瀑与高山流石滩萌趣雪山鼠",
+        "视觉细节全面升级：在景点详情卡引入在地灵动画卷实时预览横幅，增强风物百科、旅途画册与决策卡微交互，注入纳西东巴文化、茶马古道与扎西德勒藏地祝福",
+        "Service Worker 升级至 yunnan-2026-bespoke-v6，实现秒级热更新，离线也能 0ms 极速畅览高精风物插画"
+      ]
+    },
     {
       "version": "v1.5",
       "title": "手机端一屏双核架构重构 · 底部抽屉弹窗与地图气泡全面自适应",
