@@ -825,7 +825,7 @@
       <div class="px-3.5 sm:px-4 py-2.5 border-b border-[var(--border)] flex items-center justify-between gap-2 bg-gradient-to-r from-sky-500/20 via-amber-500/10 to-emerald-500/10 shrink-0">
         <div class="min-w-0">
           <div class="flex items-center gap-1.5">
-            <span id="vhCurrentVersionPill" class="px-2 py-0.5 rounded-full text-[10px] font-black bg-sky-500 text-slate-950 shrink-0">v2.1</span>
+            <span id="vhCurrentVersionPill" class="px-2 py-0.5 rounded-full text-[10px] font-black bg-sky-500 text-slate-950 shrink-0">v2.2</span>
             <h3 class="text-xs sm:text-base font-black text-[var(--foreground)] truncate">📜 路书版本演进与 Vibe 自动迭代记录</h3>
           </div>
           <p class="text-[10px] sm:text-[11px] text-[var(--muted-foreground)] truncate mt-0.5">
@@ -950,7 +950,7 @@
       💡 使用指南
     </button>
     <button onclick="openVersionHistoryModal()" class="px-2 py-0.5 rounded-md bg-sky-500/10 text-sky-500 border border-sky-500/30 text-[10px] font-mono-code font-bold cursor-pointer">
-      📜 <span id="footerVersionText">v2.1 · 版本记录</span>
+      📜 <span id="footerVersionText">v2.2 · 版本记录</span>
     </button>
     <button onclick="unlockAndOpenVibeModal()" class="px-2 py-0.5 rounded-md bg-[var(--content)]/60 hover:bg-amber-500/15 hover:text-amber-500 border border-[var(--border)] text-[10px] font-mono-code cursor-pointer">
       ✦ Vibe 调优舱
@@ -3694,7 +3694,7 @@ ${trkpts}
 
     // ==================== 11.5 HIDDEN VIBE FEEDBACK, AUTO-UPDATE POLLING & VERSION HISTORY ENGINE ====================
     const VIBE_NTFY_URL = "https://ntfy.sh/yungapple_yunnan2026_vibe_9f8a7b6c";
-    const APP_BUILTIN_VERSION = "v2.1";
+    const APP_BUILTIN_VERSION = "v2.2";
     const YUNNAN_VIBE_PASSWORD = "applefriend";
     const YUNNAN_PW_STORAGE_KEY = "yunnan2026_vibe_pw";
     const YUNNAN_UNLOCK_STORAGE_KEY = "vibe_unlocked_yunnan-2026";
@@ -3704,6 +3704,22 @@ ${trkpts}
     let baselineVersionAtSubmit = null;
 
     const DEFAULT_VIBE_HISTORY = [
+      {
+        version: "v2.2",
+        title: "重构全站单一主滚动控制器 (Unified Scroll Engine) · 彻底解决多滚动容器抢占与卡顿",
+        timestamp: "2026-10-06 05:05 CST",
+        author: "Shuguo & 随身AI定制师",
+        scope: "⚡ 全站滚动丝滑度 & 跨端手势防冲突重构",
+        vibe_tags: ["顺滑滚动重构", "消除双根滚动条", "高德滚轮防劫持", "零嵌套滚动陷阱"],
+        vibe_prompt: "bugs for latest version: can't smooth scrolling sometimes for the whole page? multiple scrolling controller conflicts?",
+        summary: "深度排查并一次性根除全站 4 处滚动控制器冲突：修复 html/body 双根 overflow-x:hidden 导致的滚动锁死、移除右侧四栏内部 overflow-y-auto 嵌套滚动陷阱、默认关闭高德地图滚轮缩放劫持并增设 +/- 缩放与滚轮锁、移除 selectPlace 跨栏 scrollIntoView 抢占。",
+        changes: [
+          "修复 CSS 双根滚动容器 Bug：将 html, body 同时声明的 overflow-x: hidden 与 overscroll-behavior-y: none 升级为 overflow-x: clip，消除浏览器将 body 误判为第二根滚动容器导致的触控板/手指滑动中断",
+          "移除右侧多栏 (节点/机位/清单/AI领队) 的固定高度 (lg:h-[820px]) 与内部 overflow-y-auto 嵌套滚动盒，全站统一收归单一主页面滚动控制器 (window)，鼠标在页面任意区域滑动均 100% 顺滑驱动整页",
+          "消除高德/Leaflet 地图滚轮劫持：默认关闭 scrollWheelZoom（点击地图激活、鼠标移出地图自动锁回），并在地图右侧新增独立「＋ / －」缩放键与「🔒滚轮」状态指示，防止滑过地图时卡住整页滚动",
+          "消除 JS 动画抢占冲突：移除切换节点/点击地图 Pin 时对右侧列表项触发的 el.scrollIntoView({behavior:'smooth'})，并为横向胶囊条与海拔曲线图补充 touch-action: pan-x pan-y"
+        ]
+      },
       {
         version: "v2.1",
         title: "上线「🎙️ 语音录入快改行程」+「🤖 云端 AI Agent 实时查天气/日照金山规划舱」",
@@ -4482,15 +4498,16 @@ ${trkpts}
         .then(cloudTracks => {
           if (Array.isArray(cloudTracks) && cloudTracks.length > 0) {
             let added = false;
+            const existingCustom = getCustomUploadedTrails();
             cloudTracks.forEach(ct => {
               if (ct && Array.isArray(ct.points) && ct.points.length >= 2) {
                 const cid = ct.id || ("cloud-tr-" + ct.name);
-                if (!ynCustomTrails.some(x => x.id === cid || x.nameZh === ct.name)) {
+                if (!existingCustom.some(x => x.id === cid || x.nameZh === ct.name)) {
                   const pts = ct.points.map(p => {
-                    const [gLat, gLng] = isInsideChinaBox(p[0], p[1]) ? wgs84ToGcj02(p[0], p[1]) : [p[0], p[1]];
+                    const [gLat, gLng] = ynIsInChina(p[0], p[1]) ? wgs84ToGcj02(p[0], p[1]) : [p[0], p[1]];
                     return [Number(gLat.toFixed(6)), Number(gLng.toFixed(6)), p[2] || 0];
                   });
-                  ynCustomTrails.unshift({
+                  saveCustomUploadedTrail({
                     id: cid,
                     placeIds: [selectedPlaceId || 7],
                     dayLabel: ct.scope || "云端共享轨迹",
