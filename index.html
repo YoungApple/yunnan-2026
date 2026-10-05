@@ -57,16 +57,29 @@
       }
     }
     * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
-    html, body {
-      max-width: 100vw;
-      overflow-x: hidden;
+    html {
+      background-color: var(--background);
+      color: var(--foreground);
+      font-family: var(--font-sans);
+      -webkit-font-smoothing: antialiased;
+      -webkit-overflow-scrolling: touch;
+      overflow-x: clip;
+    }
+    body {
+      max-width: 100%;
+      overflow-x: clip;
       background-color: var(--background);
       color: var(--foreground);
       font-family: var(--font-sans);
       margin: 0;
       padding: 0;
-      overscroll-behavior-y: none;
-      -webkit-font-smoothing: antialiased;
+    }
+    .touch-pan-xy {
+      touch-action: pan-x pan-y;
+    }
+    .modal-sheet > .overflow-y-auto {
+      overscroll-behavior-y: contain;
+      -webkit-overflow-scrolling: touch;
     }
     .font-serif-cn { font-family: var(--font-serif); }
     .font-mono-code { font-family: var(--font-mono); }
@@ -192,7 +205,7 @@
               </span>
               <button id="btnOpenVersionHistory" onclick="openVersionHistoryModal()" title="查看路书版本更新记录与 Vibe 迭代历史" class="px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-sky-500/15 text-sky-500 border border-sky-500/30 hover:bg-sky-500/25 transition cursor-pointer flex items-center gap-1 shrink-0">
                 <span>📜</span>
-                <span id="headerVersionLabel">v2.1 · 版本记录</span>
+                <span id="headerVersionLabel">v2.2 · 版本记录</span>
               </button>
             </div>
             <p id="brandSubtitleText" class="text-[11px] text-[var(--muted-foreground)] truncate">
@@ -202,7 +215,7 @@
         </div>
 
         <!-- Horizontal Scrollable Stage Filter Chips (Inline on Mobile & Desktop) -->
-        <div class="flex items-center gap-1 overflow-x-auto no-scrollbar py-0.5 flex-1 min-w-0" id="layerTabs">
+        <div class="flex items-center gap-1 overflow-x-auto no-scrollbar touch-pan-xy py-0.5 flex-1 min-w-0" id="layerTabs">
           <button data-layer="all" class="layer-btn shrink-0 px-2.5 py-1 rounded-full text-[11px] font-extrabold bg-[var(--primary)] text-[var(--primary-foreground)] transition cursor-pointer flex items-center gap-1">
             <span>🏔️ 全线(25)</span>
           </button>
@@ -262,14 +275,14 @@
     </div>
   </header>
 
-  <!-- ==================== MAIN WORKSPACE (Map + Active Place Sheet Above the Fold on Mobile!) ==================== -->
+  <!-- ==================== MAIN WORKSPACE (Single Unified Window Scroll Controller — Zero Nested Scroll Traps!) ==================== -->
   <main class="max-w-7xl mx-auto px-2 sm:px-4 pt-2 sm:pt-3">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 items-start">
 
       <!-- ==================== LEFT COLUMN (7 COLS): MAP + ACTIVE PLACE DETAIL + ELEVATION ==================== -->
       <div id="mapPaneCol" class="lg:col-span-7 flex flex-col gap-2.5 min-w-0">
 
-        <!-- 1. INTERACTIVE MAP CARD WITH FLOATING GLASS CONTROLS (Matches South America Mobile Layout) -->
+        <!-- 1. INTERACTIVE MAP CARD WITH FLOATING GLASS CONTROLS (Wheel-Zoom Guarded for Smooth Page Scrolling) -->
         <div id="mapHeroCard" class="relative w-full h-[265px] sm:h-[340px] lg:h-[400px] bg-[var(--card)] border border-[var(--border)] rounded-2xl overflow-hidden shadow-xs">
           <div id="leafletMap" class="w-full h-full z-10"></div>
           <div id="vectorMapWrap" class="w-full h-full hidden relative bg-slate-950">
@@ -305,6 +318,17 @@
             </button>
           </div>
 
+          <!-- Right-Middle Floating +/- Zoom & Scroll-Guard Pill (Prevents Map from Hijacking Page Scroll) -->
+          <div id="mapZoomControls" class="absolute right-2.5 top-12 z-20 flex flex-col items-center gap-1">
+            <div class="flex flex-col rounded-xl bg-slate-900/85 backdrop-blur-md border border-slate-700/80 shadow-md overflow-hidden">
+              <button type="button" onclick="zoomInMap()" title="放大地图" class="w-7 h-7 flex items-center justify-center text-white hover:bg-slate-800 font-black text-sm cursor-pointer border-b border-slate-700/70">＋</button>
+              <button type="button" onclick="zoomOutMap()" title="缩小地图" class="w-7 h-7 flex items-center justify-center text-white hover:bg-slate-800 font-black text-sm cursor-pointer">－</button>
+            </div>
+            <button type="button" id="btnToggleMapWheelZoom" onclick="toggleMapWheelZoom()" title="默认关闭滚轮缩放以确保全页顺滑滚动；点击地图或此按钮可开启滚轮缩放" class="hidden sm:flex px-1.5 py-0.5 rounded-lg bg-slate-900/85 text-slate-300 hover:text-white border border-slate-700/80 text-[9px] font-bold backdrop-blur-md shadow-md cursor-pointer items-center gap-0.5">
+              <span>🔒滚轮</span>
+            </button>
+          </div>
+
           <!-- Bottom-Left Floating Status Pill -->
           <div class="absolute bottom-2 left-2.5 z-20 pointer-events-none flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-slate-900/85 text-white text-[10px] font-bold backdrop-blur-xs shadow-md max-w-[66%] truncate">
             <span id="engineBadge" class="truncate">🟢 高德 GCJ-02 实景 · 大陆直连</span>
@@ -333,13 +357,13 @@
             <div class="flex items-center gap-2.5 text-[10px] text-[var(--muted-foreground)]">
               <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-amber-500 inline-block"></span>日间最高</span>
               <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-sky-500 inline-block"></span>夜间睡眠</span>
-              <button onclick="openVersionHistoryModal()" class="text-sky-500 font-bold hover:underline cursor-pointer">📜 v2.0记录</button>
+              <button onclick="openVersionHistoryModal()" class="text-sky-500 font-bold hover:underline cursor-pointer">📜 v2.2记录</button>
             </div>
           </div>
 
           <!-- Interactive SVG Elevation Chart -->
-          <div class="w-full overflow-x-auto no-scrollbar">
-            <svg id="elevationChartSvg" viewBox="0 0 960 155" class="w-full min-w-[580px] h-32 sm:h-36 select-none"></svg>
+          <div class="w-full overflow-x-auto no-scrollbar touch-pan-xy">
+            <svg id="elevationChartSvg" viewBox="0 0 960 155" class="w-full min-w-[580px] h-32 sm:h-36 select-none touch-pan-xy"></svg>
           </div>
 
           <!-- 3 Critical Trip Decision & Milestone Pills -->
@@ -359,7 +383,7 @@
                 <div class="text-[11px] font-extrabold text-rose-500">⏰ 10.11 (D8) 铁律时间锚点</div>
                 <div class="text-xs font-bold text-[var(--foreground)] truncate mt-0.5">下午 14:30 准时香格里拉出发 → 18:00 飞来寺</div>
               </div>
-              <button onclick="selectPlace(19, true, true)" class="shrink-0 px-2.5 py-1 rounded-lg text-[11px] font-extrabold bg-rose-500 text-white hover:opacity-90 transition cursor-pointer">
+              <button onclick="selectPlace(19, false, true)" class="shrink-0 px-2.5 py-1 rounded-lg text-[11px] font-extrabold bg-rose-500 text-white hover:opacity-90 transition cursor-pointer">
                 看路书
               </button>
             </div>
@@ -380,11 +404,11 @@
         </section>
       </div>
 
-      <!-- ==================== RIGHT COLUMN (5 COLS): MULTI-TAB COMPANION ==================== -->
-      <div id="rightPaneCol" class="hidden lg:flex lg:col-span-5 bg-[var(--card)] border border-[var(--border)] rounded-2xl overflow-hidden shadow-xs flex-col lg:h-[820px] min-w-0">
-        <!-- Sub-navigation Tabs -->
-        <div class="grid grid-cols-4 gap-1 p-1.5 bg-[var(--content)]/60 border-b border-[var(--border)] shrink-0">
-          <button data-subtab="list" class="subtab-btn py-2 px-1.5 rounded-xl text-xs font-extrabold bg-[var(--card)] text-[var(--foreground)] shadow-2xs transition cursor-pointer flex items-center justify-center gap-1">
+      <!-- ==================== RIGHT COLUMN (5 COLS): UNIFIED PAGE SCROLL (NO NESTED SCROLL TRAPS!) ==================== -->
+      <div id="rightPaneCol" class="hidden lg:flex lg:col-span-5 bg-[var(--card)] border border-[var(--border)] rounded-2xl shadow-xs flex-col min-w-0">
+        <!-- Sticky Sub-navigation Tabs -->
+        <div class="sticky top-[49px] z-20 rounded-t-2xl grid grid-cols-4 gap-1 p-1.5 bg-[var(--card)]/95 backdrop-blur-md border-b border-[var(--border)] shrink-0">
+          <button data-subtab="list" class="subtab-btn py-2 px-1.5 rounded-xl text-xs font-extrabold bg-[var(--content)] text-[var(--foreground)] shadow-2xs transition cursor-pointer flex items-center justify-center gap-1">
             <span>📍 节点</span>
             <span id="visibleCountBadge" class="text-[10px] px-1.5 py-0.2 rounded-full bg-amber-500/20 text-amber-500 font-mono-code">25</span>
           </button>
@@ -399,27 +423,27 @@
           </button>
         </div>
 
-        <!-- SUBPANE 1: STOP LIST -->
-        <div id="listSubPane" class="flex-1 flex flex-col min-h-[460px] lg:min-h-0">
+        <!-- SUBPANE 1: STOP LIST (Flows Naturally with Page Scroll) -->
+        <div id="listSubPane" class="flex-1 flex flex-col">
           <div class="p-2.5 border-b border-[var(--border)] flex items-center gap-2">
             <input id="searchInput" type="search" placeholder="搜索：虎跳峡 / 哈巴黑海湖 / 无底湖 / 巴拉格宗 / 南极洛 / 酒店..." class="w-full px-3 py-1.5 rounded-xl text-xs bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] focus:outline-none focus:border-amber-500" />
           </div>
-          <div id="placeListContainer" class="flex-1 overflow-y-auto divide-y divide-[var(--border)]/60 p-2 space-y-1"></div>
+          <div id="placeListContainer" class="divide-y divide-[var(--border)]/60 p-2 space-y-1"></div>
         </div>
 
-        <!-- SUBPANE 2: PHOTOGRAPHY & SCENIC GALLERY -->
-        <div id="photosSubPane" class="hidden flex-1 flex flex-col min-h-[460px] lg:min-h-0 bg-[var(--background)]/40">
+        <!-- SUBPANE 2: PHOTOGRAPHY & SCENIC GALLERY (Flows Naturally with Page Scroll) -->
+        <div id="photosSubPane" class="hidden flex-1 flex flex-col bg-[var(--background)]/40 rounded-b-2xl">
           <div class="p-3 border-b border-[var(--border)] bg-[var(--card)] flex items-center justify-between gap-2">
             <div>
               <div class="text-xs font-extrabold text-[var(--foreground)]">📸 滇西北 8 大封神摄影机位与视觉图鉴</div>
               <div class="text-[11px] text-[var(--muted-foreground)]">同源内置矢量高清图卡（无网秒开）· 点击直达小红书实拍</div>
             </div>
           </div>
-          <div id="photosGalleryContainer" class="flex-1 overflow-y-auto p-3 space-y-3"></div>
+          <div id="photosGalleryContainer" class="p-3 space-y-3"></div>
         </div>
 
-        <!-- SUBPANE 3: INTERACTIVE GEAR & PLATEAU CHECKLIST -->
-        <div id="gearSubPane" class="hidden flex-1 flex flex-col min-h-[460px] lg:min-h-0 bg-[var(--background)]/40">
+        <!-- SUBPANE 3: INTERACTIVE GEAR & PLATEAU CHECKLIST (Flows Naturally with Page Scroll) -->
+        <div id="gearSubPane" class="hidden flex-1 flex flex-col bg-[var(--background)]/40 rounded-b-2xl">
           <div class="p-3 border-b border-[var(--border)] bg-[var(--card)] flex items-center justify-between gap-2">
             <div>
               <div class="text-xs font-extrabold text-[var(--foreground)]">🎒 10月滇西北高海拔徒步装备 & 行前核对单</div>
@@ -429,11 +453,11 @@
               重置
             </button>
           </div>
-          <div id="gearChecklistContainer" class="flex-1 overflow-y-auto p-3 space-y-3"></div>
+          <div id="gearChecklistContainer" class="p-3 space-y-3"></div>
         </div>
 
-        <!-- SUBPANE 4: SMART EXPEDITION AI GUIDE -->
-        <div id="aiSubPane" class="hidden flex-1 flex flex-col min-h-[460px] lg:min-h-0 bg-[var(--background)]/50">
+        <!-- SUBPANE 4: SMART EXPEDITION AI GUIDE (Flows Naturally with Page Scroll) -->
+        <div id="aiSubPane" class="hidden flex-1 flex flex-col bg-[var(--background)]/50 rounded-b-2xl">
           <div class="px-3 py-2 border-b border-[var(--border)] bg-[var(--card)] flex items-center justify-between gap-2">
             <div class="text-[11px] text-[var(--muted-foreground)] truncate" id="aiContextPill">
               🏔️ 离线专家引擎已就绪 · 支持高反/徒步/机位/拼车解答
@@ -453,7 +477,7 @@
               <button id="btnSaveApiKey" class="px-2.5 py-1.5 rounded-lg bg-amber-500 text-slate-950 font-extrabold text-xs cursor-pointer">保存</button>
             </div>
           </div>
-          <div class="p-2 border-b border-[var(--border)] bg-[var(--card)] flex items-center gap-1.5 overflow-x-auto no-scrollbar" id="aiQuickPrompts">
+          <div class="p-2 border-b border-[var(--border)] bg-[var(--card)] flex items-center gap-1.5 overflow-x-auto no-scrollbar touch-pan-xy" id="aiQuickPrompts">
             <button type="button" onclick="triggerAiLiveWeatherQuery()" class="shrink-0 px-2.5 py-1 rounded-full text-[11px] font-black bg-sky-500/20 text-sky-400 border border-sky-500/40 hover:bg-sky-500/30 cursor-pointer">🌤️ 查全线实时天气&日照金山</button>
             <button type="button" onclick="unlockAndOpenVibeModal()" class="shrink-0 px-2.5 py-1 rounded-full text-[11px] font-black bg-amber-500/20 text-amber-400 border border-amber-500/40 hover:bg-amber-500/30 cursor-pointer">🎙️ 语音让Agent改行程</button>
             <button data-q="哈巴黑海湖徒步难度大吗？穿什么鞋？" class="ai-q-btn shrink-0 px-2.5 py-1 rounded-full text-[11px] font-bold bg-[var(--content)] hover:bg-amber-500/20 text-[var(--foreground)] cursor-pointer">🥾 哈巴黑海湖17km攻略</button>
@@ -461,8 +485,8 @@
             <button data-q="为什么10.11必须下午14:30从香格里拉出发去德钦？" class="ai-q-btn shrink-0 px-2.5 py-1 rounded-full text-[11px] font-bold bg-[var(--content)] hover:bg-amber-500/20 text-[var(--foreground)] cursor-pointer">⏰ 10.11 14:30出发</button>
             <button data-q="飞来寺明珠拉卡酒店看梅里日照金山几点起床？" class="ai-q-btn shrink-0 px-2.5 py-1 rounded-full text-[11px] font-bold bg-[var(--content)] hover:bg-amber-500/20 text-[var(--foreground)] cursor-pointer">🌅 日照金山时刻</button>
           </div>
-          <div id="aiChatMessages" class="flex-1 overflow-y-auto p-3 space-y-3"></div>
-          <form id="aiChatForm" class="p-2.5 border-t border-[var(--border)] bg-[var(--card)] flex items-center gap-1.5">
+          <div id="aiChatMessages" class="p-3 space-y-3"></div>
+          <form id="aiChatForm" class="p-2.5 border-t border-[var(--border)] bg-[var(--card)] rounded-b-2xl flex items-center gap-1.5">
             <button type="button" id="btnVoiceAiChat" onclick="toggleVoiceInput('aiChatInput', 'btnVoiceAiChat', true)" title="点击用语音提问" class="px-2.5 py-2 rounded-xl text-xs font-extrabold bg-[var(--content)] text-amber-500 border border-amber-500/40 hover:bg-amber-500/15 cursor-pointer shrink-0 flex items-center gap-1">
               <span>🎙️</span>
               <span class="hidden sm:inline">语音</span>
@@ -2410,7 +2434,7 @@ ${trkpts}
       if (!dayObj) return;
       document.getElementById("todayBadgeLabel").textContent = `D${dayNum}`;
       renderElevationChart();
-      selectPlace(dayObj.firstPlaceId, true, true);
+      selectPlace(dayObj.firstPlaceId, false, true);
     };
 
     // ==================== 2. GAODE / AUTONAVI MAP & OFFLINE VECTOR MAP ====================
@@ -2423,15 +2447,60 @@ ${trkpts}
       return "https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}";
     }
 
+    let mapWheelZoomEnabled = false;
+
+    function syncMapWheelZoomUi() {
+      const btn = document.getElementById("btnToggleMapWheelZoom");
+      if (!btn) return;
+      if (mapWheelZoomEnabled) {
+        btn.className = "hidden sm:flex px-1.5 py-0.5 rounded-lg bg-amber-500 text-slate-950 border border-amber-400 text-[9px] font-black backdrop-blur-md shadow-md cursor-pointer items-center gap-0.5";
+        btn.innerHTML = "<span>🔓滚轮</span>";
+      } else {
+        btn.className = "hidden sm:flex px-1.5 py-0.5 rounded-lg bg-slate-900/85 text-slate-300 hover:text-white border border-slate-700/80 text-[9px] font-bold backdrop-blur-md shadow-md cursor-pointer items-center gap-0.5";
+        btn.innerHTML = "<span>🔒滚轮</span>";
+      }
+    }
+
+    function setMapWheelZoomState(enable) {
+      mapWheelZoomEnabled = Boolean(enable);
+      if (lfMap && lfMap.scrollWheelZoom) {
+        if (mapWheelZoomEnabled) lfMap.scrollWheelZoom.enable();
+        else lfMap.scrollWheelZoom.disable();
+      }
+      syncMapWheelZoomUi();
+    }
+
+    window.toggleMapWheelZoom = function() {
+      setMapWheelZoomState(!mapWheelZoomEnabled);
+    };
+
+    window.zoomInMap = function() {
+      if (lfMap && activeMapMode !== "vector") lfMap.zoomIn();
+    };
+
+    window.zoomOutMap = function() {
+      if (lfMap && activeMapMode !== "vector") lfMap.zoomOut();
+    };
+
     function initLeafletMap() {
       if (lfMap || typeof L === "undefined") return;
       lfMap = L.map("leafletMap", {
         center: [27.65, 99.65],
         zoom: 8,
         zoomControl: false,
-        attributionControl: false
+        attributionControl: false,
+        scrollWheelZoom: false
       });
+      // Clicking inside the map enables wheel zoom while hovered; leaving mapHeroCard disables it so page scroll is never hijacked
+      lfMap.on("click", () => setMapWheelZoomState(true));
+      const heroEl = document.getElementById("mapHeroCard");
+      if (heroEl) {
+        heroEl.addEventListener("mouseleave", () => {
+          if (mapWheelZoomEnabled) setMapWheelZoomState(false);
+        });
+      }
       applyLeafletTiles(activeMapMode);
+      syncMapWheelZoomUi();
     }
 
     function applyLeafletTiles(mode) {
@@ -2605,7 +2674,7 @@ ${trkpts}
           autoPanPaddingBottomRight: [14, 36],
           closeButton: true
         });
-        marker.on("click", () => selectPlace(p.id, true, false, false, true));
+        marker.on("click", () => selectPlace(p.id, false, false, false, true));
         if (isSel) selectedMarkerRef = marker;
         lfMarkers.push(marker);
       });
@@ -2658,7 +2727,7 @@ ${trkpts}
         const isSel = p.id === selectedPlaceId;
         const c = pinColorFor(p);
         s += `
-          <g class="cursor-pointer" onclick="selectPlace(${p.id}, true, false)">
+          <g class="cursor-pointer" onclick="selectPlace(${p.id}, false, false)">
             ${isSel ? `<circle cx="${x}" cy="${y}" r="19" fill="${c}" opacity="0.28"/>` : ""}
             <circle cx="${x}" cy="${y}" r="${isSel ? 12 : 9.5}" fill="${c}" stroke="#fff" stroke-width="2"/>
             <text x="${x}" y="${y + 4}" text-anchor="middle" fill="#fff" font-size="10" font-weight="900">${p.id}</text>
@@ -2696,7 +2765,7 @@ ${trkpts}
       const pool = list.length > 0 ? list : places;
       const idx = pool.findIndex(item => item.id === selectedPlaceId);
       const nextIdx = idx === -1 ? 0 : (idx + delta + pool.length) % pool.length;
-      selectPlace(pool[nextIdx].id, true, true);
+      selectPlace(pool[nextIdx].id, false, true);
     };
 
     function renderYunnanTrailsHubCard() {
@@ -2904,7 +2973,7 @@ ${trkpts}
         .join("");
     }
 
-    window.selectPlace = function(id, scrollIntoList = true, flyOnMap = true, switchToExploreOnMobile = false, openSelectedPopup = false) {
+    window.selectPlace = function(id, scrollIntoList = false, flyOnMap = true, switchToExploreOnMobile = false, openSelectedPopup = false) {
       selectedPlaceId = id;
       const p = places.find(item => item.id === id);
       if (p) {
@@ -2922,11 +2991,14 @@ ${trkpts}
       renderMap(false, openSelectedPopup);
 
       if (flyOnMap && p && lfMap && activeMapMode !== "vector") {
-        lfMap.flyTo([p.lat, p.lng], 12, { duration: 0.65 });
+        lfMap.flyTo([p.lat, p.lng], 12, { duration: 0.55 });
       }
-      if (scrollIntoList) {
-        const el = document.querySelector(`[data-place-id="${id}"]`);
-        if (el) el.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      // Note: Do NOT call el.scrollIntoView() on [data-place-id] because it hijacks the root window scroll controller!
+      if (switchToExploreOnMobile && window.innerWidth >= 1024) {
+        const hero = document.getElementById("mapHeroCard");
+        if (hero && hero.getBoundingClientRect().top < -120) {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
       }
     };
 
@@ -4457,7 +4529,131 @@ ${trkpts}
       if ("serviceWorker" in navigator) {
         navigator.serviceWorker.register("./sw.js").catch(() => {});
       }
+      if (urlParams.get("partner") === "1" || window.location.hash === "#partner") {
+        window.openPartnerModal();
+      }
     });
+  </script>
+
+  <!-- ==================== PARTNER & XIAOHONGSHU LEAD CAPTURE MODAL ==================== -->
+  <div id="ynPartnerModal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-xs flex items-center justify-center p-4" onclick="if(event.target===this) window.closePartnerModal()">
+    <div class="mobile-sheet w-full max-w-xl bg-[var(--card)] border border-amber-500/40 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[88vh]">
+      <div class="px-4 py-3 border-b border-[var(--border)] flex items-center justify-between gap-2 bg-gradient-to-r from-amber-500/20 via-rose-500/15 to-sky-500/10 shrink-0">
+        <div class="min-w-0">
+          <div class="flex items-center gap-1.5">
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-amber-500 text-slate-950">欢迎合作 · 小红书同款</span>
+            <h3 class="text-xs sm:text-base font-black text-[var(--foreground)] truncate">🤝 携程私家团 / 定制游 / 户外俱乐部 合作直通车</h3>
+          </div>
+          <p class="text-[10px] sm:text-[11px] text-[var(--muted-foreground)] truncate mt-0.5">
+            前 20 家同行免费将 1 条王牌线路升级为同款 AI 交互路书 · 秒级推送主理人 Google Chat
+          </p>
+        </div>
+        <button onclick="window.closePartnerModal()" class="w-7 h-7 rounded-full bg-[var(--content)] text-[var(--foreground)] font-bold cursor-pointer shrink-0">✕</button>
+      </div>
+      <div class="p-4 overflow-y-auto space-y-3 text-xs flex-1">
+        <div class="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/35 space-y-1.5">
+          <div class="flex items-center justify-between gap-2 flex-wrap">
+            <span class="font-black text-amber-500">🎁 为什么升级 Travel Studio 智能私家团路书？</span>
+            <a href="https://youngapple.github.io/travel-studio/bp.html" target="_blank" rel="noopener" class="px-2 py-0.5 rounded bg-amber-500 text-slate-950 font-black text-[10px]">📊 查看完整商业BP & 小红书套件 ↗</a>
+          </div>
+          <p class="text-[11px] text-[var(--foreground)] leading-relaxed">
+            • <strong>售前逼单利器</strong>：高德实景地图 + 每日高光卡片 + 冠名您的旅行社/定制师品牌，询单转化率提升 30%+<br/>
+            • <strong>两步路 4 格式互通</strong>：支持 .kml/.kmz/.gpx 轨迹导入导出 + 海拔阶梯预警 + Plan A/B 动态切换<br/>
+            • <strong>10 秒 AI 随心改行程</strong>：行中一句话 Vibe 自动重排路线，老客发小红书自动帮您带新客留资！
+          </p>
+        </div>
+        <div class="space-y-2.5">
+          <div>
+            <label class="block font-bold mb-1 text-[var(--foreground)]">🏷️ 您的身份 / 合作需求 *</label>
+            <select id="ynPartnerRole" class="w-full px-3 py-2 rounded-xl bg-[var(--content)] border border-[var(--border)] text-xs font-bold text-[var(--foreground)]">
+              <option value="携程/飞猪半托管私家团供应商">💼 携程/飞猪半托管私家团供应商 (申领免费首条王牌线路)</option>
+              <option value="独立定制师 / 高端定制游工作室">✨ 独立定制师 / 高端定制游工作室</option>
+              <option value="户外徒步俱乐部 / 独立领队">🥾 户外徒步俱乐部 / 独立领队 (两步路轨迹互通)</option>
+              <option value="云南当地包车车队 / 司导团队">🚐 云南当地精品包车车队 / 司导团队</option>
+              <option value="小红书旅行博主 / 流量联名合作">📕 小红书旅行博主 / 流量联名合作</option>
+              <option value="C端游客：求云南同款路书 / 咨询包车定制">✈️ C端游客：求云南同款路书或包车私家团推荐</option>
+            </select>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <div>
+              <label class="block font-bold mb-1 text-[var(--foreground)]">👤 您的称呼 / 机构名称 *</label>
+              <input id="ynPartnerName" type="text" placeholder="如：丽江私家团老张 / 山野户外" class="w-full px-3 py-2 rounded-xl bg-[var(--content)] border border-[var(--border)] text-xs font-bold text-[var(--foreground)]" />
+            </div>
+            <div>
+              <label class="block font-bold mb-1 text-[var(--foreground)]">📱 微信号 / 手机号 *</label>
+              <input id="ynPartnerContact" type="text" placeholder="请输入微信号或手机号，方便加您对接" class="w-full px-3 py-2 rounded-xl bg-[var(--content)] border border-[var(--border)] text-xs font-bold text-[var(--foreground)]" />
+            </div>
+          </div>
+          <div>
+            <label class="block font-bold mb-1 text-[var(--foreground)]">💬 主营目的地 / 想升级的王牌线路或需求（选填）</label>
+            <textarea id="ynPartnerNote" rows="2" placeholder="例如：我们主做云南滇西北/川西/新疆私家团，希望能免费升级一条我们的王牌环线..." class="w-full p-2.5 rounded-xl bg-[var(--content)] border border-[var(--border)] text-xs text-[var(--foreground)]"></textarea>
+          </div>
+          <button type="button" id="btnYnSubmitPartner" onclick="window.submitYnPartnerLead()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 text-slate-950 font-black text-xs shadow-md hover:opacity-95 cursor-pointer">
+            🚀 立即提交合作意向 / 领取同款（直达主理人工作台）
+          </button>
+          <div id="ynPartnerStatusText" class="text-xs font-bold text-emerald-500"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    window.openPartnerModal = function() {
+      document.getElementById("ynPartnerModal")?.classList.remove("hidden");
+    };
+    window.closePartnerModal = function() {
+      document.getElementById("ynPartnerModal")?.classList.add("hidden");
+    };
+    window.submitYnPartnerLead = async function() {
+      const role = document.getElementById("ynPartnerRole")?.value || "携程私家团/定制合作";
+      const name = (document.getElementById("ynPartnerName")?.value || "").trim();
+      const contact = (document.getElementById("ynPartnerContact")?.value || "").trim();
+      const note = (document.getElementById("ynPartnerNote")?.value || "").trim();
+      const statusEl = document.getElementById("ynPartnerStatusText");
+      const btn = document.getElementById("btnYnSubmitPartner");
+      if (!name || !contact) {
+        if (statusEl) {
+          statusEl.className = "text-xs font-bold text-rose-500";
+          statusEl.textContent = "⚠️ 请填写您的称呼/机构名称与微信号/手机号，方便我们联系您！";
+        }
+        return;
+      }
+      if (btn) btn.disabled = true;
+      if (statusEl) {
+        statusEl.className = "text-xs font-bold text-amber-500";
+        statusEl.textContent = "📡 正在加密投递至主理人 Google Chat 工作台...";
+      }
+      const payload = {
+        app: "yunnan-2026",
+        event_type: "PARTNER_INQUIRY",
+        id: "lead-" + Date.now() + "-" + Math.random().toString(36).slice(2, 6),
+        source_page: "yunnan-2026 (滇西北11日奢野路书)",
+        partner_role: role,
+        author: name,
+        contact: contact,
+        scope: "🤝 商务合作 / 小红书同款定制",
+        message: note || "从云南2026路书提交合作申请 / 申领免费同款定制",
+        timestamp: new Date().toISOString()
+      };
+      try {
+        await fetch("https://ntfy.sh/yungapple_travel_studio_vibe_9f8a7b6c", {
+          method: "POST",
+          body: JSON.stringify(payload)
+        });
+        if (statusEl) {
+          statusEl.className = "text-xs font-bold text-emerald-500";
+          statusEl.textContent = "🎉 提交成功！主理人已在 Google Chat 收到您的合作线索，将尽快加您微信对接！";
+        }
+        const noteEl = document.getElementById("ynPartnerNote");
+        if (noteEl) noteEl.value = "";
+      } catch (e) {
+        if (statusEl) {
+          statusEl.className = "text-xs font-bold text-rose-500";
+          statusEl.textContent = "⚠️ 网络波动，请稍后重试。";
+        }
+      } finally {
+        if (btn) btn.disabled = false;
+      }
+    };
   </script>
 </body>
 </html>
