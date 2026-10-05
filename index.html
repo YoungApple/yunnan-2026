@@ -57,7 +57,9 @@
       }
     }
     * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
-    body {
+    html, body {
+      max-width: 100vw;
+      overflow-x: hidden;
       background-color: var(--background);
       color: var(--foreground);
       font-family: var(--font-sans);
@@ -77,56 +79,109 @@
       border-radius: 9999px;
       color: #fff;
       font-weight: 800;
-      font-size: 11.5px;
+      font-size: 11px;
       border: 2.5px solid #fff;
       box-shadow: 0 3px 10px rgba(0,0,0,0.45);
       transition: transform 0.18s cubic-bezier(0.22,1,0.36,1), box-shadow 0.18s ease;
     }
     .gm-pin-wrap.selected {
-      transform: scale(1.36);
-      box-shadow: 0 0 0 6px rgba(245, 158, 11, 0.48), 0 6px 16px rgba(0,0,0,0.55);
+      transform: scale(1.34);
+      box-shadow: 0 0 0 5px rgba(245, 158, 11, 0.48), 0 6px 16px rgba(0,0,0,0.55);
       z-index: 1000 !important;
     }
+    /* Mobile-Adaptive Leaflet Popup Styles */
     .leaflet-popup-content-wrapper {
-      border-radius: 16px !important;
+      border-radius: 14px !important;
       padding: 2px !important;
-      box-shadow: 0 14px 32px rgba(0,0,0,0.28) !important;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.35) !important;
       background: var(--card) !important;
       color: var(--foreground) !important;
+      border: 1px solid var(--border) !important;
+      max-width: min(264px, calc(100vw - 40px)) !important;
     }
     .leaflet-popup-tip { background: var(--card) !important; }
-    .leaflet-popup-content { margin: 10px 12px !important; }
+    .leaflet-popup-content {
+      margin: 8px 10px !important;
+      line-height: 1.4 !important;
+      max-width: min(242px, calc(100vw - 62px)) !important;
+      word-break: break-word !important;
+      overflow-wrap: anywhere !important;
+    }
+    .leaflet-container a.leaflet-popup-close-button {
+      color: var(--muted-foreground) !important;
+      padding: 4px 6px 0 0 !important;
+    }
     .leaflet-container { font-family: var(--font-sans) !important; }
+
+    /* Mobile-Adaptive Bottom-Sheet Modals (<= 640px) */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      background: rgba(2, 6, 23, 0.78);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+    }
+    .modal-backdrop.hidden { display: none !important; }
+    .modal-sheet {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      width: 100%;
+      max-height: 88dvh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.5);
+    }
+    @media (max-width: 640px) {
+      .modal-backdrop {
+        align-items: flex-end !important;
+        padding: 0 !important;
+      }
+      .modal-sheet {
+        width: 100vw !important;
+        max-width: 100vw !important;
+        max-height: 85dvh !important;
+        border-radius: 20px 20px 0 0 !important;
+        border-left: none !important;
+        border-right: none !important;
+        border-bottom: none !important;
+        margin: 0 !important;
+        overflow-x: hidden !important;
+      }
+    }
     @media print {
-      header, #mobileBottomBar, #mapControlsBar { display: none !important; }
+      header, #mobileBottomBar, #floatingVibeBtn { display: none !important; }
       body { background: #fff !important; color: #000 !important; }
     }
   </style>
 </head>
-<body class="pb-20 lg:pb-6">
+<body class="pb-16 lg:pb-6">
 
-  <!-- ==================== STICKY LUXURY HEADER ==================== -->
-  <header class="sticky top-0 z-30 bg-[var(--card)]/95 backdrop-blur-md border-b border-[var(--border)]">
-    <div class="max-w-7xl mx-auto px-3 py-2 flex flex-col gap-1.5">
-      <div class="flex items-center justify-between gap-2">
-        <div class="flex items-center gap-2.5 min-w-0 shrink-0">
-          <div id="brandLogoBadge" title="连击 3 次或长按 1.2 秒开启隐藏「AI Vibe 实时迭代舱」" class="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 text-slate-950 flex items-center justify-center font-black text-sm shadow-sm shrink-0 cursor-pointer select-none active:scale-95 transition">
+  <!-- ==================== STICKY COMPACT HEADER (Matches South America Mobile Layout) ==================== -->
+  <header class="sticky top-0 z-30 bg-[var(--card)]/95 backdrop-blur-md border-b border-[var(--border)] px-2.5 sm:px-4 py-2">
+    <div class="max-w-7xl mx-auto flex flex-col gap-1.5">
+      <div class="flex items-center justify-between gap-1.5">
+        <!-- Brand Logo + Desktop Title -->
+        <div class="flex items-center gap-2 min-w-0 shrink-0">
+          <div id="brandLogoBadge" title="连击 3 次或长按 1.2 秒开启「AI Vibe 实时迭代舱」" class="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-orange-600 text-slate-950 flex items-center justify-center font-black text-xs shadow-xs shrink-0 cursor-pointer select-none active:scale-95 transition">
             云境
           </div>
-          <div class="min-w-0">
+          <div class="hidden md:block min-w-0">
             <div class="flex items-center gap-1.5">
               <h1 id="brandHeaderTitle" class="text-sm font-black tracking-tight text-[var(--foreground)] truncate">
                 滇西北·雪山秘境奢野环线 2026
               </h1>
-              <span id="brandEditionBadge" class="hidden sm:inline-flex px-1.5 py-0.5 rounded-md text-[10px] font-extrabold bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30">
-                BESPOKE PRO · 中国大陆直连
+              <span id="brandEditionBadge" class="px-1.5 py-0.5 rounded-md text-[10px] font-extrabold bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30">
+                BESPOKE PRO · 大陆直连
               </span>
-              <button id="btnOpenVersionHistory" onclick="openVersionHistoryModal()" title="查看路书版本更新记录与 Vibe 迭代历史" class="px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-sky-500/15 text-sky-600 dark:text-sky-400 border border-sky-500/30 hover:bg-sky-500/25 transition cursor-pointer flex items-center gap-1 shrink-0">
+              <button id="btnOpenVersionHistory" onclick="openVersionHistoryModal()" title="查看路书版本更新记录与 Vibe 迭代历史" class="px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-sky-500/15 text-sky-500 border border-sky-500/30 hover:bg-sky-500/25 transition cursor-pointer flex items-center gap-1 shrink-0">
                 <span>📜</span>
-                <span id="headerVersionLabel">v1.4 · 版本记录</span>
-              </button>
-              <button id="btnSecretVibeHeader" onclick="unlockAndOpenVibeModal()" title="定制师隐藏入口：Vibe 实时反馈与 AI 自动迭代" class="px-1.5 py-0.5 rounded-md text-[10px] font-black text-[var(--muted-foreground)] hover:text-amber-500 hover:bg-amber-500/10 transition cursor-pointer select-none">
-                ✦
+                <span id="headerVersionLabel">v1.5 · 版本记录</span>
               </button>
             </div>
             <p id="brandSubtitleText" class="text-[11px] text-[var(--muted-foreground)] truncate">
@@ -135,196 +190,199 @@
           </div>
         </div>
 
-        <!-- Commercial Action Buttons -->
-        <div class="flex items-center gap-1.5 shrink-0">
-          <button id="btnOpenUserGuide" onclick="openUserGuideModal()" class="px-2.5 py-1.5 rounded-xl text-xs font-black bg-gradient-to-r from-amber-400 via-amber-500 to-orange-500 text-slate-950 shadow-sm ring-2 ring-amber-400/50 hover:opacity-95 transition cursor-pointer flex items-center gap-1" title="查看路书核心功能介绍与旅伴使用指南">
+        <!-- Horizontal Scrollable Stage Filter Chips (Inline on Mobile & Desktop) -->
+        <div class="flex items-center gap-1 overflow-x-auto no-scrollbar py-0.5 flex-1 min-w-0" id="layerTabs">
+          <button data-layer="all" class="layer-btn shrink-0 px-2.5 py-1 rounded-full text-[11px] font-extrabold bg-[var(--primary)] text-[var(--primary-foreground)] transition cursor-pointer flex items-center gap-1">
+            <span>🏔️ 全线(25)</span>
+          </button>
+          <button data-layer="today" id="btnTodayLayer" class="layer-btn shrink-0 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] transition cursor-pointer flex items-center gap-1">
+            <span>📍 按日</span>
+            <span id="todayBadgeLabel" class="font-mono-code text-[10px] text-amber-500 font-black">D1</span>
+          </button>
+          <button data-layer="lijiang" class="layer-btn shrink-0 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] transition cursor-pointer">
+            🏮 丽江(6)
+          </button>
+          <button data-layer="haba" class="layer-btn shrink-0 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] transition cursor-pointer">
+            🥾 虎跳·哈巴(6)
+          </button>
+          <button data-layer="shangrila" class="layer-btn shrink-0 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] transition cursor-pointer">
+            ☸️ 香格里拉(6)
+          </button>
+          <button data-layer="meili" class="layer-btn shrink-0 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] transition cursor-pointer">
+            🌅 梅里(4)
+          </button>
+          <button data-layer="nanjiluo" class="layer-btn shrink-0 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] transition cursor-pointer">
+            💧 南极洛(3)
+          </button>
+        </div>
+
+        <!-- Compact Right Action Pills (Never overflows 375px) -->
+        <div class="flex items-center gap-1 shrink-0">
+          <button id="btnOpenUserGuide" onclick="openUserGuideModal()" class="px-2 py-1 rounded-lg text-[11px] font-black bg-amber-500 text-slate-950 shadow-2xs hover:opacity-95 transition cursor-pointer flex items-center gap-0.5" title="查看路书功能介绍与使用指南">
             <span>💡</span>
-            <span>使用指南</span>
+            <span>指南</span>
           </button>
-          <button id="btnOpenScheduleModal" class="px-2.5 py-1.5 rounded-xl text-xs font-extrabold bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30 hover:bg-amber-500/25 transition cursor-pointer flex items-center gap-1">
+          <button id="btnOpenScheduleModal" class="px-2 py-1 rounded-lg text-[11px] font-extrabold bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] hover:border-amber-500/50 transition cursor-pointer flex items-center gap-0.5" title="11日行程总表">
             <span>📅</span>
-            <span class="hidden sm:inline">11日总表</span>
+            <span class="hidden sm:inline">总表</span>
           </button>
-          <button id="btnOpenHotelsModal" class="px-2.5 py-1.5 rounded-xl text-xs font-extrabold bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] hover:border-amber-500/50 transition cursor-pointer flex items-center gap-1">
+          <button id="btnOpenHotelsModal" class="hidden sm:flex px-2 py-1 rounded-lg text-[11px] font-extrabold bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] hover:border-amber-500/50 transition cursor-pointer items-center gap-0.5" title="四大必住雪山美宿">
             <span>🏨</span>
-            <span class="hidden sm:inline">四大美宿</span>
+            <span class="hidden md:inline">美宿</span>
           </button>
-          <button id="btnOpenCommercialModal" class="hidden sm:flex px-2.5 py-1.5 rounded-xl text-xs font-extrabold bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] hover:border-amber-500/50 transition cursor-pointer items-center gap-1" title="定制师白标品牌/路书海报/导出">
+          <button id="btnOpenCommercialModal" class="hidden lg:flex px-2 py-1 rounded-lg text-[11px] font-extrabold bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] hover:border-amber-500/50 transition cursor-pointer items-center gap-0.5" title="定制师白标品牌/路书海报/导出">
             <span>💎</span>
-            <span class="hidden md:inline">定制/导出</span>
+            <span>导出</span>
+          </button>
+          <button id="btnSecretVibeHeader" onclick="unlockAndOpenVibeModal()" title="Vibe 实时反馈与 AI 自动迭代" class="px-2 py-1 rounded-lg text-[11px] font-extrabold bg-amber-500/15 text-amber-500 border border-amber-500/30 hover:bg-amber-500/25 transition cursor-pointer select-none">
+            ✨
           </button>
         </div>
       </div>
 
       <!-- Live Auto-Update Release Notification Banner (Hidden until new version detected) -->
-      <div id="vibeNewReleaseBanner" class="hidden px-3 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white text-xs font-extrabold flex items-center justify-between gap-2 shadow-md">
-        <span id="vibeNewReleaseBannerText">🎉 新版本已根据你的 Vibe 自动编译上线！</span>
-        <button onclick="forceReloadFreshVersion()" class="px-3 py-1 rounded-lg bg-white text-slate-950 font-black text-[11px] cursor-pointer hover:opacity-95 shrink-0">
-          🔄 立即刷新查看最新路书
-        </button>
-      </div>
-
-      <!-- Stage / Region Filter Chips -->
-      <div class="flex items-center gap-1 overflow-x-auto no-scrollbar py-0.5" id="layerTabs">
-        <button data-layer="today" id="btnTodayLayer" class="layer-btn shrink-0 px-2.5 py-1 rounded-xl text-xs font-extrabold bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30 transition cursor-pointer flex items-center gap-1">
-          <span>📍 今日行程</span>
-          <span id="todayBadgeLabel" class="font-mono-code text-[11px]">D1</span>
-        </button>
-        <button data-layer="all" class="layer-btn shrink-0 px-2.5 py-1 rounded-xl text-xs font-extrabold bg-[var(--primary)] text-[var(--primary-foreground)] transition cursor-pointer">
-          🏔️ 全环线 (25)
-        </button>
-        <button data-layer="lijiang" class="layer-btn shrink-0 px-2.5 py-1 rounded-xl text-xs font-semibold bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] transition cursor-pointer">
-          🏮 丽江·白沙 (6)
-        </button>
-        <button data-layer="haba" class="layer-btn shrink-0 px-2.5 py-1 rounded-xl text-xs font-semibold bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] transition cursor-pointer">
-          🥾 老药山·虎跳峡·哈巴 (6)
-        </button>
-        <button data-layer="shangrila" class="layer-btn shrink-0 px-2.5 py-1 rounded-xl text-xs font-semibold bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] transition cursor-pointer">
-          ☸️ 香格里拉·无底湖·巴拉格宗 (6)
-        </button>
-        <button data-layer="meili" class="layer-btn shrink-0 px-2.5 py-1 rounded-xl text-xs font-semibold bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] transition cursor-pointer">
-          🌅 德钦梅里·孔雀山 (4)
-        </button>
-        <button data-layer="nanjiluo" class="layer-btn shrink-0 px-2.5 py-1 rounded-xl text-xs font-semibold bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] transition cursor-pointer">
-          💧 南极洛九湖秘境 (3)
+      <div id="vibeNewReleaseBanner" class="hidden px-2.5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white text-[11px] font-extrabold flex items-center justify-between gap-2 shadow-md">
+        <span id="vibeNewReleaseBannerText" class="truncate">🎉 新版本已根据你的 Vibe 自动编译上线！</span>
+        <button onclick="forceReloadFreshVersion()" class="px-2.5 py-1 rounded-lg bg-white text-slate-950 font-black text-[11px] cursor-pointer hover:opacity-95 shrink-0">
+          🔄 立即刷新
         </button>
       </div>
     </div>
   </header>
 
-  <!-- ==================== MAIN WORKSPACE ==================== -->
-  <main class="max-w-7xl mx-auto px-2.5 sm:px-4 pt-3 space-y-3">
+  <!-- ==================== MAIN WORKSPACE (Map + Active Place Sheet Above the Fold on Mobile!) ==================== -->
+  <main class="max-w-7xl mx-auto px-2 sm:px-4 pt-2 sm:pt-3">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 items-start">
 
-    <!-- TOP COMMERCIAL BANNER: ELEVATION & ACCLIMATIZATION CURVE + KEY MILESTONES -->
-    <section class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-3 sm:p-4 shadow-xs">
-      <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
-        <div class="flex items-center gap-2">
-          <span class="px-2 py-0.5 rounded-lg text-[11px] font-black bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30">
-            科学「高爬低睡」海拔阶梯
-          </span>
-          <h2 class="text-xs sm:text-sm font-extrabold text-[var(--foreground)]">
-            11日日间最高海拔 vs 夜间睡眠海拔（点击任一天联动地图与机位）
-          </h2>
-        </div>
-        <div class="flex items-center gap-3 text-[11px] text-[var(--muted-foreground)]">
-          <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block"></span>日间最高 (Peak)</span>
-          <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-sky-500 inline-block"></span>夜间安睡 (Sleep)</span>
-          <span class="hidden md:inline text-emerald-500 font-semibold">✓ 全程国内高德/百度/小红书直连 · 离线可用</span>
-        </div>
-      </div>
+      <!-- ==================== LEFT COLUMN (7 COLS): MAP + ACTIVE PLACE DETAIL + ELEVATION ==================== -->
+      <div id="mapPaneCol" class="lg:col-span-7 flex flex-col gap-2.5 min-w-0">
 
-      <!-- Interactive SVG Elevation Chart -->
-      <div class="w-full overflow-x-auto no-scrollbar">
-        <svg id="elevationChartSvg" viewBox="0 0 960 155" class="w-full min-w-[680px] h-36 select-none"></svg>
-      </div>
-
-      <!-- 3 Critical Trip Decision & Milestone Pills -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-2 mt-2.5 pt-2.5 border-t border-[var(--border)]/70">
-        <!-- Decision 1: D2 (10.5) -->
-        <div class="rounded-xl bg-[var(--content)]/70 border border-[var(--border)] p-2.5 flex items-center justify-between gap-2">
-          <div class="min-w-0">
-            <div class="text-[11px] font-extrabold text-amber-600 dark:text-amber-400">🔀 10.5 (D2) 下午茶牧场二选一</div>
-            <div id="d2ChoiceLabel" class="text-xs font-bold text-[var(--foreground)] truncate mt-0.5">当前优选：香巴拉牧场 (雪山草甸荒野机位)</div>
-          </div>
-          <button id="btnToggleD2Choice" class="shrink-0 px-2.5 py-1 rounded-lg text-[11px] font-extrabold bg-[var(--card)] border border-[var(--border)] hover:border-amber-500 transition cursor-pointer">
-            切换方案
-          </button>
-        </div>
-
-        <!-- Milestone 2: D8 (10.11 14:30) -->
-        <div class="rounded-xl bg-rose-500/10 border border-rose-500/30 p-2.5 flex items-center justify-between gap-2">
-          <div class="min-w-0">
-            <div class="text-[11px] font-extrabold text-rose-600 dark:text-rose-400">⏰ 10.11 (D8) 铁律时间锚点</div>
-            <div class="text-xs font-bold text-[var(--foreground)] truncate mt-0.5">下午 14:30 准时香格里拉出发 → 18:00 飞来寺晚霞</div>
-          </div>
-          <button onclick="selectPlace(19, true, true)" class="shrink-0 px-2.5 py-1 rounded-lg text-[11px] font-extrabold bg-rose-500 text-white hover:opacity-90 transition cursor-pointer">
-            查看路书
-          </button>
-        </div>
-
-        <!-- Decision 3: D10 (10.13) -->
-        <div class="rounded-xl bg-sky-500/10 border border-sky-500/30 p-2.5 flex items-center justify-between gap-2">
-          <div class="min-w-0">
-            <div class="text-[11px] font-extrabold text-sky-600 dark:text-sky-400">🚙 10.13 (D10) 南极洛返丽江决策</div>
-            <div id="d10CarpoolLabel" class="text-xs font-bold text-[var(--foreground)] truncate mt-0.5">待定：御景园民宿拼车(¥280/人) vs 独立包车</div>
-          </div>
-          <button id="btnOpenCarpoolDecision" class="shrink-0 px-2.5 py-1 rounded-lg text-[11px] font-extrabold bg-sky-600 text-white hover:opacity-90 transition cursor-pointer">
-            拼车决策器
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- CORE 2-COLUMN GRID: LEFT MAP + DETAIL CARD, RIGHT MULTI-TAB WORKBENCH -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-3.5 items-start">
-
-      <!-- ==================== LEFT COLUMN (7 COLS): MAP + ACTIVE PLACE DETAIL ==================== -->
-      <div id="mapPaneCol" class="lg:col-span-7 flex flex-col gap-3">
-        <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl overflow-hidden shadow-xs">
-          <!-- Map Engine Switcher & Category Filter Bar -->
-          <div id="mapControlsBar" class="px-3 py-2 border-b border-[var(--border)] flex flex-wrap items-center justify-between gap-2 bg-[var(--content)]/40">
-            <div class="flex items-center gap-1">
-              <button data-map-mode="amap_road" class="map-mode-btn px-2.5 py-1 rounded-lg text-xs font-extrabold bg-[var(--primary)] text-[var(--primary-foreground)] transition cursor-pointer">
-                🗺️ 高德路网 (国内极速)
-              </button>
-              <button data-map-mode="amap_sat" class="map-mode-btn px-2.5 py-1 rounded-lg text-xs font-semibold bg-[var(--card)] text-[var(--foreground)] border border-[var(--border)] transition cursor-pointer">
-                🛰️ 高德卫星地形
-              </button>
-              <button data-map-mode="vector" class="map-mode-btn px-2.5 py-1 rounded-lg text-xs font-semibold bg-[var(--card)] text-[var(--foreground)] border border-[var(--border)] transition cursor-pointer">
-                🏔️ 离线等高线矢量图
-              </button>
-            </div>
-
-            <div class="flex items-center gap-1 overflow-x-auto no-scrollbar" id="catFilterBar">
-              <button data-cat="all" class="cat-btn px-2 py-1 rounded-lg text-[11px] font-extrabold bg-amber-500/20 text-amber-600 dark:text-amber-400 border border-amber-500/30 cursor-pointer">全部</button>
-              <button data-cat="hike" class="cat-btn px-2 py-1 rounded-lg text-[11px] font-semibold bg-[var(--card)] text-[var(--muted-foreground)] border border-[var(--border)] cursor-pointer">🥾 徒步秘境</button>
-              <button data-cat="hotel" class="cat-btn px-2 py-1 rounded-lg text-[11px] font-semibold bg-[var(--card)] text-[var(--muted-foreground)] border border-[var(--border)] cursor-pointer">🏨 美学宿集</button>
-              <button data-cat="scenic" class="cat-btn px-2 py-1 rounded-lg text-[11px] font-semibold bg-[var(--card)] text-[var(--muted-foreground)] border border-[var(--border)] cursor-pointer">📷 观景/古镇</button>
-            </div>
+        <!-- 1. INTERACTIVE MAP CARD WITH FLOATING GLASS CONTROLS (Matches South America Mobile Layout) -->
+        <div id="mapHeroCard" class="relative w-full h-[265px] sm:h-[340px] lg:h-[400px] bg-[var(--card)] border border-[var(--border)] rounded-2xl overflow-hidden shadow-xs">
+          <div id="leafletMap" class="w-full h-full z-10"></div>
+          <div id="vectorMapWrap" class="w-full h-full hidden relative bg-slate-950">
+            <svg id="mapSvg" viewBox="0 0 800 460" class="w-full h-full cursor-pointer select-none"></svg>
           </div>
 
-          <!-- Map Viewport -->
-          <div class="relative w-full h-[360px] sm:h-[430px] bg-[var(--content)]">
-            <div id="leafletMap" class="w-full h-full z-10"></div>
-            <div id="vectorMapWrap" class="w-full h-full hidden relative bg-slate-950">
-              <svg id="mapSvg" viewBox="0 0 800 460" class="w-full h-full cursor-pointer select-none"></svg>
-            </div>
-
-            <!-- Floating Map Status Pill -->
-            <div class="absolute bottom-2.5 left-2.5 z-20 pointer-events-none flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-900/85 text-white text-[11px] font-bold backdrop-blur-xs shadow-md">
-              <span id="engineBadge">🟢 高德地图 GCJ-02 实时路网 · 大陆免翻墙直连</span>
-            </div>
-            <button id="btnResetMapBounds" class="absolute bottom-2.5 right-2.5 z-20 px-2.5 py-1 rounded-full bg-slate-900/85 hover:bg-slate-900 text-amber-400 text-[11px] font-extrabold backdrop-blur-xs shadow-md cursor-pointer border border-amber-500/40">
-              🎯 居中当前赛段
+          <!-- Top-Left Floating Map Engine Switcher (Compact Glass Pill) -->
+          <div id="mapControlsBar" class="absolute top-2.5 left-2.5 z-20 flex items-center gap-0.5 p-0.5 rounded-xl bg-slate-900/85 backdrop-blur-md border border-slate-700/80 shadow-md">
+            <button data-map-mode="amap_road" class="map-mode-btn px-2 py-1 rounded-lg text-[11px] font-extrabold bg-[var(--primary)] text-[var(--primary-foreground)] transition cursor-pointer">
+              🗺️ 路网
+            </button>
+            <button data-map-mode="amap_sat" class="map-mode-btn px-2 py-1 rounded-lg text-[11px] font-semibold text-slate-200 hover:text-white transition cursor-pointer">
+              🛰️ 卫星
+            </button>
+            <button data-map-mode="vector" class="map-mode-btn px-2 py-1 rounded-lg text-[11px] font-semibold text-slate-200 hover:text-white transition cursor-pointer">
+              🏔️ 等高线
             </button>
           </div>
+
+          <!-- Top-Right Floating Category + Reset Bounds Pill -->
+          <div class="absolute top-2.5 right-2.5 z-20 flex items-center gap-1">
+            <div class="hidden sm:flex items-center gap-0.5 p-0.5 rounded-xl bg-slate-900/85 backdrop-blur-md border border-slate-700/80 shadow-md" id="catFilterBar">
+              <button data-cat="all" class="cat-btn px-2 py-1 rounded-lg text-[10px] font-extrabold bg-amber-500 text-slate-950 cursor-pointer">全部</button>
+              <button data-cat="hike" class="cat-btn px-2 py-1 rounded-lg text-[10px] font-semibold text-slate-200 cursor-pointer">🥾徒步</button>
+              <button data-cat="hotel" class="cat-btn px-2 py-1 rounded-lg text-[10px] font-semibold text-slate-200 cursor-pointer">🏨美宿</button>
+              <button data-cat="scenic" class="cat-btn px-2 py-1 rounded-lg text-[10px] font-semibold text-slate-200 cursor-pointer">📷观景</button>
+            </div>
+            <button id="btnResetMapBounds" class="px-2.5 py-1 rounded-xl bg-slate-900/85 hover:bg-slate-900 text-amber-400 text-[11px] font-extrabold backdrop-blur-md shadow-md cursor-pointer border border-amber-500/40">
+              🎯 全览
+            </button>
+          </div>
+
+          <!-- Bottom-Left Floating Status Pill -->
+          <div class="absolute bottom-2 left-2.5 z-20 pointer-events-none flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-slate-900/85 text-white text-[10px] font-bold backdrop-blur-xs shadow-md max-w-[66%] truncate">
+            <span id="engineBadge" class="truncate">🟢 高德 GCJ-02 实景 · 大陆直连</span>
+          </div>
+
+          <!-- Bottom-Right Floating Active Stop Elevation Pill -->
+          <div id="mapActiveElevBadge" class="absolute bottom-2 right-2.5 z-20 pointer-events-none px-2.5 py-0.5 rounded-full bg-slate-900/85 text-sky-300 text-[10px] font-mono-code font-extrabold border border-sky-500/30 shadow-md">
+            #1 · 2410m
+          </div>
         </div>
 
-        <!-- Active Stop Deep Commercial Detail Card -->
-        <div id="detailCard" class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-3.5 sm:p-4 shadow-xs"></div>
+        <!-- 2. ACTIVE STOP DEEP COMMERCIAL DETAIL CARD (Immediately Below Map Above the Fold!) -->
+        <div id="detailCard" class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-3 sm:p-4 shadow-xs"></div>
+
+        <!-- 3. ELEVATION & ACCLIMATIZATION CURVE + 3 CRITICAL TRIP DECISIONS -->
+        <section id="elevationSection" class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-3 sm:p-4 shadow-xs">
+          <div class="flex flex-wrap items-center justify-between gap-1.5 mb-2">
+            <div class="flex items-center gap-1.5 min-w-0">
+              <span class="px-2 py-0.5 rounded-lg text-[10px] font-black bg-emerald-500/15 text-emerald-500 border border-emerald-500/30 shrink-0">
+                高爬低睡阶梯
+              </span>
+              <h2 class="text-xs sm:text-sm font-extrabold text-[var(--foreground)] truncate">
+                11日最高海拔 vs 睡眠海拔（点日期联动地图）
+              </h2>
+            </div>
+            <div class="flex items-center gap-2.5 text-[10px] text-[var(--muted-foreground)]">
+              <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-amber-500 inline-block"></span>日间最高</span>
+              <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-sky-500 inline-block"></span>夜间睡眠</span>
+              <button onclick="openVersionHistoryModal()" class="text-sky-500 font-bold hover:underline cursor-pointer">📜 v1.5记录</button>
+            </div>
+          </div>
+
+          <!-- Interactive SVG Elevation Chart -->
+          <div class="w-full overflow-x-auto no-scrollbar">
+            <svg id="elevationChartSvg" viewBox="0 0 960 155" class="w-full min-w-[580px] h-32 sm:h-36 select-none"></svg>
+          </div>
+
+          <!-- 3 Critical Trip Decision & Milestone Pills -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-2 mt-2.5 pt-2.5 border-t border-[var(--border)]/70">
+            <div class="rounded-xl bg-[var(--content)]/70 border border-[var(--border)] p-2.5 flex items-center justify-between gap-2">
+              <div class="min-w-0">
+                <div class="text-[11px] font-extrabold text-amber-500">🔀 10.5 (D2) 下午茶牧场二选一</div>
+                <div id="d2ChoiceLabel" class="text-xs font-bold text-[var(--foreground)] truncate mt-0.5">当前优选：香巴拉牧场 (雪山草甸荒野机位)</div>
+              </div>
+              <button id="btnToggleD2Choice" class="shrink-0 px-2.5 py-1 rounded-lg text-[11px] font-extrabold bg-[var(--card)] border border-[var(--border)] hover:border-amber-500 transition cursor-pointer">
+                切换方案
+              </button>
+            </div>
+
+            <div class="rounded-xl bg-rose-500/10 border border-rose-500/30 p-2.5 flex items-center justify-between gap-2">
+              <div class="min-w-0">
+                <div class="text-[11px] font-extrabold text-rose-500">⏰ 10.11 (D8) 铁律时间锚点</div>
+                <div class="text-xs font-bold text-[var(--foreground)] truncate mt-0.5">下午 14:30 准时香格里拉出发 → 18:00 飞来寺</div>
+              </div>
+              <button onclick="selectPlace(19, true, true)" class="shrink-0 px-2.5 py-1 rounded-lg text-[11px] font-extrabold bg-rose-500 text-white hover:opacity-90 transition cursor-pointer">
+                看路书
+              </button>
+            </div>
+
+            <div class="rounded-xl bg-sky-500/10 border border-sky-500/30 p-2.5 flex items-center justify-between gap-2">
+              <div class="min-w-0">
+                <div class="text-[11px] font-extrabold text-sky-500">🚙 10.13 (D10) 南极洛返丽江决策</div>
+                <div id="d10CarpoolLabel" class="text-xs font-bold text-[var(--foreground)] truncate mt-0.5">待定：御景园民宿拼车(¥280/人) vs 独立包车</div>
+              </div>
+              <button id="btnOpenCarpoolDecision" class="shrink-0 px-2.5 py-1 rounded-lg text-[11px] font-extrabold bg-sky-600 text-white hover:opacity-90 transition cursor-pointer">
+                决策器
+              </button>
+            </div>
+          </div>
+        </section>
       </div>
 
       <!-- ==================== RIGHT COLUMN (5 COLS): MULTI-TAB COMPANION ==================== -->
-      <div id="rightPaneCol" class="lg:col-span-5 bg-[var(--card)] border border-[var(--border)] rounded-2xl overflow-hidden shadow-xs flex flex-col lg:h-[820px]">
+      <div id="rightPaneCol" class="hidden lg:flex lg:col-span-5 bg-[var(--card)] border border-[var(--border)] rounded-2xl overflow-hidden shadow-xs flex-col lg:h-[820px] min-w-0">
         <!-- Sub-navigation Tabs -->
         <div class="grid grid-cols-4 gap-1 p-1.5 bg-[var(--content)]/60 border-b border-[var(--border)] shrink-0">
-          <button data-subtab="list" class="subtab-btn py-2 px-2 rounded-xl text-xs font-extrabold bg-[var(--card)] text-[var(--foreground)] shadow-2xs transition cursor-pointer flex items-center justify-center gap-1">
-            <span>📍 路书节点</span>
-            <span id="visibleCountBadge" class="text-[10px] px-1.5 py-0.2 rounded-full bg-amber-500/20 text-amber-600 dark:text-amber-400 font-mono-code">25</span>
+          <button data-subtab="list" class="subtab-btn py-2 px-1.5 rounded-xl text-xs font-extrabold bg-[var(--card)] text-[var(--foreground)] shadow-2xs transition cursor-pointer flex items-center justify-center gap-1">
+            <span>📍 节点</span>
+            <span id="visibleCountBadge" class="text-[10px] px-1.5 py-0.2 rounded-full bg-amber-500/20 text-amber-500 font-mono-code">25</span>
           </button>
-          <button data-subtab="photos" class="subtab-btn py-2 px-2 rounded-xl text-xs font-semibold text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition cursor-pointer flex items-center justify-center gap-1">
-            <span>📸 机位图鉴</span>
+          <button data-subtab="photos" class="subtab-btn py-2 px-1.5 rounded-xl text-xs font-semibold text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition cursor-pointer flex items-center justify-center gap-1">
+            <span>📸 机位</span>
           </button>
-          <button data-subtab="gear" class="subtab-btn py-2 px-2 rounded-xl text-xs font-semibold text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition cursor-pointer flex items-center justify-center gap-1">
-            <span>🎒 高原清单</span>
+          <button data-subtab="gear" class="subtab-btn py-2 px-1.5 rounded-xl text-xs font-semibold text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition cursor-pointer flex items-center justify-center gap-1">
+            <span>🎒 清单</span>
           </button>
-          <button data-subtab="ai" class="subtab-btn py-2 px-2 rounded-xl text-xs font-semibold text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition cursor-pointer flex items-center justify-center gap-1">
-            <span>🤖 随身领队</span>
+          <button data-subtab="ai" class="subtab-btn py-2 px-1.5 rounded-xl text-xs font-semibold text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition cursor-pointer flex items-center justify-center gap-1">
+            <span>🤖 领队</span>
           </button>
         </div>
 
         <!-- SUBPANE 1: STOP LIST -->
-        <div id="listSubPane" class="flex-1 flex flex-col min-h-[480px] lg:min-h-0">
+        <div id="listSubPane" class="flex-1 flex flex-col min-h-[460px] lg:min-h-0">
           <div class="p-2.5 border-b border-[var(--border)] flex items-center gap-2">
             <input id="searchInput" type="search" placeholder="搜索：虎跳峡 / 哈巴黑海湖 / 无底湖 / 巴拉格宗 / 南极洛 / 酒店..." class="w-full px-3 py-1.5 rounded-xl text-xs bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] focus:outline-none focus:border-amber-500" />
           </div>
@@ -332,22 +390,22 @@
         </div>
 
         <!-- SUBPANE 2: PHOTOGRAPHY & SCENIC GALLERY -->
-        <div id="photosSubPane" class="hidden flex-1 flex flex-col min-h-[480px] lg:min-h-0 bg-[var(--background)]/40">
+        <div id="photosSubPane" class="hidden flex-1 flex flex-col min-h-[460px] lg:min-h-0 bg-[var(--background)]/40">
           <div class="p-3 border-b border-[var(--border)] bg-[var(--card)] flex items-center justify-between gap-2">
             <div>
               <div class="text-xs font-extrabold text-[var(--foreground)]">📸 滇西北 8 大封神摄影机位与视觉图鉴</div>
-              <div class="text-[11px] text-[var(--muted-foreground)]">同源内置矢量高清图卡（无网秒开）· 点击直达小红书最新实拍</div>
+              <div class="text-[11px] text-[var(--muted-foreground)]">同源内置矢量高清图卡（无网秒开）· 点击直达小红书实拍</div>
             </div>
           </div>
           <div id="photosGalleryContainer" class="flex-1 overflow-y-auto p-3 space-y-3"></div>
         </div>
 
         <!-- SUBPANE 3: INTERACTIVE GEAR & PLATEAU CHECKLIST -->
-        <div id="gearSubPane" class="hidden flex-1 flex flex-col min-h-[480px] lg:min-h-0 bg-[var(--background)]/40">
+        <div id="gearSubPane" class="hidden flex-1 flex flex-col min-h-[460px] lg:min-h-0 bg-[var(--background)]/40">
           <div class="p-3 border-b border-[var(--border)] bg-[var(--card)] flex items-center justify-between gap-2">
             <div>
               <div class="text-xs font-extrabold text-[var(--foreground)]">🎒 10月滇西北高海拔徒步装备 & 行前核对单</div>
-              <div class="text-[11px] text-[var(--muted-foreground)]">自动保存在本机浏览器 · 针对哈巴黑海湖(4100m)与南极洛(4380m)定制</div>
+              <div class="text-[11px] text-[var(--muted-foreground)]">自动保存在本机 · 针对哈巴黑海湖(4100m)与南极洛定制</div>
             </div>
             <button id="btnResetChecklist" class="px-2 py-1 rounded-lg text-[11px] font-bold bg-[var(--content)] text-[var(--muted-foreground)] hover:text-[var(--foreground)] cursor-pointer">
               重置
@@ -357,37 +415,37 @@
         </div>
 
         <!-- SUBPANE 4: SMART EXPEDITION AI GUIDE -->
-        <div id="aiSubPane" class="hidden flex-1 flex flex-col min-h-[480px] lg:min-h-0 bg-[var(--background)]/50">
+        <div id="aiSubPane" class="hidden flex-1 flex flex-col min-h-[460px] lg:min-h-0 bg-[var(--background)]/50">
           <div class="px-3 py-2 border-b border-[var(--border)] bg-[var(--card)] flex items-center justify-between gap-2">
             <div class="text-[11px] text-[var(--muted-foreground)] truncate" id="aiContextPill">
-              🏔️ 离线专家引擎已就绪 · 支持高反/徒步/机位/拼车即时解答
+              🏔️ 离线专家引擎已就绪 · 支持高反/徒步/机位/拼车解答
             </div>
-            <button id="btnToggleApiKeyDrawer" class="px-2 py-1 rounded-lg text-[11px] font-bold bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30 cursor-pointer shrink-0">
-              🔑 DeepSeek/千问增强
+            <button id="btnToggleApiKeyDrawer" class="px-2 py-1 rounded-lg text-[11px] font-bold bg-amber-500/15 text-amber-500 border border-amber-500/30 cursor-pointer shrink-0">
+              🔑 DeepSeek/千问
             </button>
           </div>
           <div id="apiKeyDrawer" class="hidden px-3 py-2.5 bg-[var(--secondary)]/30 border-b border-[var(--border)] space-y-2 text-xs">
-            <div class="font-bold text-[var(--foreground)]">配置国内直连大模型 API Key（可选，默认内置完整离线路书大脑）：</div>
-            <div class="flex items-center gap-1.5">
+            <div class="font-bold text-[var(--foreground)]">配置国内直连大模型 API Key（可选，默认内置离线路书大脑）：</div>
+            <div class="flex flex-wrap items-center gap-1.5">
               <select id="llmProviderSelect" class="px-2 py-1.5 rounded-lg bg-[var(--card)] border border-[var(--border)] text-xs">
-                <option value="deepseek">DeepSeek (api.deepseek.com · 国内直连)</option>
-                <option value="qwen">阿里通义千问 (dashscope · 国内直连)</option>
+                <option value="deepseek">DeepSeek (国内直连)</option>
+                <option value="qwen">通义千问 (国内直连)</option>
               </select>
-              <input id="llmApiKeyInput" type="password" placeholder="输入 API Key (仅存本机 LocalStorage)" class="flex-1 px-2.5 py-1.5 rounded-lg bg-[var(--card)] border border-[var(--border)] text-xs" />
+              <input id="llmApiKeyInput" type="password" placeholder="输入 API Key" class="flex-1 min-w-[140px] px-2.5 py-1.5 rounded-lg bg-[var(--card)] border border-[var(--border)] text-xs" />
               <button id="btnSaveApiKey" class="px-2.5 py-1.5 rounded-lg bg-amber-500 text-slate-950 font-extrabold text-xs cursor-pointer">保存</button>
             </div>
           </div>
           <div class="p-2 border-b border-[var(--border)] bg-[var(--card)] flex items-center gap-1.5 overflow-x-auto no-scrollbar" id="aiQuickPrompts">
             <button data-q="哈巴黑海湖徒步难度大吗？穿什么鞋？" class="ai-q-btn shrink-0 px-2.5 py-1 rounded-full text-[11px] font-bold bg-[var(--content)] hover:bg-amber-500/20 text-[var(--foreground)] cursor-pointer">🥾 哈巴黑海湖攻略</button>
-            <button data-q="南极洛1-5号湖和1-9号湖怎么选？10.13怎么拼车回丽江？" class="ai-q-btn shrink-0 px-2.5 py-1 rounded-full text-[11px] font-bold bg-[var(--content)] hover:bg-amber-500/20 text-[var(--foreground)] cursor-pointer">💧 南极洛环线&拼车</button>
-            <button data-q="为什么10.11必须下午14:30从香格里拉出发去德钦？" class="ai-q-btn shrink-0 px-2.5 py-1 rounded-full text-[11px] font-bold bg-[var(--content)] hover:bg-amber-500/20 text-[var(--foreground)] cursor-pointer">⏰ 10.11 14:30出发原因</button>
-            <button data-q="10.5香巴拉牧场和云栖壹号院怎么选？" class="ai-q-btn shrink-0 px-2.5 py-1 rounded-full text-[11px] font-bold bg-[var(--content)] hover:bg-amber-500/20 text-[var(--foreground)] cursor-pointer">🔀 香巴拉 vs 云栖壹号院</button>
-            <button data-q="飞来寺明珠拉卡酒店看梅里日照金山几点起床？" class="ai-q-btn shrink-0 px-2.5 py-1 rounded-full text-[11px] font-bold bg-[var(--content)] hover:bg-amber-500/20 text-[var(--foreground)] cursor-pointer">🌅 梅里日照金山时刻</button>
+            <button data-q="南极洛1-5号湖和1-9号湖怎么选？10.13怎么拼车回丽江？" class="ai-q-btn shrink-0 px-2.5 py-1 rounded-full text-[11px] font-bold bg-[var(--content)] hover:bg-amber-500/20 text-[var(--foreground)] cursor-pointer">💧 南极洛&拼车</button>
+            <button data-q="为什么10.11必须下午14:30从香格里拉出发去德钦？" class="ai-q-btn shrink-0 px-2.5 py-1 rounded-full text-[11px] font-bold bg-[var(--content)] hover:bg-amber-500/20 text-[var(--foreground)] cursor-pointer">⏰ 10.11 14:30出发</button>
+            <button data-q="10.5香巴拉牧场和云栖壹号院怎么选？" class="ai-q-btn shrink-0 px-2.5 py-1 rounded-full text-[11px] font-bold bg-[var(--content)] hover:bg-amber-500/20 text-[var(--foreground)] cursor-pointer">🔀 香巴拉 vs 云栖</button>
+            <button data-q="飞来寺明珠拉卡酒店看梅里日照金山几点起床？" class="ai-q-btn shrink-0 px-2.5 py-1 rounded-full text-[11px] font-bold bg-[var(--content)] hover:bg-amber-500/20 text-[var(--foreground)] cursor-pointer">🌅 日照金山时刻</button>
             <button data-q="全程海拔怎么阶梯适应预防高反？" class="ai-q-btn shrink-0 px-2.5 py-1 rounded-full text-[11px] font-bold bg-[var(--content)] hover:bg-amber-500/20 text-[var(--foreground)] cursor-pointer">🫁 高反阶梯预防</button>
           </div>
           <div id="aiChatMessages" class="flex-1 overflow-y-auto p-3 space-y-3"></div>
           <form id="aiChatForm" class="p-2.5 border-t border-[var(--border)] bg-[var(--card)] flex items-center gap-2">
-            <input id="aiChatInput" type="text" placeholder="向随身领队提问（如：无底湖路况、四大美宿亮点、高反预案）..." class="flex-1 px-3 py-2 rounded-xl text-xs bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] focus:outline-none focus:border-amber-500" />
+            <input id="aiChatInput" type="text" placeholder="向随身领队提问（如：无底湖路况、四大美宿亮点）..." class="flex-1 px-3 py-2 rounded-xl text-xs bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] focus:outline-none focus:border-amber-500" />
             <button type="submit" class="px-3.5 py-2 rounded-xl text-xs font-extrabold bg-amber-500 text-slate-950 hover:opacity-95 cursor-pointer shrink-0">发送</button>
           </form>
         </div>
@@ -396,106 +454,87 @@
     </div>
   </main>
 
-  <!-- ==================== MODAL 1: 11-DAY FULL SCHEDULE & HOTELS ==================== -->
-  <div id="scheduleModal" class="fixed inset-0 z-50 hidden bg-black/75 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4">
-    <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl max-w-4xl w-full max-h-[88vh] flex flex-col overflow-hidden shadow-2xl">
-      <div class="px-4 py-3 border-b border-[var(--border)] flex items-center justify-between">
-        <div>
-          <h3 class="text-sm sm:text-base font-black text-[var(--foreground)]" id="modalTitleText">📅 2026 滇西北·雪山秘境奢野环线 11日行程总表 (10.4–10.14)</h3>
-          <p class="text-[11px] text-[var(--muted-foreground)]">点击任意日程即可联动地图并定位至当日核心机位与宿集</p>
+  <!-- ==================== MODAL 1: 11-DAY FULL SCHEDULE & HOTELS (Mobile Bottom Sheet) ==================== -->
+  <div id="scheduleModal" class="modal-backdrop hidden">
+    <div class="modal-sheet max-w-4xl">
+      <div class="px-3.5 sm:px-4 py-2.5 border-b border-[var(--border)] flex items-center justify-between gap-2 shrink-0">
+        <div class="min-w-0">
+          <h3 class="text-xs sm:text-base font-black text-[var(--foreground)] truncate" id="modalTitleText">📅 2026 滇西北 11日行程总表 (10.4–10.14)</h3>
+          <p class="text-[10px] sm:text-[11px] text-[var(--muted-foreground)] truncate">点击任意日程即可联动地图并定位至当日核心机位与宿集</p>
         </div>
-        <button onclick="closeScheduleModal()" class="w-8 h-8 rounded-full bg-[var(--content)] text-[var(--foreground)] font-bold cursor-pointer">✕</button>
+        <button onclick="closeScheduleModal()" class="w-7 h-7 rounded-full bg-[var(--content)] text-[var(--foreground)] font-bold cursor-pointer shrink-0">✕</button>
       </div>
-      <div id="scheduleModalBody" class="p-4 overflow-y-auto space-y-3"></div>
+      <div id="scheduleModalBody" class="p-3 sm:p-4 overflow-y-auto space-y-2.5 flex-1"></div>
     </div>
   </div>
 
-  <!-- ==================== MODAL 2: DRIVER / CONCIERGE CARD & BAIDU BAIKE ENCYCLOPEDIA ==================== -->
-  <div id="infoModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4">
-    <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl max-w-xl w-full max-h-[86vh] flex flex-col overflow-hidden shadow-2xl">
-      <div class="px-4 py-3 border-b border-[var(--border)] flex items-center justify-between">
-        <h3 id="infoModalHeader" class="text-sm font-black text-[var(--foreground)]">详情卡片</h3>
-        <button onclick="closeInfoModal()" class="w-8 h-8 rounded-full bg-[var(--content)] text-[var(--foreground)] font-bold cursor-pointer">✕</button>
+  <!-- ==================== MODAL 2: DRIVER / CONCIERGE CARD & BAIDU BAIKE (Mobile Bottom Sheet) ==================== -->
+  <div id="infoModal" class="modal-backdrop hidden">
+    <div class="modal-sheet max-w-xl">
+      <div class="px-3.5 sm:px-4 py-2.5 border-b border-[var(--border)] flex items-center justify-between gap-2 shrink-0">
+        <h3 id="infoModalHeader" class="text-xs sm:text-sm font-black text-[var(--foreground)] truncate">详情卡片</h3>
+        <button onclick="closeInfoModal()" class="w-7 h-7 rounded-full bg-[var(--content)] text-[var(--foreground)] font-bold cursor-pointer shrink-0">✕</button>
       </div>
-      <div id="infoModalBody" class="p-4 overflow-y-auto space-y-3.5"></div>
+      <div id="infoModalBody" class="p-3.5 sm:p-4 overflow-y-auto space-y-3 flex-1"></div>
     </div>
   </div>
 
   <!-- ==================== MODAL 3: COMMERCIAL WHITE-LABEL & EXPORT WORKBENCH ==================== -->
-  <div id="commercialModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4">
-    <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl max-w-2xl w-full max-h-[88vh] flex flex-col overflow-hidden shadow-2xl">
-      <div class="px-4 py-3 border-b border-[var(--border)] flex items-center justify-between bg-gradient-to-r from-amber-500/15 to-orange-500/10">
-        <div>
-          <h3 class="text-sm sm:text-base font-black text-[var(--foreground)]">💎 商业定制师白标工作台 & 路书交付中心 (Sellable Pro Mode)</h3>
-          <p class="text-[11px] text-[var(--muted-foreground)]">一键定制专属品牌抬头、客户尊享署名、生成报价海报或导出离线文件</p>
+  <div id="commercialModal" class="modal-backdrop hidden">
+    <div class="modal-sheet max-w-2xl">
+      <div class="px-3.5 sm:px-4 py-2.5 border-b border-[var(--border)] flex items-center justify-between gap-2 bg-gradient-to-r from-amber-500/15 to-orange-500/10 shrink-0">
+        <div class="min-w-0">
+          <h3 class="text-xs sm:text-base font-black text-[var(--foreground)] truncate">💎 定制师白标工作台 & 路书导出</h3>
+          <p class="text-[10px] sm:text-[11px] text-[var(--muted-foreground)] truncate">一键定制专属品牌抬头、导出 KML 轨迹或 CSV 坐标</p>
         </div>
-        <button onclick="closeCommercialModal()" class="w-8 h-8 rounded-full bg-[var(--content)] text-[var(--foreground)] font-bold cursor-pointer">✕</button>
+        <button onclick="closeCommercialModal()" class="w-7 h-7 rounded-full bg-[var(--content)] text-[var(--foreground)] font-bold cursor-pointer shrink-0">✕</button>
       </div>
-      <div class="p-4 overflow-y-auto space-y-4 text-xs">
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div class="p-3.5 sm:p-4 overflow-y-auto space-y-3.5 text-xs flex-1">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
           <div>
-            <label class="block font-bold mb-1 text-[var(--foreground)]">定制机构 / 品牌名称 (White-Label Brand)</label>
-            <input id="wlBrandInput" type="text" value="云境奢野 · YUNNAN BESPOKE" class="w-full px-3 py-2 rounded-xl bg-[var(--content)] border border-[var(--border)] text-xs font-bold" />
+            <label class="block font-bold mb-1 text-[var(--foreground)]">定制机构 / 品牌名称</label>
+            <input id="wlBrandInput" type="text" value="云境奢野 · YUNNAN BESPOKE" class="w-full px-3 py-1.5 rounded-xl bg-[var(--content)] border border-[var(--border)] text-xs font-bold" />
           </div>
           <div>
-            <label class="block font-bold mb-1 text-[var(--foreground)]">尊享客户 / 团组署名 (Client / VIP Name)</label>
-            <input id="wlClientInput" type="text" value="Shuguo 专属私家定制团 (2026金秋典藏)" class="w-full px-3 py-2 rounded-xl bg-[var(--content)] border border-[var(--border)] text-xs font-bold" />
+            <label class="block font-bold mb-1 text-[var(--foreground)]">尊享客户 / 团组署名</label>
+            <input id="wlClientInput" type="text" value="Shuguo 专属私家定制团 (2026金秋典藏)" class="w-full px-3 py-1.5 rounded-xl bg-[var(--content)] border border-[var(--border)] text-xs font-bold" />
           </div>
           <div>
-            <label class="block font-bold mb-1 text-[var(--foreground)]">产品零售标价牌 (Commercial Price Tag)</label>
-            <input id="wlPriceInput" type="text" value="¥15,800 / 人起 · 含四大雪山美宿与越野保障" class="w-full px-3 py-2 rounded-xl bg-[var(--content)] border border-[var(--border)] text-xs font-bold" />
+            <label class="block font-bold mb-1 text-[var(--foreground)]">产品零售标价牌</label>
+            <input id="wlPriceInput" type="text" value="¥15,800 / 人起 · 含四大雪山美宿与越野保障" class="w-full px-3 py-1.5 rounded-xl bg-[var(--content)] border border-[var(--border)] text-xs font-bold" />
           </div>
           <div>
             <label class="block font-bold mb-1 text-[var(--foreground)]">私人管家 / 领队联络方式</label>
-            <input id="wlContactInput" type="text" value="24h 藏地雪山管家 · 卫星电话随车保障" class="w-full px-3 py-2 rounded-xl bg-[var(--content)] border border-[var(--border)] text-xs font-bold" />
+            <input id="wlContactInput" type="text" value="24h 藏地雪山管家 · 卫星电话随车保障" class="w-full px-3 py-1.5 rounded-xl bg-[var(--content)] border border-[var(--border)] text-xs font-bold" />
           </div>
         </div>
 
-        <div class="flex flex-wrap items-center gap-2 pt-1">
-          <button id="btnApplyWhiteLabel" class="px-4 py-2 rounded-xl bg-amber-500 text-slate-950 font-black cursor-pointer hover:opacity-95">
-            ✨ 应用品牌冠名至全站
+        <div class="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-2 pt-1">
+          <button id="btnApplyWhiteLabel" class="px-3 py-2 rounded-xl bg-amber-500 text-slate-950 font-black cursor-pointer hover:opacity-95 text-center">
+            ✨ 应用品牌冠名
           </button>
-          <button onclick="window.print()" class="px-3.5 py-2 rounded-xl bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] font-bold cursor-pointer hover:border-amber-500">
-            🖨️ 打印 / 导出 PDF 商业路书
+          <button onclick="window.print()" class="px-3 py-2 rounded-xl bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] font-bold cursor-pointer hover:border-amber-500 text-center">
+            🖨️ 导出 PDF
           </button>
-          <button id="btnExportKml" class="px-3.5 py-2 rounded-xl bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] font-bold cursor-pointer hover:border-amber-500">
-            🌍 导出两步路/奥维 KML 轨迹
+          <button id="btnExportKml" class="px-3 py-2 rounded-xl bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] font-bold cursor-pointer hover:border-amber-500 text-center">
+            🌍 导出两步路 KML
           </button>
-          <button id="btnExportCsv" class="px-3.5 py-2 rounded-xl bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] font-bold cursor-pointer hover:border-amber-500">
-            📊 导出全站坐标与宿集 CSV
+          <button id="btnExportCsv" class="px-3 py-2 rounded-xl bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] font-bold cursor-pointer hover:border-amber-500 text-center">
+            📊 导出坐标 CSV
           </button>
         </div>
 
-        <!-- Live Commercial Pitch Card Preview -->
-        <div class="rounded-2xl bg-gradient-to-br from-slate-900 via-slate-900 to-amber-950 text-white p-4 border border-amber-500/40 space-y-2.5">
-          <div class="flex items-center justify-between">
-            <span id="previewWlBrand" class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-amber-500 text-slate-950">云境奢野 · YUNNAN BESPOKE</span>
-            <span id="previewWlPrice" class="text-xs font-extrabold text-amber-300">¥15,800 / 人起 · 含四大雪山美宿与越野保障</span>
+        <div class="rounded-2xl bg-gradient-to-br from-slate-900 via-slate-900 to-amber-950 text-white p-3.5 border border-amber-500/40 space-y-2">
+          <div class="flex flex-wrap items-center justify-between gap-1">
+            <span id="previewWlBrand" class="px-2 py-0.5 rounded-full text-[10px] font-black bg-amber-500 text-slate-950">云境奢野 · YUNNAN BESPOKE</span>
+            <span id="previewWlPrice" class="text-[11px] font-extrabold text-amber-300">¥15,800 / 人起 · 含四大雪山美宿</span>
           </div>
-          <div class="text-base sm:text-lg font-black tracking-tight">2026 滇西北·雪山秘境奢野大环线 (11日10晚私家路书)</div>
-          <div id="previewWlClient" class="text-xs text-slate-300">尊享定制：Shuguo 专属私家定制团 (2026金秋典藏)</div>
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 text-[11px]">
-            <div class="p-2 rounded-xl bg-white/5 border border-white/10">
-              <div class="text-amber-400 font-black">4 大传奇徒步</div>
-              <div class="text-slate-300 mt-0.5">老药山 · 哈巴黑海湖 · 无底湖 · 南极洛</div>
-            </div>
-            <div class="p-2 rounded-xl bg-white/5 border border-white/10">
-              <div class="text-amber-400 font-black">4 座雪山对峙</div>
-              <div class="text-slate-300 mt-0.5">玉龙 · 哈巴 · 卡瓦格博 · 碧罗雪山</div>
-            </div>
-            <div class="p-2 rounded-xl bg-white/5 border border-white/10">
-              <div class="text-amber-400 font-black">4 家美学宿集</div>
-              <div class="text-slate-300 mt-0.5">新茶马 · 格雅3晚连住 · 明珠拉卡 · 御景园</div>
-            </div>
-            <div class="p-2 rounded-xl bg-white/5 border border-white/10">
-              <div class="text-amber-400 font-black">100% 国内生态</div>
-              <div class="text-slate-300 mt-0.5">高德实景 · 百度百科 · 小红书机位</div>
-            </div>
-          </div>
-          <div class="pt-1 flex items-center justify-between text-[11px] text-slate-400">
+          <div class="text-sm sm:text-base font-black tracking-tight">2026 滇西北·雪山秘境奢野大环线 (11日10晚私家路书)</div>
+          <div id="previewWlClient" class="text-[11px] text-slate-300">尊享定制：Shuguo 专属私家定制团 (2026金秋典藏)</div>
+          <div class="pt-1 flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-400">
             <span id="previewWlContact">24h 藏地雪山管家 · 卫星电话随车保障</span>
-            <button id="btnCopySharePitch" class="px-3 py-1 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-400/40 font-bold cursor-pointer hover:bg-amber-500/30">
-              📋 一键复制小红书/微信发售文案
+            <button id="btnCopySharePitch" class="px-2.5 py-1 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-400/40 font-bold cursor-pointer hover:bg-amber-500/30">
+              📋 复制发售文案
             </button>
           </div>
         </div>
@@ -503,48 +542,48 @@
     </div>
   </div>
 
-  <!-- ==================== MODAL 4: HIDDEN VIBE FEEDBACK & AUTO-ITERATION CABIN ==================== -->
-  <div id="vibeFeedbackModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4">
-    <div class="bg-[var(--card)] border border-amber-500/40 rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col overflow-hidden shadow-2xl">
-      <div class="px-4 py-3 border-b border-[var(--border)] flex items-center justify-between bg-gradient-to-r from-amber-500/20 via-orange-500/10 to-sky-500/10">
-        <div>
-          <div class="flex items-center gap-2">
-            <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-amber-500 text-slate-950">HIDDEN VIBE LOOP</span>
-            <h3 class="text-sm sm:text-base font-black text-[var(--foreground)]">✨ AI 定制师 · Vibe 实时反馈与自动迭代舱</h3>
+  <!-- ==================== MODAL 4: HIDDEN VIBE FEEDBACK & AUTO-ITERATION CABIN (Mobile Bottom Sheet) ==================== -->
+  <div id="vibeFeedbackModal" class="modal-backdrop hidden">
+    <div class="modal-sheet max-w-2xl border-amber-500/40">
+      <div class="px-3.5 sm:px-4 py-2.5 border-b border-[var(--border)] flex items-center justify-between gap-2 bg-gradient-to-r from-amber-500/20 via-orange-500/10 to-sky-500/10 shrink-0">
+        <div class="min-w-0">
+          <div class="flex items-center gap-1.5">
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-amber-500 text-slate-950 shrink-0">VIBE LOOP</span>
+            <h3 class="text-xs sm:text-base font-black text-[var(--foreground)] truncate">✨ AI 定制师 · 实时反馈与自动迭代舱</h3>
           </div>
-          <p class="text-[11px] text-[var(--muted-foreground)] mt-0.5">
-            提交后直连 Cloudtop 守护进程 ──► 自动通知 Google Chat 并唤醒专属会话 (`4aa6fc13`) 实时改版重发 GitHub Pages
+          <p class="text-[10px] sm:text-[11px] text-[var(--muted-foreground)] truncate mt-0.5">
+            提交后直连 Cloudtop ──► 自动唤醒专属会话 (4aa6fc13) 改版并重发 GitHub Pages
           </p>
         </div>
-        <button onclick="closeVibeFeedbackModal()" class="w-8 h-8 rounded-full bg-[var(--content)] text-[var(--foreground)] font-bold cursor-pointer">✕</button>
+        <button onclick="closeVibeFeedbackModal()" class="w-7 h-7 rounded-full bg-[var(--content)] text-[var(--foreground)] font-bold cursor-pointer shrink-0">✕</button>
       </div>
 
-      <div class="p-4 overflow-y-auto space-y-3.5 text-xs">
+      <div class="p-3.5 sm:p-4 overflow-y-auto space-y-3 text-xs flex-1">
         <!-- Live Cloudtop & Iteration Status Banner -->
-        <div class="p-3 rounded-xl bg-[var(--content)]/70 border border-[var(--border)] flex flex-wrap items-center justify-between gap-2">
-          <div class="space-y-0.5">
-            <div class="flex items-center gap-1.5 font-extrabold text-[var(--foreground)]">
-              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping inline-block"></span>
-              <span id="vibeLiveVersionBadge">📡 云端 AI 迭代引擎在线 (v1.2 · Live Vibe Loop)</span>
+        <div class="p-2.5 rounded-xl bg-[var(--content)]/70 border border-[var(--border)] flex items-center justify-between gap-2">
+          <div class="min-w-0 space-y-0.5">
+            <div class="flex items-center gap-1.5 font-extrabold text-[var(--foreground)] truncate">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping inline-block shrink-0"></span>
+              <span id="vibeLiveVersionBadge" class="truncate">📡 云端 AI 迭代引擎在线 (v1.5)</span>
             </div>
-            <div id="vibeLatestChangelog" class="text-[11px] text-[var(--muted-foreground)]">
-              最近更新：已上线 11 日高爬低睡曲线、四大美宿卡片与隐藏 Vibe 实时反馈闭环
+            <div id="vibeLatestChangelog" class="text-[11px] text-[var(--muted-foreground)] truncate">
+              最近更新：已全面重构手机端一屏双核体验与底部抽屉弹窗自适应
             </div>
           </div>
-          <button onclick="refreshVibeStatusJson()" class="px-2.5 py-1 rounded-lg bg-[var(--card)] border border-[var(--border)] text-[11px] font-bold hover:border-amber-500 cursor-pointer">
-            🔄 刷新状态
+          <button onclick="refreshVibeStatusJson()" class="px-2 py-1 rounded-lg bg-[var(--card)] border border-[var(--border)] text-[11px] font-bold hover:border-amber-500 cursor-pointer shrink-0">
+            🔄 刷新
           </button>
         </div>
 
         <!-- Author & Target Day/Stop Scope -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
           <div>
-            <label class="block font-bold mb-1 text-[var(--foreground)]">👤 你的昵称 / 身份 (选填)</label>
-            <input id="vibeAuthorInput" type="text" placeholder="如：Shuguo / 同行老友 / 领队" class="w-full px-3 py-2 rounded-xl bg-[var(--content)] border border-[var(--border)] text-xs font-bold focus:outline-none focus:border-amber-500" />
+            <label class="block font-bold mb-1 text-[var(--foreground)]">👤 你的昵称 (选填)</label>
+            <input id="vibeAuthorInput" type="text" placeholder="如：Shuguo / 同行老友" class="w-full px-3 py-1.5 rounded-xl bg-[var(--content)] border border-[var(--border)] text-xs font-bold focus:outline-none focus:border-amber-500" />
           </div>
           <div>
-            <label class="block font-bold mb-1 text-[var(--foreground)]">🎯 针对哪天或哪个赛段？</label>
-            <select id="vibeScopeSelect" class="w-full px-3 py-2 rounded-xl bg-[var(--content)] border border-[var(--border)] text-xs font-bold focus:outline-none focus:border-amber-500">
+            <label class="block font-bold mb-1 text-[var(--foreground)]">🎯 针对哪个赛段？</label>
+            <select id="vibeScopeSelect" class="w-full px-3 py-1.5 rounded-xl bg-[var(--content)] border border-[var(--border)] text-xs font-bold focus:outline-none focus:border-amber-500">
               <option value="🌟 整体行程 Vibe 与节奏">🌟 整体行程 Vibe 与节奏</option>
               <option value="D1 (10.4) 北京-丽江">D1 (10.4) 北京-丽江</option>
               <option value="D2 (10.5) 丽江·束河·白沙·香巴拉or云栖">D2 (10.5) 丽江·束河·白沙·香巴拉or云栖</option>
@@ -563,250 +602,230 @@
 
         <!-- Multi-select Vibe Shift Chips -->
         <div>
-          <label class="block font-bold mb-1.5 text-[var(--foreground)]">✨ 期望调整的 Vibe 方向（可多选）：</label>
+          <label class="block font-bold mb-1 text-[var(--foreground)]">✨ 期望调整的 Vibe 方向（可多选）：</label>
           <div class="flex flex-wrap gap-1.5" id="vibeTagChips">
-            <button type="button" data-vtag="🥾 降低徒步强度 / 更松弛" class="vibe-tag-btn px-2.5 py-1.5 rounded-xl bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] font-bold cursor-pointer transition">🥾 降低徒步强度 / 更松弛</button>
-            <button type="button" data-vtag="🏔️ 增加硬核徒步 / 秘境探索" class="vibe-tag-btn px-2.5 py-1.5 rounded-xl bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] font-bold cursor-pointer transition">🏔️ 增加硬核徒步 / 秘境探索</button>
-            <button type="button" data-vtag="📸 强化日照金山 / 摄影机位" class="vibe-tag-btn px-2.5 py-1.5 rounded-xl bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] font-bold cursor-pointer transition">📸 强化日照金山 / 摄影机位</button>
-            <button type="button" data-vtag="🍲 增加地道藏餐 / 菌子美食推荐" class="vibe-tag-btn px-2.5 py-1.5 rounded-xl bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] font-bold cursor-pointer transition">🍲 增加地道藏餐 / 菌子美食推荐</button>
-            <button type="button" data-vtag="🏨 敲定或更换民宿方案" class="vibe-tag-btn px-2.5 py-1.5 rounded-xl bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] font-bold cursor-pointer transition">🏨 敲定或更换民宿方案</button>
-            <button type="button" data-vtag="🚗 更新包车 / 拼车 / 出发时间" class="vibe-tag-btn px-2.5 py-1.5 rounded-xl bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] font-bold cursor-pointer transition">🚗 更新包车 / 拼车 / 出发时间</button>
+            <button type="button" data-vtag="🥾 降低徒步强度 / 更松弛" class="vibe-tag-btn px-2 py-1 rounded-lg bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] text-[11px] font-bold cursor-pointer transition">🥾 更松弛</button>
+            <button type="button" data-vtag="🏔️ 增加硬核徒步 / 秘境探索" class="vibe-tag-btn px-2 py-1 rounded-lg bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] text-[11px] font-bold cursor-pointer transition">🏔️ 秘境探索</button>
+            <button type="button" data-vtag="📸 强化日照金山 / 摄影机位" class="vibe-tag-btn px-2 py-1 rounded-lg bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] text-[11px] font-bold cursor-pointer transition">📸 摄影机位</button>
+            <button type="button" data-vtag="🍲 增加地道藏餐 / 菌子美食推荐" class="vibe-tag-btn px-2 py-1 rounded-lg bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] text-[11px] font-bold cursor-pointer transition">🍲 藏餐美食</button>
+            <button type="button" data-vtag="🏨 敲定或更换民宿方案" class="vibe-tag-btn px-2 py-1 rounded-lg bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] text-[11px] font-bold cursor-pointer transition">🏨 宿集方案</button>
+            <button type="button" data-vtag="🚗 更新包车 / 拼车 / 出发时间" class="vibe-tag-btn px-2 py-1 rounded-lg bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] text-[11px] font-bold cursor-pointer transition">🚗 拼车/时间</button>
           </div>
         </div>
 
         <!-- Freeform Vibe Prompt + 1-Tap Examples -->
         <div>
           <div class="flex flex-wrap items-center justify-between gap-1 mb-1">
-            <label class="font-bold text-[var(--foreground)]">💬 具体想法或新的 Vibe 描述：</label>
-            <div class="flex items-center gap-1 text-[11px]">
-              <span class="text-[var(--muted-foreground)]">快速示例：</span>
-              <button type="button" onclick="fillVibeSample('10.5 下午我们敲定去云栖壹号院喝下午茶看雪山倒影，把默认推荐改成云栖壹号院，并补充点单攻略！', 'D2 (10.5) 丽江·束河·白沙·香巴拉or云栖')" class="px-2 py-0.5 rounded bg-amber-500/15 text-amber-500 font-bold cursor-pointer">示例1：敲定云栖壹号院</button>
-              <button type="button" onclick="fillVibeSample('10.9 无底湖我们想走最轻松的摄影环湖线，帮我补充沿途最佳咖啡/下午茶补给点和具体穿搭颜色建议！', 'D6 (10.9) 香格里拉-无底湖轻徒步')" class="px-2 py-0.5 rounded bg-sky-500/15 text-sky-500 font-bold cursor-pointer">示例2：无底湖松弛摄影</button>
+            <label class="font-bold text-[var(--foreground)]">💬 具体想法或新 Vibe 描述：</label>
+            <div class="flex items-center gap-1 text-[10px]">
+              <button type="button" onclick="fillVibeSample('10.5 下午我们敲定去云栖壹号院喝下午茶看雪山倒影，把默认推荐改成云栖壹号院，并补充点单攻略！', 'D2 (10.5) 丽江·束河·白沙·香巴拉or云栖')" class="px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-500 font-bold cursor-pointer">示例1：敲定云栖</button>
+              <button type="button" onclick="fillVibeSample('10.9 无底湖我们想走最轻松的摄影环湖线，帮我补充沿途最佳咖啡补给点和穿搭颜色建议！', 'D6 (10.9) 香格里拉-无底湖轻徒步')" class="px-1.5 py-0.5 rounded bg-sky-500/15 text-sky-500 font-bold cursor-pointer">示例2：无底湖摄影</button>
             </div>
           </div>
-          <textarea id="vibeMessageInput" rows="3" placeholder="直接写下你想调整的行程细节、节奏偏好、新增机位或餐厅需求，提交后后台将自动唤醒云南专属 Agent 会话进行迭代并重新发布到 GitHub Pages..." class="w-full p-3 rounded-xl bg-[var(--content)] border border-[var(--border)] text-xs text-[var(--foreground)] focus:outline-none focus:border-amber-500 leading-relaxed"></textarea>
+          <textarea id="vibeMessageInput" rows="3" placeholder="直接写下你想调整的行程细节、节奏偏好、新增机位或餐厅需求，提交后后台将自动唤醒云南专属 Agent 会话进行迭代并重新发布..." class="w-full p-2.5 rounded-xl bg-[var(--content)] border border-[var(--border)] text-xs text-[var(--foreground)] focus:outline-none focus:border-amber-500 leading-relaxed"></textarea>
         </div>
 
         <!-- Submit & Backup Copy Actions -->
-        <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
-          <div class="flex flex-wrap items-center gap-2">
-            <button type="button" id="btnSubmitVibeFeedback" onclick="submitVibeFeedback()" class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-black text-xs shadow-sm hover:opacity-95 cursor-pointer flex items-center gap-1.5">
-              <span>🚀 发送新 Vibe 并唤醒 AI 自动迭代</span>
-            </button>
-            <button type="button" onclick="openVersionHistoryModal()" class="px-3 py-2 rounded-xl bg-sky-500/15 text-sky-500 border border-sky-500/30 font-extrabold text-xs hover:bg-sky-500/25 cursor-pointer">
-              📜 查看完整版本记录
-            </button>
-            <button type="button" onclick="copyVibeCommandBackup()" class="px-3 py-2 rounded-xl bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] font-bold text-xs hover:border-amber-500 cursor-pointer">
-              📋 复制口令
-            </button>
-          </div>
-          <span id="vibeSubmitStatusText" class="text-xs font-bold text-emerald-500"></span>
+        <div class="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-2 pt-0.5">
+          <button type="button" id="btnSubmitVibeFeedback" onclick="submitVibeFeedback()" class="col-span-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-black text-xs shadow-sm hover:opacity-95 cursor-pointer flex items-center justify-center gap-1.5">
+            <span>🚀 发送新 Vibe 并自动迭代</span>
+          </button>
+          <button type="button" onclick="openVersionHistoryModal()" class="px-3 py-2 rounded-xl bg-sky-500/15 text-sky-500 border border-sky-500/30 font-extrabold text-xs hover:bg-sky-500/25 cursor-pointer text-center">
+            📜 版本记录
+          </button>
+          <button type="button" onclick="copyVibeCommandBackup()" class="px-3 py-2 rounded-xl bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] font-bold text-xs hover:border-amber-500 cursor-pointer text-center">
+            📋 复制口令
+          </button>
         </div>
+        <div id="vibeSubmitStatusText" class="text-xs font-bold text-emerald-500"></div>
 
         <!-- Live Post-Submit Auto-Compile Progress Stepper -->
-        <div id="vibeAutoWatchBox" class="hidden p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 space-y-1.5">
+        <div id="vibeAutoWatchBox" class="hidden p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 space-y-1">
           <div class="flex items-center justify-between gap-2">
-            <span id="vibeAutoWatchTitle" class="font-black text-emerald-500 text-xs">📡 1. 已投递至公网信箱 ──► 🧠 2. Cloudtop AI 正在实时编译新版本 (每8秒自动检测)...</span>
-            <button onclick="forceReloadFreshVersion()" id="btnModalReloadFresh" class="hidden px-3 py-1 rounded-lg bg-emerald-500 text-slate-950 font-black text-[11px] cursor-pointer">
-              🔄 立即刷新看新版
+            <span id="vibeAutoWatchTitle" class="font-black text-emerald-500 text-xs">📡 1. 已投递 ──► 🧠 2. AI 正在实时编译新版本 (每8秒检测)...</span>
+            <button onclick="forceReloadFreshVersion()" id="btnModalReloadFresh" class="hidden px-2.5 py-1 rounded-lg bg-emerald-500 text-slate-950 font-black text-[11px] cursor-pointer shrink-0">
+              🔄 立即刷新
             </button>
           </div>
           <div id="vibeAutoWatchSub" class="text-[11px] text-[var(--muted-foreground)]">
-            当云端会话 (4aa6fc13) 完成改版并推送到 GitHub Pages 后，此处将自动弹出新版本升级提示，无需手动盯屏。
+            当云端会话完成改版并推送到 GitHub Pages 后，此处将自动弹出升级提示。
           </div>
         </div>
 
         <!-- Submitted Feedback History & Cloud Iteration Log -->
-        <div class="pt-2 border-t border-[var(--border)] space-y-2">
+        <div class="pt-2 border-t border-[var(--border)] space-y-1.5">
           <div class="flex items-center justify-between">
-            <span class="text-[11px] font-extrabold text-[var(--muted-foreground)]">📜 本机已提交的 Vibe 需求 & 云端版本演进记录：</span>
-            <button onclick="openVersionHistoryModal()" class="text-[11px] font-bold text-sky-500 hover:underline cursor-pointer">展开全部版本详情 ➔</button>
+            <span class="text-[11px] font-extrabold text-[var(--muted-foreground)]">📜 最近提交与版本演进记录：</span>
+            <button onclick="openVersionHistoryModal()" class="text-[11px] font-bold text-sky-500 hover:underline cursor-pointer">全部版本 ➔</button>
           </div>
-          <div id="vibeHistoryList" class="space-y-1.5 max-h-44 overflow-y-auto"></div>
+          <div id="vibeHistoryList" class="space-y-1.5 max-h-36 overflow-y-auto"></div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ==================== MODAL 5: FULL VERSION HISTORY & VIBE CHANGELOG ==================== -->
-  <div id="versionHistoryModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4">
-    <div class="bg-[var(--card)] border border-sky-500/40 rounded-2xl max-w-3xl w-full max-h-[88vh] flex flex-col overflow-hidden shadow-2xl">
-      <div class="px-4 py-3 border-b border-[var(--border)] flex items-center justify-between bg-gradient-to-r from-sky-500/20 via-amber-500/10 to-emerald-500/10">
-        <div>
-          <div class="flex items-center gap-2">
-            <span id="vhCurrentVersionPill" class="px-2 py-0.5 rounded-full text-[10px] font-black bg-sky-500 text-slate-950">v1.4</span>
-            <h3 class="text-sm sm:text-base font-black text-[var(--foreground)]">📜 路书版本演进与 Vibe 自动迭代记录 (Version Changelog)</h3>
+  <!-- ==================== MODAL 5: FULL VERSION HISTORY & VIBE CHANGELOG (Mobile Bottom Sheet) ==================== -->
+  <div id="versionHistoryModal" class="modal-backdrop hidden">
+    <div class="modal-sheet max-w-3xl border-sky-500/40">
+      <div class="px-3.5 sm:px-4 py-2.5 border-b border-[var(--border)] flex items-center justify-between gap-2 bg-gradient-to-r from-sky-500/20 via-amber-500/10 to-emerald-500/10 shrink-0">
+        <div class="min-w-0">
+          <div class="flex items-center gap-1.5">
+            <span id="vhCurrentVersionPill" class="px-2 py-0.5 rounded-full text-[10px] font-black bg-sky-500 text-slate-950 shrink-0">v1.5</span>
+            <h3 class="text-xs sm:text-base font-black text-[var(--foreground)] truncate">📜 路书版本演进与 Vibe 自动迭代记录</h3>
           </div>
-          <p class="text-[11px] text-[var(--muted-foreground)] mt-0.5">
-            每次通过隐藏入口提交新 Vibe，云端 AI 自动修改路书、递增版本号并记录详细变更清单
+          <p class="text-[10px] sm:text-[11px] text-[var(--muted-foreground)] truncate mt-0.5">
+            每次提交新 Vibe，云端 AI 自动修改路书、递增版本号并记录变更明细
           </p>
         </div>
-        <div class="flex items-center gap-1.5">
-          <button onclick="unlockAndOpenVibeModal(); closeVersionHistoryModal();" class="px-2.5 py-1 rounded-lg bg-amber-500 text-slate-950 font-black text-xs cursor-pointer">
-            ✨ 提交新 Vibe
+        <div class="flex items-center gap-1.5 shrink-0">
+          <button onclick="unlockAndOpenVibeModal(); closeVersionHistoryModal();" class="px-2.5 py-1 rounded-lg bg-amber-500 text-slate-950 font-black text-[11px] cursor-pointer">
+            ✨ 提Vibe
           </button>
-          <button onclick="closeVersionHistoryModal()" class="w-8 h-8 rounded-full bg-[var(--content)] text-[var(--foreground)] font-bold cursor-pointer">✕</button>
+          <button onclick="closeVersionHistoryModal()" class="w-7 h-7 rounded-full bg-[var(--content)] text-[var(--foreground)] font-bold cursor-pointer">✕</button>
         </div>
       </div>
-      <div id="versionHistoryModalBody" class="p-4 overflow-y-auto space-y-3 text-xs"></div>
+      <div id="versionHistoryModalBody" class="p-3.5 sm:p-4 overflow-y-auto space-y-2.5 text-xs flex-1"></div>
     </div>
   </div>
 
-  <!-- ==================== MODAL 6: FEATURE INTRO & USER GUIDE DIALOG (#userGuideModal) ==================== -->
-  <div id="userGuideModal" class="fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
-    <div class="bg-[var(--card)] border-2 border-amber-500/50 rounded-2xl max-w-3xl w-full max-h-[90vh] flex flex-col overflow-hidden shadow-2xl">
-      <!-- Top Hero Banner -->
-      <div class="px-4 sm:px-5 py-3.5 border-b border-[var(--border)] bg-gradient-to-r from-amber-500/25 via-orange-500/15 to-sky-500/15 flex items-center justify-between gap-2">
-        <div>
-          <div class="flex flex-wrap items-center gap-2">
-            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-amber-500 text-slate-950">WELCOME · 旅伴必读导览</span>
-            <span class="px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-emerald-500/20 text-emerald-500">100% 国内免翻墙直连 · 离线可用</span>
+  <!-- ==================== MODAL 6: FEATURE INTRO & USER GUIDE DIALOG (#userGuideModal - Mobile Bottom Sheet) ==================== -->
+  <div id="userGuideModal" class="modal-backdrop hidden">
+    <div class="modal-sheet max-w-2xl border-amber-500/50">
+      <!-- Compact 1-Line Mobile-Adaptive Header -->
+      <div class="px-3.5 sm:px-5 py-2.5 sm:py-3 border-b border-[var(--border)] bg-gradient-to-r from-amber-500/25 via-orange-500/15 to-sky-500/15 flex items-center justify-between gap-2 shrink-0">
+        <div class="min-w-0">
+          <div class="flex items-center gap-1.5">
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-amber-500 text-slate-950 shrink-0">GUIDE</span>
+            <h3 class="text-xs sm:text-base font-black text-[var(--foreground)] truncate">
+              💡 2026 滇西北雪山秘境路书 · 使用指南与微信分享
+            </h3>
           </div>
-          <h3 class="text-base sm:text-lg font-black text-[var(--foreground)] mt-1">
-            💡 2026 滇西北·雪山秘境奢野路书 · 功能介绍与使用指南
-          </h3>
-          <p class="text-[11px] text-[var(--muted-foreground)]">
-            10.4–10.14 (11日) · 丽江 · 虎跳峡 · 哈巴黑海湖 · 香格里拉(无底湖/巴拉格宗) · 梅里飞来寺 · 南极洛
+          <p class="text-[10px] sm:text-[11px] text-[var(--muted-foreground)] truncate mt-0.5">
+            10.4–10.14 (11日) · 国内高德/百科/小红书直连 · 进山离线可用
           </p>
         </div>
-        <button onclick="closeUserGuideModal()" class="w-8 h-8 rounded-full bg-[var(--content)] text-[var(--foreground)] font-bold cursor-pointer shrink-0">✕</button>
+        <button onclick="closeUserGuideModal()" class="w-7 h-7 rounded-full bg-[var(--content)] text-[var(--foreground)] font-bold cursor-pointer shrink-0">✕</button>
       </div>
 
-      <!-- Dialog Body: 4 Highlight Cards + Ready-to-Share WeChat Guide Box -->
-      <div class="p-4 sm:p-5 overflow-y-auto space-y-4 text-xs">
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <!-- Card 1 -->
-          <div class="p-3.5 rounded-2xl bg-[var(--content)]/70 border border-[var(--border)] space-y-1.5">
-            <div class="flex items-center gap-2 font-black text-sm text-amber-500">
-              <span>🗺️ 1. 高德雪山实景地图 & 海拔血氧阶梯</span>
-            </div>
-            <p class="text-[var(--foreground)] leading-relaxed">
-              点击上方 <span class="font-bold text-amber-500">D1–D11 日程按钮</span> 或地图气泡，即可联动查看每日「高爬低睡」海拔阶梯（峰值孔雀山 3950m、南极洛 3920m，住宿严控在 1980m–3400m）、血氧安全提示，并支持一键切换 <strong>高德实景路网 / 卫星雪山 / 离线等高线</strong> 三种图层。
+      <!-- Scrollable Guide Body -->
+      <div class="p-3.5 sm:p-4 overflow-y-auto space-y-3 text-xs flex-1">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <div class="p-3 rounded-xl bg-[var(--content)]/70 border border-[var(--border)] space-y-1">
+            <div class="font-black text-xs text-amber-500">🗺️ 1. 手机一屏看图 & 高爬低睡阶梯</div>
+            <p class="text-[11px] text-[var(--foreground)] leading-relaxed">
+              顶部切换赛段，地图与当前景点详情卡同屏联动；用 <strong>‹ 上一站 / 下一站 ›</strong> 快速浏览 25 个节点，底部切换「海拔/决策」查看 11 日高爬低睡曲线。
             </p>
           </div>
 
-          <!-- Card 2 -->
-          <div class="p-3.5 rounded-2xl bg-[var(--content)]/70 border border-[var(--border)] space-y-1.5">
-            <div class="flex items-center gap-2 font-black text-sm text-emerald-500">
-              <span>🧭 2. 国内生态一键直达 & 高原无网离线可用</span>
-            </div>
-            <p class="text-[var(--foreground)] leading-relaxed">
-              每个景点与四大雪山美宿均内置 <strong>📍高德一键导航、📖百度百科/离线风物志、📕小红书出片机位、🍜大众点评/携程、🪪司机藏地问路大字卡</strong>。首次打开自动缓存至手机，进南极洛、哈巴黑海湖无信号区依然丝滑查看！
+          <div class="p-3 rounded-xl bg-[var(--content)]/70 border border-[var(--border)] space-y-1">
+            <div class="font-black text-xs text-emerald-500">🧭 2. 国内生态一键直达 & 进山离线</div>
+            <p class="text-[11px] text-[var(--foreground)] leading-relaxed">
+              每个节点均配齐 <strong>📍高德导航、📖百度百科、📕小红书机位、🪪给司机看大字卡</strong>；首次打开自动缓存，哈巴黑海湖与南极洛无信号区照常使用。
             </p>
           </div>
 
-          <!-- Card 3 -->
-          <div class="p-3.5 rounded-2xl bg-[var(--content)]/70 border border-[var(--border)] space-y-1.5">
-            <div class="flex items-center gap-2 font-black text-sm text-sky-500">
-              <span>🔀 3. 三大待定方案现场切换 & 关键时刻锚点</span>
-            </div>
-            <p class="text-[var(--foreground)] leading-relaxed">
-              地图上方内置三大现场决策器：<strong>10.5 香巴拉牧场 vs 云栖壹号院</strong> 二选一、<strong>10.10 巴拉格宗峡谷路线</strong>、<strong>10.13 南极洛 1-5/1-9号湖 & 拼车返丽江决策</strong>，以及硬核锁定的 <strong>10.11 14:30 香格里拉准时出发</strong> 强提醒与行前装备 Checklist。
+          <div class="p-3 rounded-xl bg-[var(--content)]/70 border border-[var(--border)] space-y-1">
+            <div class="font-black text-xs text-sky-500">🔀 3. 三大现场决策器 & 时间铁律</div>
+            <p class="text-[11px] text-[var(--foreground)] leading-relaxed">
+              内置 <strong>10.5 香巴拉 vs 云栖壹号院</strong>、<strong>10.11 14:30 香格里拉准时出发</strong> 强提醒、<strong>10.13 南极洛 1-5/1-9号湖 & 拼车决策器</strong>。
             </p>
           </div>
 
-          <!-- Card 4: Highlighted AI Vibe Loop + Version History -->
-          <div class="p-3.5 rounded-2xl bg-gradient-to-br from-amber-500/15 via-orange-500/10 to-sky-500/15 border-2 border-amber-500/50 space-y-2">
+          <div class="p-3 rounded-xl bg-gradient-to-br from-amber-500/15 via-orange-500/10 to-sky-500/15 border border-amber-500/50 space-y-1.5">
             <div class="flex items-center justify-between gap-1">
-              <span class="font-black text-sm text-amber-500">✨ 4. 专属黑科技：AI Vibe 实时改版 + 版本记录</span>
-              <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-amber-500 text-slate-950">AUTO LOOP</span>
+              <span class="font-black text-xs text-amber-500">✨ 4. AI Vibe 实时改版 + 版本记录</span>
+              <span class="px-1.5 py-0.2 rounded text-[9px] font-black bg-amber-500 text-slate-950">AUTO</span>
             </div>
-            <p class="text-[var(--foreground)] leading-relaxed">
-              旅途中任何时候想调整节奏、更换餐厅或敲定方案，<strong>连点左上角「云境」图标 3 次</strong>（或点下方按钮）打开 <strong>「✨ AI Vibe 实时迭代舱」</strong> 写下想法。云端 AI 收到后 <strong>1–2 分钟内自动改好网页并上线</strong>，网页每 8 秒自动检测新版并弹窗提醒刷新，所有改动全程记录在顶部 <strong>「📜 版本记录」</strong>！
+            <p class="text-[11px] text-[var(--foreground)] leading-relaxed">
+              连点左上角「云境」3 次或点右上角 <strong>✨</strong> 打开迭代舱提需求，云端 AI <strong>1–2 分钟自动改好网页并上线</strong>，所有改动全程记入 <strong>📜 版本记录</strong>！
             </p>
-            <div class="flex flex-wrap items-center gap-2 pt-0.5">
-              <button onclick="closeUserGuideModal(); unlockAndOpenVibeModal();" class="px-2.5 py-1 rounded-lg bg-amber-500 text-slate-950 font-black text-[11px] cursor-pointer">
-                ✨ 打开 AI Vibe 调优舱
+            <div class="flex items-center gap-1.5 pt-0.5">
+              <button onclick="closeUserGuideModal(); unlockAndOpenVibeModal();" class="px-2 py-1 rounded-lg bg-amber-500 text-slate-950 font-black text-[11px] cursor-pointer">
+                ✨ 提 Vibe 需求
               </button>
-              <button onclick="closeUserGuideModal(); openVersionHistoryModal();" class="px-2.5 py-1 rounded-lg bg-sky-500/20 text-sky-500 border border-sky-500/40 font-extrabold text-[11px] cursor-pointer">
-                📜 查看版本更新记录
+              <button onclick="closeUserGuideModal(); openVersionHistoryModal();" class="px-2 py-1 rounded-lg bg-sky-500/20 text-sky-400 border border-sky-500/40 font-extrabold text-[11px] cursor-pointer">
+                📜 版本记录
               </button>
             </div>
           </div>
         </div>
 
         <!-- Ready-to-Forward WeChat Share Card -->
-        <div class="p-3.5 rounded-2xl bg-[var(--content)]/80 border border-[var(--border)] space-y-2">
-          <div class="flex flex-wrap items-center justify-between gap-2">
-            <div class="font-extrabold text-[var(--foreground)] flex items-center gap-1.5">
-              <span>📲 一键转发给同行朋友的微信群功能介绍与使用指南：</span>
-            </div>
-            <button onclick="copyWeChatGuideText()" class="px-3 py-1 rounded-xl bg-emerald-500 text-slate-950 font-black text-xs cursor-pointer hover:opacity-95 flex items-center gap-1">
-              <span>📋 一键复制微信分享文案</span>
+        <div class="p-3 rounded-xl bg-[var(--content)]/80 border border-[var(--border)] space-y-1.5">
+          <div class="flex items-center justify-between gap-2">
+            <span class="font-extrabold text-[11px] text-[var(--foreground)]">📲 微信群转发文案（一键复制发给同行朋友）：</span>
+            <button onclick="copyWeChatGuideText()" class="px-2.5 py-1 rounded-lg bg-emerald-500 text-slate-950 font-black text-[11px] cursor-pointer shrink-0">
+              📋 复制文案
             </button>
           </div>
-          <pre id="wechatShareGuidePre" class="p-3 rounded-xl bg-[var(--card)] border border-[var(--border)] text-[11px] text-[var(--muted-foreground)] whitespace-pre-wrap leading-relaxed font-sans max-h-36 overflow-y-auto">🏔️【2026 滇西北·雪山秘境奢野环线】专属交互式路书上线啦！
-📅 行程日期：10.4 – 10.14（11天10晚 · 丽江/虎跳峡/哈巴黑海湖/香格里拉无底湖&巴拉格宗/梅里飞来寺/南极洛）
-🌐 手机/电脑直接点开（国内秒开免翻墙，支持离线）：
+          <pre id="wechatShareGuidePre" class="p-2.5 rounded-lg bg-[var(--card)] border border-[var(--border)] text-[11px] text-[var(--muted-foreground)] whitespace-pre-wrap break-words leading-relaxed font-sans max-h-28 overflow-y-auto">🏔️【2026 滇西北·雪山秘境奢野环线】交互式路书：
+📅 10.4–10.14（11天10晚 · 丽江/虎跳峡/哈巴黑海湖/香格里拉无底湖&巴拉格宗/梅里飞来寺/南极洛）
 👉 https://youngapple.github.io/yunnan-2026/
 
-💡【4大核心功能怎么用】：
-1️⃣ 看每天行程 & 海拔防高反：点顶部「D1–D11」或「📅 11日总表」，直接看当天路线、高爬低睡海拔阶梯（住宿严控在1980m–3400m）和四大必住雪山美宿。
-2️⃣ 现场一键导航 & 机位百科：点任意景点卡片，直接唤醒「高德一键导航」「百度百科风物志」「小红书机位攻略」和「司机问路大字卡」；进山没信号也能离线看！
-3️⃣ 现场切换待定方案：内置 10.5 香巴拉vs云栖壹号院、10.11 14:30香格里拉准时出发强提醒、10.13 南极洛1-5/1-9号湖&拼车决策，点一下全团同步。
-4️⃣ ✨ 彩蛋黑科技（AI 实时改路书）：大家对哪天行程有新想法（想换餐厅、调松弛度、加机位），连点左上角「云境」图标 3 次打开【AI Vibe 实时迭代舱】直接提需求！云端 AI 1-2分钟自动改好网页并弹窗提醒刷新，所有改动还会记在顶部【📜 版本记录】里！</pre>
+💡【4大核心用法】：
+1️⃣ 手机打开直接看高德实景地图 + 当前景点卡片，点「‹ 上一站 / 下一站 ›」切换 25 个核心机位与四大必住雪山美宿。
+2️⃣ 每个景点一键唤醒「高德导航」「百度百科」「小红书实拍机位」「给司机看大字卡」，进山无信号也能离线看。
+3️⃣ 内置 10.5 下午茶二选一、10.11 14:30准时出发德钦、10.13 南极洛拼车决策器与每日高爬低睡海拔曲线。
+4️⃣ ✨ 随时改路书：点右上角「✨」或连点左上角「云境」3次打开【AI Vibe 实时迭代舱】提需求，云端 AI 1-2分钟自动改好网页并更新【📜 版本记录】！</pre>
           <div id="wechatGuideCopyStatus" class="text-[11px] font-bold text-emerald-500"></div>
         </div>
       </div>
 
-      <!-- Dialog Footer -->
-      <div class="px-4 sm:px-5 py-3 border-t border-[var(--border)] bg-[var(--content)]/50 flex flex-wrap items-center justify-between gap-3">
-        <label class="flex items-center gap-2 text-xs text-[var(--muted-foreground)] cursor-pointer select-none">
-          <input id="chkDontShowGuideAgain" type="checkbox" checked class="rounded accent-amber-500 w-4 h-4 cursor-pointer" />
-          <span>下次打开不再自动弹出（随时可点顶部金色「💡 使用指南」重看）</span>
-        </label>
-        <div class="flex flex-wrap items-center gap-2">
-          <button onclick="copyWeChatGuideText()" class="px-3 py-2 rounded-xl bg-[var(--card)] text-[var(--foreground)] border border-[var(--border)] font-extrabold text-xs hover:border-amber-500 cursor-pointer">
-            📋 复制微信转发指南
-          </button>
-          <button onclick="closeUserGuideModal(); unlockAndOpenVibeModal();" class="px-3 py-2 rounded-xl bg-amber-500/20 text-amber-500 border border-amber-500/40 font-extrabold text-xs hover:bg-amber-500/30 cursor-pointer">
-            ✨ 体验 AI Vibe 调优
-          </button>
-          <button onclick="closeUserGuideModal()" class="px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-black text-xs shadow-sm hover:opacity-95 cursor-pointer">
-            🚀 我知道了，开始探索路书
-          </button>
-        </div>
+      <!-- Compact 1-Row 2-Button Footer -->
+      <div class="px-3.5 sm:px-5 py-2.5 border-t border-[var(--border)] bg-[var(--content)]/60 grid grid-cols-2 gap-2 shrink-0">
+        <button onclick="copyWeChatGuideText()" class="py-2 px-3 rounded-xl bg-[var(--card)] text-[var(--foreground)] border border-[var(--border)] font-extrabold text-xs hover:border-amber-500 cursor-pointer text-center">
+          📋 复制微信群文案
+        </button>
+        <button onclick="closeUserGuideModal()" class="py-2 px-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-black text-xs shadow-sm hover:opacity-95 cursor-pointer text-center">
+          🚀 开始探索路书
+        </button>
       </div>
     </div>
   </div>
 
-  <!-- Floating Vibe Pill (Visible once unlocked via triple-tap, ?vibe=1, or ✦ button) -->
-  <button id="floatingVibeBtn" onclick="openVibeFeedbackModal()" class="hidden fixed bottom-16 lg:bottom-5 right-4 z-40 px-3.5 py-2 rounded-full bg-gradient-to-r from-amber-500 to-orange-600 text-slate-950 font-black text-xs shadow-xl border-2 border-white/80 cursor-pointer flex items-center gap-1.5 hover:scale-105 transition">
-    <span>✨ Vibe 实时调优</span>
+  <!-- Floating Vibe Pill (Visible once unlocked) -->
+  <button id="floatingVibeBtn" onclick="openVibeFeedbackModal()" class="hidden fixed bottom-16 lg:bottom-5 right-3.5 z-40 px-3 py-1.5 rounded-full bg-gradient-to-r from-amber-500 to-orange-600 text-slate-950 font-black text-xs shadow-xl border border-white/80 cursor-pointer flex items-center gap-1 hover:scale-105 transition">
+    <span>✨ Vibe 调优</span>
   </button>
 
-  <!-- Subtle Footer with Discreet Entrance -->
-  <footer class="max-w-7xl mx-auto px-4 pt-6 pb-8 text-center text-[11px] text-[var(--muted-foreground)] flex flex-wrap items-center justify-center gap-3">
-    <span>🏔️ 2026 滇西北·雪山秘境奢野环线 · 100% 中国大陆原生直连 (高德 GCJ-02 · 百度百科 · 小红书)</span>
-    <button onclick="openUserGuideModal()" class="px-2 py-0.5 rounded-md bg-amber-500/15 text-amber-500 border border-amber-500/30 text-[10px] font-mono-code font-bold cursor-pointer transition">
-      💡 功能介绍与使用指南
+  <!-- Subtle Footer -->
+  <footer class="max-w-7xl mx-auto px-3 pt-4 pb-8 text-center text-[11px] text-[var(--muted-foreground)] flex flex-wrap items-center justify-center gap-2">
+    <span>🏔️ 2026 滇西北·雪山秘境奢野环线 · 100% 大陆直连</span>
+    <button onclick="openUserGuideModal()" class="px-2 py-0.5 rounded-md bg-amber-500/15 text-amber-500 border border-amber-500/30 text-[10px] font-mono-code font-bold cursor-pointer">
+      💡 使用指南
     </button>
-    <button onclick="openVersionHistoryModal()" class="px-2 py-0.5 rounded-md bg-sky-500/10 text-sky-500 border border-sky-500/30 text-[10px] font-mono-code font-bold cursor-pointer transition">
-      📜 <span id="footerVersionText">v1.4 · 版本更新记录</span>
+    <button onclick="openVersionHistoryModal()" class="px-2 py-0.5 rounded-md bg-sky-500/10 text-sky-500 border border-sky-500/30 text-[10px] font-mono-code font-bold cursor-pointer">
+      📜 <span id="footerVersionText">v1.5 · 版本记录</span>
     </button>
-    <button onclick="unlockAndOpenVibeModal()" class="px-2 py-0.5 rounded-md bg-[var(--content)]/60 hover:bg-amber-500/15 hover:text-amber-500 border border-[var(--border)] text-[10px] font-mono-code cursor-pointer transition" title="打开隐藏的实时反馈与 AI 迭代舱">
-      ✦ 定制师 Vibe 调优入口
+    <button onclick="unlockAndOpenVibeModal()" class="px-2 py-0.5 rounded-md bg-[var(--content)]/60 hover:bg-amber-500/15 hover:text-amber-500 border border-[var(--border)] text-[10px] font-mono-code cursor-pointer">
+      ✦ Vibe 调优舱
     </button>
   </footer>
 
-  <!-- ==================== MOBILE BOTTOM NAVIGATION ==================== -->
-  <nav id="mobileBottomBar" class="lg:hidden fixed bottom-0 inset-x-0 z-30 bg-[var(--card)]/95 backdrop-blur-md border-t border-[var(--border)] grid grid-cols-5 py-1.5 px-1">
-    <button onclick="switchMobilePane('map')" class="mob-nav-btn flex flex-col items-center justify-center py-1 text-[11px] font-extrabold text-amber-500 cursor-pointer">
-      <span>🗺️ 地图详情</span>
+  <!-- ==================== MOBILE BOTTOM NAVIGATION (True View Switcher Like South America) ==================== -->
+  <nav id="mobileBottomBar" class="lg:hidden fixed bottom-0 inset-x-0 z-30 bg-[var(--card)]/95 backdrop-blur-md border-t border-[var(--border)] grid grid-cols-5 py-1 px-1">
+    <button data-mview="explore" onclick="setMobileView('explore')" class="mob-nav-btn flex flex-col items-center justify-center py-1 rounded-xl text-[10px] font-extrabold text-amber-500 bg-amber-500/10 cursor-pointer">
+      <span class="text-sm leading-none">🗺️</span>
+      <span class="mt-0.5">地图详情</span>
     </button>
-    <button onclick="switchMobilePane('list')" class="mob-nav-btn flex flex-col items-center justify-center py-1 text-[11px] font-semibold text-[var(--muted-foreground)] cursor-pointer">
-      <span>📍 11日节点</span>
+    <button data-mview="list" onclick="setMobileView('list')" class="mob-nav-btn flex flex-col items-center justify-center py-1 rounded-xl text-[10px] font-semibold text-[var(--muted-foreground)] cursor-pointer">
+      <span class="text-sm leading-none">📋</span>
+      <span class="mt-0.5">25节点</span>
     </button>
-    <button onclick="switchMobilePane('photos')" class="mob-nav-btn flex flex-col items-center justify-center py-1 text-[11px] font-semibold text-[var(--muted-foreground)] cursor-pointer">
-      <span>📸 机位图鉴</span>
+    <button data-mview="elev" onclick="setMobileView('elev')" class="mob-nav-btn flex flex-col items-center justify-center py-1 rounded-xl text-[10px] font-semibold text-[var(--muted-foreground)] cursor-pointer">
+      <span class="text-sm leading-none">⛰️</span>
+      <span class="mt-0.5">海拔决策</span>
     </button>
-    <button onclick="switchMobilePane('ai')" class="mob-nav-btn flex flex-col items-center justify-center py-1 text-[11px] font-semibold text-[var(--muted-foreground)] cursor-pointer">
-      <span>🤖 随身领队</span>
+    <button data-mview="photos" onclick="setMobileView('photos')" class="mob-nav-btn flex flex-col items-center justify-center py-1 rounded-xl text-[10px] font-semibold text-[var(--muted-foreground)] cursor-pointer">
+      <span class="text-sm leading-none">📸</span>
+      <span class="mt-0.5">机位清单</span>
     </button>
-    <button onclick="openUserGuideModal()" class="mob-nav-btn flex flex-col items-center justify-center py-1 text-[11px] font-extrabold text-amber-500 cursor-pointer">
-      <span>💡 使用指南</span>
+    <button data-mview="ai" onclick="setMobileView('ai')" class="mob-nav-btn flex flex-col items-center justify-center py-1 rounded-xl text-[10px] font-semibold text-[var(--muted-foreground)] cursor-pointer">
+      <span class="text-sm leading-none">🤖</span>
+      <span class="mt-0.5">随身领队</span>
     </button>
   </nav>
+
 
   <!-- ==================== CORE APPLICATION DATA & LOGIC ==================== -->
   <script>
@@ -1617,7 +1636,7 @@
       lfMap = L.map("leafletMap", {
         center: [27.65, 99.65],
         zoom: 8,
-        zoomControl: true,
+        zoomControl: false,
         attributionControl: false
       });
       applyLeafletTiles(activeMapMode);
@@ -1668,14 +1687,38 @@
       return "#d97706";                        // Amber for Scenic / Towns
     }
 
-    function renderMap(fitBounds = true) {
+    function buildPopupHtml(p) {
+      return `
+        <div class="space-y-1 text-xs">
+          <div class="flex items-center justify-between gap-1 pr-4">
+            <span class="px-1.5 py-0.2 rounded bg-amber-500 text-slate-950 font-mono-code font-black text-[10px]">#${p.id} · ${p.day.split(" ")[0]}</span>
+            <span class="text-[10px] font-mono-code font-bold text-sky-500">⛰️ ${p.elev}m</span>
+          </div>
+          <div class="font-black text-[11px] text-[var(--foreground)] leading-tight truncate">${p.name}</div>
+          <div class="text-[10px] text-[var(--muted-foreground)] leading-tight truncate">${p.city} · ${p.localName.split("·")[0]}</div>
+          <div class="grid grid-cols-2 gap-1 pt-0.5">
+            <a href="${getAmapMarkerUrl(p)}" target="_blank" rel="noopener" class="py-1 px-1.5 rounded-lg bg-sky-600 !text-white font-extrabold text-[10px] text-center no-underline">🧭 高德导航</a>
+            <button onclick="openDriverModal(${p.id})" class="py-1 px-1.5 rounded-lg bg-amber-500 text-slate-950 font-black text-[10px] cursor-pointer">🪪 司机卡</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderMap(fitBounds = true, openSelectedPopup = false) {
       const list = getFilteredPlaces();
-      document.getElementById("visibleCountBadge").textContent = String(list.length);
+      const badgeEl = document.getElementById("visibleCountBadge");
+      if (badgeEl) badgeEl.textContent = String(list.length);
+
+      const curP = places.find(item => item.id === selectedPlaceId) || places[0];
+      const elevBadge = document.getElementById("mapActiveElevBadge");
+      if (elevBadge && curP) {
+        elevBadge.textContent = `#${curP.id} · ⛰️${curP.elev}m`;
+      }
 
       if (activeMapMode === "vector" || typeof L === "undefined") {
         document.getElementById("leafletMap").classList.add("hidden");
         document.getElementById("vectorMapWrap").classList.remove("hidden");
-        document.getElementById("engineBadge").textContent = "🏔️ 高原无网离线等高线矢量路书 · 0信号可用";
+        document.getElementById("engineBadge").textContent = "🏔️ 离线等高线矢量路书 · 0信号可用";
         renderVectorMap(list);
         return;
       }
@@ -1684,8 +1727,8 @@
       document.getElementById("vectorMapWrap").classList.add("hidden");
       document.getElementById("engineBadge").textContent =
         activeMapMode === "amap_sat"
-          ? "🛰️ 高德卫星雪山地形混合图层 · 国内免翻墙直连"
-          : "🟢 高德地图 GCJ-02 实时路网 · 国内免翻墙直连";
+          ? "🛰️ 高德卫星雪山地形 · 大陆直连"
+          : "🟢 高德 GCJ-02 实景 · 大陆直连";
 
       initLeafletMap();
       if (!lfMap) {
@@ -1707,22 +1750,38 @@
         }).addTo(lfMap);
       }
 
+      const popupMaxW = Math.min(220, Math.max(176, (window.innerWidth || 375) - 72));
+      let selectedMarkerRef = null;
       list.forEach(p => {
         const isSel = p.id === selectedPlaceId;
-        const size = isSel ? 32 : 26;
+        const size = isSel ? 30 : 24;
         const icon = L.divIcon({
           className: "",
           html: `<div class="gm-pin-wrap ${isSel ? 'selected' : ''}" style="width:${size}px;height:${size}px;background:${pinColorFor(p)};">${p.id}</div>`,
           iconSize: [size, size],
-          iconAnchor: [size / 2, size / 2]
+          iconAnchor: [size / 2, size / 2],
+          popupAnchor: [0, -Math.round(size / 2)]
         });
         const marker = L.marker([p.lat, p.lng], { icon }).addTo(lfMap);
-        marker.on("click", () => selectPlace(p.id, true, false));
+        marker.bindPopup(buildPopupHtml(p), {
+          maxWidth: popupMaxW,
+          minWidth: 176,
+          autoPanPaddingTopLeft: [14, 52],
+          autoPanPaddingBottomRight: [14, 36],
+          closeButton: true
+        });
+        marker.on("click", () => selectPlace(p.id, true, false, false, true));
+        if (isSel) selectedMarkerRef = marker;
         lfMarkers.push(marker);
       });
 
       if (fitBounds && latlngs.length > 0) {
-        lfMap.fitBounds(latlngs, { padding: [36, 36], maxZoom: 12 });
+        lfMap.fitBounds(latlngs, { paddingTopLeft: [24, 46], paddingBottomRight: [24, 34], maxZoom: 12 });
+      }
+      if (openSelectedPopup && selectedMarkerRef) {
+        setTimeout(() => {
+          try { selectedMarkerRef.openPopup(); } catch (e) {}
+        }, 120);
       }
     }
 
@@ -1789,6 +1848,14 @@
       return `https://www.dianping.com/search/keyword/1/0_${encodeURIComponent(p.name.replace(/🏨|🥾|🌅|⏰/g, "").trim())}`;
     }
 
+    window.stepPlace = function(delta) {
+      const list = getFilteredPlaces();
+      const pool = list.length > 0 ? list : places;
+      const idx = pool.findIndex(item => item.id === selectedPlaceId);
+      const nextIdx = idx === -1 ? 0 : (idx + delta + pool.length) % pool.length;
+      selectPlace(pool[nextIdx].id, true, true);
+    };
+
     function renderDetailCard() {
       const p = places.find(item => item.id === selectedPlaceId) || places[0];
       const box = document.getElementById("detailCard");
@@ -1796,30 +1863,38 @@
 
       const catBadge =
         p.cat === "hotel"
-          ? `<span class="px-2 py-0.5 rounded-md text-[11px] font-extrabold bg-rose-500/15 text-rose-500 border border-rose-500/30">🏨 甄选雪山美宿</span>`
+          ? `<span class="px-1.5 py-0.5 rounded-md text-[10px] font-extrabold bg-rose-500/15 text-rose-500 border border-rose-500/30">🏨 雪山美宿</span>`
           : p.cat === "hike"
-          ? `<span class="px-2 py-0.5 rounded-md text-[11px] font-extrabold bg-emerald-500/15 text-emerald-500 border border-emerald-500/30">🥾 高原秘境徒步</span>`
-          : `<span class="px-2 py-0.5 rounded-md text-[11px] font-extrabold bg-amber-500/15 text-amber-500 border border-amber-500/30">📷 核心观景节点</span>`;
+          ? `<span class="px-1.5 py-0.5 rounded-md text-[10px] font-extrabold bg-emerald-500/15 text-emerald-500 border border-emerald-500/30">🥾 秘境徒步</span>`
+          : `<span class="px-1.5 py-0.5 rounded-md text-[10px] font-extrabold bg-amber-500/15 text-amber-500 border border-amber-500/30">📷 观景节点</span>`;
 
       box.innerHTML = `
-        <div class="flex flex-col gap-3">
-          <div class="flex flex-wrap items-start justify-between gap-2">
-            <div class="space-y-1 min-w-0">
-              <div class="flex flex-wrap items-center gap-1.5">
-                <span class="px-2 py-0.5 rounded-md text-[11px] font-mono-code font-black bg-[var(--primary)] text-[var(--primary-foreground)]">#${p.id} · ${p.day}</span>
-                ${catBadge}
-                <span class="px-2 py-0.5 rounded-md text-[11px] font-mono-code font-extrabold bg-sky-500/15 text-sky-500 border border-sky-500/30">⛰️ 海拔 ${p.elev}m</span>
-              </div>
-              <h2 class="text-base sm:text-lg font-black text-[var(--foreground)] leading-snug">${p.name}</h2>
-              <p class="text-xs text-[var(--muted-foreground)] font-medium">${p.localName} · 📍 ${p.city}</p>
+        <div class="flex flex-col gap-2.5">
+          <!-- Top Bar: Badges + Prev/Next Stepper (Matches South America Place Sheet) -->
+          <div class="flex items-center justify-between gap-1.5">
+            <div class="flex flex-wrap items-center gap-1 min-w-0">
+              <span class="px-2 py-0.5 rounded-md text-[10px] font-mono-code font-black bg-[var(--primary)] text-[var(--primary-foreground)]">#${p.id} · ${p.day}</span>
+              ${catBadge}
+              <span class="px-1.5 py-0.5 rounded-md text-[10px] font-mono-code font-extrabold bg-sky-500/15 text-sky-400 border border-sky-500/30">⛰️ ${p.elev}m</span>
             </div>
+            <div class="flex items-center gap-1 shrink-0">
+              <button onclick="stepPlace(-1)" class="px-2 py-1 rounded-lg text-[11px] font-extrabold bg-[var(--content)] hover:bg-amber-500/20 text-[var(--foreground)] border border-[var(--border)] cursor-pointer">‹ 上一站</button>
+              <button onclick="stepPlace(1)" class="px-2 py-1 rounded-lg text-[11px] font-extrabold bg-[var(--content)] hover:bg-amber-500/20 text-[var(--foreground)] border border-[var(--border)] cursor-pointer">下一站 ›</button>
+            </div>
+          </div>
 
-            <div class="flex items-center gap-1.5 shrink-0">
-              <button onclick="speakText('${p.name.replace(/'/g, "")}，请带我去${p.city}${p.localName.split("·")[0]}')" class="px-2.5 py-1.5 rounded-xl text-xs font-extrabold bg-[var(--content)] hover:bg-amber-500/20 text-[var(--foreground)] border border-[var(--border)] cursor-pointer" title="语音播报地名">
-                🔊 播报
+          <!-- Title + Driver Card & Audio Buttons -->
+          <div class="flex items-start justify-between gap-2">
+            <div class="min-w-0">
+              <h2 class="text-sm sm:text-lg font-black text-[var(--foreground)] leading-snug">${p.name}</h2>
+              <p class="text-[11px] text-[var(--muted-foreground)] font-medium truncate mt-0.5">${p.localName} · 📍 ${p.city}</p>
+            </div>
+            <div class="flex items-center gap-1 shrink-0">
+              <button onclick="speakText('${p.name.replace(/'/g, "")}，请带我去${p.city}${p.localName.split("·")[0]}')" class="px-2 py-1 rounded-lg text-[11px] font-extrabold bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] cursor-pointer" title="语音播报地名">
+                🔊
               </button>
-              <button onclick="openDriverModal(${p.id})" class="px-3 py-1.5 rounded-xl text-xs font-extrabold bg-amber-500 text-slate-950 hover:opacity-95 cursor-pointer">
-                🪪 给司机/管家看
+              <button onclick="openDriverModal(${p.id})" class="px-2.5 py-1 rounded-lg text-[11px] font-black bg-amber-500 text-slate-950 hover:opacity-95 cursor-pointer">
+                🪪 司机卡
               </button>
             </div>
           </div>
@@ -1827,39 +1902,39 @@
           <!-- Hiking / Technical Metrics & Camera Spot Banner -->
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
             <div class="p-2.5 rounded-xl bg-[var(--content)]/70 border border-[var(--border)]">
-              <div class="text-[11px] font-extrabold text-emerald-600 dark:text-emerald-400">🥾 里程 / 海拔 / 节奏指标</div>
-              <div class="font-bold text-[var(--foreground)] mt-0.5 leading-relaxed">${p.hikeInfo}</div>
+              <div class="text-[10px] font-extrabold text-emerald-500">🥾 里程 / 海拔 / 节奏指标</div>
+              <div class="font-bold text-[var(--foreground)] mt-0.5 leading-relaxed text-[11px] sm:text-xs">${p.hikeInfo}</div>
             </div>
             <div class="p-2.5 rounded-xl bg-[var(--content)]/70 border border-[var(--border)]">
-              <div class="text-[11px] font-extrabold text-amber-600 dark:text-amber-400">📷 最佳机位与黄金时刻</div>
-              <div class="font-bold text-[var(--foreground)] mt-0.5 leading-relaxed">${p.cameraSpot}</div>
+              <div class="text-[10px] font-extrabold text-amber-500">📷 最佳机位与黄金时刻</div>
+              <div class="font-bold text-[var(--foreground)] mt-0.5 leading-relaxed text-[11px] sm:text-xs">${p.cameraSpot}</div>
             </div>
           </div>
 
           <!-- Editorial Description & Tips -->
-          <div class="text-xs sm:text-sm text-[var(--foreground)] leading-relaxed space-y-1.5">
+          <div class="text-xs text-[var(--foreground)] leading-relaxed space-y-1.5">
             <p>${p.desc}</p>
-            <div class="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/25 text-xs text-[var(--foreground)]">
-              <span class="font-black text-amber-600 dark:text-amber-400">💡 私家路书锦囊：</span>${p.tips}
+            <div class="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/25 text-[11px] sm:text-xs text-[var(--foreground)]">
+              <span class="font-black text-amber-500">💡 路书锦囊：</span>${p.tips}
             </div>
           </div>
 
-          <!-- 100% China Mainland Domestic Services Action Bar -->
-          <div class="pt-1 border-t border-[var(--border)] flex flex-wrap items-center gap-1.5">
-            <a href="${getAmapMarkerUrl(p)}" target="_blank" rel="noopener" class="px-3 py-1.5 rounded-xl text-xs font-extrabold bg-sky-600 text-white hover:opacity-95 transition flex items-center gap-1">
-              🧭 高德地图导航
+          <!-- Mobile Thumb-Zone 2x2 Action Grid (100% China Mainland Domestic Services) -->
+          <div class="pt-1.5 border-t border-[var(--border)] grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-1.5">
+            <a href="${getAmapMarkerUrl(p)}" target="_blank" rel="noopener" class="px-2.5 py-2 sm:py-1.5 rounded-xl text-xs font-extrabold bg-sky-600 text-white hover:opacity-95 transition flex items-center justify-center gap-1">
+              🧭 高德导航
             </a>
-            <a href="${getBaiduMarkerUrl(p)}" target="_blank" rel="noopener" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] hover:border-sky-500 transition flex items-center gap-1">
-              🗺️ 百度地图
+            <a href="${getXiaohongshuUrl(p)}" target="_blank" rel="noopener" class="px-2.5 py-2 sm:py-1.5 rounded-xl text-xs font-extrabold bg-rose-500/15 text-rose-500 border border-rose-500/30 hover:bg-rose-500/25 transition flex items-center justify-center gap-1">
+              📕 小红书机位
             </a>
-            <a href="${getXiaohongshuUrl(p)}" target="_blank" rel="noopener" class="px-3 py-1.5 rounded-xl text-xs font-extrabold bg-rose-500/15 text-rose-600 dark:text-rose-400 border border-rose-500/30 hover:bg-rose-500/25 transition flex items-center gap-1">
-              📕 小红书实拍机位
-            </a>
-            <button onclick="openBaikeModal(${p.id})" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] hover:border-amber-500 transition cursor-pointer flex items-center gap-1">
-              📖 百度百科 / 风物志
+            <button onclick="openBaikeModal(${p.id})" class="px-2.5 py-2 sm:py-1.5 rounded-xl text-xs font-bold bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] hover:border-amber-500 transition cursor-pointer flex items-center justify-center gap-1">
+              📖 百科/风物志
             </button>
-            <a href="${getDianpingUrl(p)}" target="_blank" rel="noopener" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] hover:border-orange-500 transition flex items-center gap-1">
+            <a href="${getDianpingUrl(p)}" target="_blank" rel="noopener" class="px-2.5 py-2 sm:py-1.5 rounded-xl text-xs font-bold bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] hover:border-orange-500 transition flex items-center justify-center gap-1">
               🍜 大众点评/携程
+            </a>
+            <a href="${getBaiduMarkerUrl(p)}" target="_blank" rel="noopener" class="hidden sm:flex px-2.5 py-1.5 rounded-xl text-xs font-bold bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] hover:border-sky-500 transition items-center justify-center gap-1">
+              🗺️ 百度地图
             </a>
           </div>
         </div>
@@ -1881,7 +1956,7 @@
         .map(p => {
           const isSel = p.id === selectedPlaceId;
           return `
-            <div data-place-id="${p.id}" onclick="selectPlace(${p.id}, false, true)" class="p-2.5 rounded-xl cursor-pointer transition flex items-start gap-2.5 ${
+            <div data-place-id="${p.id}" onclick="selectPlace(${p.id}, false, true, true)" class="p-2.5 rounded-xl cursor-pointer transition flex items-start gap-2.5 ${
             isSel
               ? "bg-amber-500/15 border border-amber-500/40"
               : "hover:bg-[var(--content)]/70 border border-transparent"
@@ -1891,8 +1966,8 @@
               </div>
               <div class="min-w-0 flex-1">
                 <div class="flex items-center justify-between gap-1">
-                  <span class="text-[10px] font-mono-code font-bold text-amber-600 dark:text-amber-400">${p.day}</span>
-                  <span class="text-[10px] font-mono-code font-semibold text-sky-500">⛰️ ${p.elev}m</span>
+                  <span class="text-[10px] font-mono-code font-bold text-amber-500">${p.day}</span>
+                  <span class="text-[10px] font-mono-code font-semibold text-sky-400">⛰️ ${p.elev}m</span>
                 </div>
                 <div class="text-xs font-extrabold text-[var(--foreground)] truncate mt-0.5">${p.name}</div>
                 <div class="text-[11px] text-[var(--muted-foreground)] truncate">${p.hikeInfo}</div>
@@ -1903,7 +1978,7 @@
         .join("");
     }
 
-    window.selectPlace = function(id, scrollIntoList = true, flyOnMap = true) {
+    window.selectPlace = function(id, scrollIntoList = true, flyOnMap = true, switchToExploreOnMobile = false, openSelectedPopup = false) {
       selectedPlaceId = id;
       const p = places.find(item => item.id === id);
       if (p) {
@@ -1913,9 +1988,12 @@
           renderElevationChart();
         }
       }
+      if (switchToExploreOnMobile && window.innerWidth < 1024 && typeof window.setMobileView === "function") {
+        window.setMobileView("explore");
+      }
       renderDetailCard();
       renderPlaceList();
-      renderMap(false);
+      renderMap(false, openSelectedPopup);
 
       if (flyOnMap && p && lfMap && activeMapMode !== "vector") {
         lfMap.flyTo([p.lat, p.lng], 12, { duration: 0.65 });
@@ -2351,7 +2429,7 @@
 
     // ==================== 11.5 HIDDEN VIBE FEEDBACK, AUTO-UPDATE POLLING & VERSION HISTORY ENGINE ====================
     const VIBE_NTFY_URL = "https://ntfy.sh/yungapple_yunnan2026_vibe_9f8a7b6c";
-    const APP_BUILTIN_VERSION = "v1.4";
+    const APP_BUILTIN_VERSION = "v1.5";
     let selectedVibeTags = new Set();
     let cloudVibeStatus = null;
     let postSubmitWatchTimer = null;
@@ -2359,15 +2437,27 @@
 
     const DEFAULT_VIBE_HISTORY = [
       {
+        version: "v1.5",
+        title: "手机端一屏双核架构重构 · 底部抽屉弹窗与地图气泡全面自适应",
+        timestamp: "2026-10-05 21:45 CST",
+        author: "Shuguo & 随身AI定制师",
+        scope: "📱 移动端体验重构 & 弹窗/气泡自适应",
+        vibe_prompt: "bugs for yunnan，dialog and popup width is not Mobile adaptive，overall looks bad...",
+        changes: [
+          "重构手机端首屏架构（对齐南美路书体验）：顶部精简为单行导航条，首屏直接呈现「高德实景地图(悬浮图层胶囊) + 当前景点深度卡片(含‹上一站/下一站›切换)」，彻底消除横向滚动条与首屏遮挡",
+          "全站 6 大弹窗（使用指南/Vibe调优舱/版本记录/11日总表/司机卡/导出）在手机端(<=640px)全面升级为 iOS 风格底部抽屉(Bottom Sheet, 100vw, 85dvh)，并取消首次打开网页时的 600ms 强行自动弹窗遮挡",
+          "新增高德地图 Marker 点击气泡手机端自适应宽度约束 (max-width: min(264px, 100vw-40px)) 与一键导航/司机卡快捷按钮，新增底部 5 栏真正视图切换 (setMobileView)"
+        ]
+      },
+      {
         version: "v1.4",
-        title: "上线「💡 功能导览与同行旅伴使用指南」首屏弹窗 & 一键复制微信分享文案",
+        title: "上线「💡 功能导览与同行旅伴使用指南」弹窗 & 一键复制微信分享文案",
         timestamp: "2026-10-05 18:22 CST",
         author: "Shuguo & 随身AI定制师",
         scope: "🌟 全环线导览体验 & 旅伴分享指南",
         vibe_prompt: "生成一段功能介绍和使用帮助，我好转发给朋友，同时也需要在Web App里展示一个dialog凸显出来",
         changes: [
-          "新增显著的「💡 2026 滇西北·雪山秘境奢野路书 · 功能介绍与使用指南」弹窗 (#userGuideModal)，首次访问网页 600ms 自动弹出（支持勾选下次不再自动弹出，或访问 ?guide=1 直达）",
-          "在顶部导航栏、页面底部与手机底部工具栏同步新增醒目的金色「💡 使用指南」按钮，四大核心功能卡片一目了然",
+          "新增「💡 2026 滇西北·雪山秘境奢野路书 · 功能介绍与使用指南」弹窗 (#userGuideModal)，支持点击顶部「💡 指南」或访问 ?guide=1 直达",
           "弹窗内内置「📲 一键复制微信分享文案」卡片，方便直接转发给同行旅伴微信群"
         ]
       },
@@ -2379,7 +2469,7 @@
         scope: "🌟 全环线自动迭代闭环 & 版本记录系统",
         vibe_prompt: "懂了，有点儿意思，那岂不是可以完成自动vibe反馈然后自动更新了？加上更新版本记录",
         changes: [
-          "新增「📜 v1.3 · 版本记录」顶部徽章与完整版本演进弹窗 (#versionHistoryModal)，完整展示每次迭代的版本号、提交人、Vibe 原话与变更细项",
+          "新增「📜 版本记录」顶部徽章与完整版本演进弹窗 (#versionHistoryModal)，完整展示每次迭代的版本号、提交人、Vibe 原话与变更细项",
           "新增提交 Vibe 后的「8秒实时自动检测新版本」轮询引擎 (#vibeAutoWatchBox)，检测到云端新版本上线后自动清理缓存并弹出「🎉 新版本已上线 · 立即刷新」横幅",
           "升级 Cloudtop 守护进程 vibe_bridge.py 为 5 步全自动「改代码 ➔ 递增版本号写 Changelog ➔ 重建产物 ➔ 4秒极速发布 GitHub Pages ➔ 双端通知」闭环"
         ]
@@ -2392,7 +2482,7 @@
         scope: "🌟 整体行程 Vibe 与交互闭环",
         vibe_prompt: "在网页加一个隐藏入口，同行旅伴随时输入新的 Vibe，自动通知 Cloudtop 上的守护进程并唤醒专属会话迭代重发页面",
         changes: [
-          "新增三击左上角「云境」徽章、点击 ✦ 按钮或访问 ?vibe=1 唤醒隐藏式「Vibe 实时迭代舱」",
+          "新增三击左上角「云境」徽章、点击 ✨ 按钮或访问 ?vibe=1 唤醒「Vibe 实时迭代舱」",
           "打通国内手机浏览器免翻墙直连公网信箱 (ntfy.sh) ──► Cloudtop 守护进程 8 秒轮询 ──► 自动唤醒专属会话 (4aa6fc13) 改版闭环",
           "内置高原弱网兜底：断网时自动复制结构化 Vibe 反馈口令至剪贴板"
         ]
@@ -2429,12 +2519,6 @@
     };
 
     window.closeUserGuideModal = function() {
-      const chk = document.getElementById("chkDontShowGuideAgain");
-      if (!chk || chk.checked) {
-        localStorage.setItem("yunnan2026_guide_seen_v14", "1");
-      } else {
-        localStorage.removeItem("yunnan2026_guide_seen_v14");
-      }
       document.getElementById("userGuideModal")?.classList.add("hidden");
     };
 
@@ -2511,7 +2595,7 @@
             logEl.textContent = `最近已上线 Vibe：${cloudVibeStatus.latest_summary}`;
           }
           if (headerVer) headerVer.textContent = `${verCode} · 版本记录`;
-          if (footerVer) footerVer.textContent = `${verCode} · 版本更新记录`;
+          if (footerVer) footerVer.textContent = `${verCode} · 版本记录`;
           if (vhPill) vhPill.textContent = verCode;
 
           renderVibeHistory();
@@ -2540,13 +2624,13 @@
       if (localItems.length > 0) {
         const latestLocal = localItems[0];
         pendingHtml = `
-          <div class="p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/40 space-y-1.5">
+          <div class="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/40 space-y-1">
             <div class="flex items-center justify-between gap-2">
               <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-amber-500 text-slate-950">🚀 本机最近提交的 Vibe 需求</span>
-              <span class="text-[11px] text-amber-500 font-bold">${latestLocal.author || '旅伴'} · ${latestLocal.scope || '全环线'}</span>
+              <span class="text-[11px] text-amber-500 font-bold truncate">${latestLocal.author || '旅伴'} · ${latestLocal.scope || '全环线'}</span>
             </div>
             <div class="text-xs font-bold text-[var(--foreground)]">“${latestLocal.message}”</div>
-            <div class="text-[11px] text-[var(--muted-foreground)]">状态：已直连投递至 Cloudtop 守护进程，完成后将自动生成新版本记录并排入下方列表顶部。</div>
+            <div class="text-[11px] text-[var(--muted-foreground)]">状态：已直连投递至 Cloudtop 守护进程，完成后将自动生成新版本记录。</div>
           </div>
         `;
       }
@@ -2558,21 +2642,21 @@
           : (entry.summary ? [entry.summary] : []);
         const bullets = changesArr.map(c => `<li class="flex items-start gap-1.5"><span class="text-sky-500 font-black">•</span><span>${c}</span></li>`).join("");
         return `
-          <div class="p-4 rounded-2xl ${isLatest ? 'bg-sky-500/10 border-2 border-sky-500/40' : 'bg-[var(--content)]/60 border border-[var(--border)]'} space-y-2">
-            <div class="flex flex-wrap items-center justify-between gap-2">
-              <div class="flex items-center gap-2">
-                <span class="px-2.5 py-0.5 rounded-full text-xs font-black ${isLatest ? 'bg-sky-500 text-slate-950' : 'bg-[var(--card)] text-[var(--foreground)] border border-[var(--border)]'}">${entry.version || 'v1.x'}</span>
-                ${isLatest ? '<span class="px-2 py-0.5 rounded-md text-[10px] font-black bg-emerald-500/20 text-emerald-500">当前在线版本 (LIVE)</span>' : ''}
-                <span class="font-black text-xs sm:text-sm text-[var(--foreground)]">${entry.title || entry.scope || '版本迭代更新'}</span>
+          <div class="p-3.5 rounded-2xl ${isLatest ? 'bg-sky-500/10 border-2 border-sky-500/40' : 'bg-[var(--content)]/60 border border-[var(--border)]'} space-y-1.5">
+            <div class="flex flex-wrap items-center justify-between gap-1.5">
+              <div class="flex flex-wrap items-center gap-1.5">
+                <span class="px-2 py-0.5 rounded-full text-[11px] font-black ${isLatest ? 'bg-sky-500 text-slate-950' : 'bg-[var(--card)] text-[var(--foreground)] border border-[var(--border)]'}">${entry.version || 'v1.x'}</span>
+                ${isLatest ? '<span class="px-1.5 py-0.5 rounded-md text-[10px] font-black bg-emerald-500/20 text-emerald-500">当前在线版本</span>' : ''}
+                <span class="font-black text-xs text-[var(--foreground)]">${entry.title || entry.scope || '版本迭代更新'}</span>
               </div>
-              <span class="text-[11px] font-mono-code text-[var(--muted-foreground)]">${entry.timestamp || ''}</span>
+              <span class="text-[10px] font-mono-code text-[var(--muted-foreground)]">${entry.timestamp || ''}</span>
             </div>
-            <div class="flex flex-wrap items-center gap-2 text-[11px]">
-              <span class="px-2 py-0.5 rounded bg-[var(--card)] border border-[var(--border)] font-bold text-[var(--foreground)]">👤 发起人：${entry.author || 'Shuguo'}</span>
-              <span class="px-2 py-0.5 rounded bg-[var(--card)] border border-[var(--border)] font-bold text-amber-500">🎯 赛段：${entry.scope || '全环线'}</span>
+            <div class="flex flex-wrap items-center gap-1.5 text-[10px]">
+              <span class="px-2 py-0.5 rounded bg-[var(--card)] border border-[var(--border)] font-bold text-[var(--foreground)]">👤 ${entry.author || 'Shuguo'}</span>
+              <span class="px-2 py-0.5 rounded bg-[var(--card)] border border-[var(--border)] font-bold text-amber-500">🎯 ${entry.scope || '全环线'}</span>
             </div>
-            ${entry.vibe_prompt ? `<div class="p-2.5 rounded-xl bg-[var(--card)]/80 border border-[var(--border)] text-[11px] text-[var(--muted-foreground)]"><span class="font-extrabold text-[var(--foreground)]">💬 触发 Vibe 原话：</span>“${entry.vibe_prompt}”</div>` : ''}
-            <ul class="space-y-1 text-xs text-[var(--foreground)] leading-relaxed pt-0.5">
+            ${entry.vibe_prompt ? `<div class="p-2 rounded-xl bg-[var(--card)]/80 border border-[var(--border)] text-[11px] text-[var(--muted-foreground)]"><span class="font-extrabold text-[var(--foreground)]">💬 Vibe 原话：</span>“${entry.vibe_prompt}”</div>` : ''}
+            <ul class="space-y-1 text-[11px] sm:text-xs text-[var(--foreground)] leading-relaxed pt-0.5">
               ${bullets}
             </ul>
           </div>
@@ -2601,10 +2685,10 @@
         html += `
           <div class="p-2 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-start justify-between gap-2">
             <div class="min-w-0">
-              <div class="font-extrabold text-amber-500">[本机已投递] ${it.scope} · ${it.author || '旅伴'}</div>
+              <div class="font-extrabold text-amber-500 truncate">[本机已投递] ${it.scope} · ${it.author || '旅伴'}</div>
               <div class="text-[var(--foreground)] truncate">${it.message}</div>
             </div>
-            <span class="shrink-0 px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-500 font-bold text-[10px]">🚀 AI自动编译中</span>
+            <span class="shrink-0 px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-500 font-bold text-[10px]">🚀 编译中</span>
           </div>
         `;
       });
@@ -2614,7 +2698,7 @@
         html += `
           <div onclick="openVersionHistoryModal()" class="p-2 rounded-xl bg-[var(--content)]/60 hover:bg-sky-500/10 border border-[var(--border)] flex items-start justify-between gap-2 cursor-pointer transition">
             <div class="min-w-0">
-              <div class="font-bold text-sky-500">[已上线 ${cit.version || ''}] ${cit.title || cit.scope || '全环线'}</div>
+              <div class="font-bold text-sky-500 truncate">[已上线 ${cit.version || ''}] ${cit.title || cit.scope || '全环线'}</div>
               <div class="text-[var(--muted-foreground)] truncate">${firstChange}</div>
             </div>
             <span class="shrink-0 px-2 py-0.5 rounded bg-sky-500/20 text-sky-500 font-bold text-[10px]">📜 详情</span>
@@ -2635,10 +2719,10 @@
       if (watchBox) watchBox.classList.remove("hidden");
       if (btnReload) btnReload.classList.add("hidden");
       if (watchTitle) {
-        watchTitle.textContent = `📡 1. 已投递至公网信箱 ──► 🧠 2. Cloudtop AI 正在基于 ${baselineVersionAtSubmit} 实时编译新版本 (每8秒自动轮询)...`;
+        watchTitle.textContent = `📡 1. 已投递 ──► 🧠 2. AI 正在基于 ${baselineVersionAtSubmit} 实时编译新版本 (每8秒检测)...`;
       }
       if (watchSub) {
-        watchSub.textContent = "当云端专属会话 (4aa6fc13) 完成代码修改、版本记录更新并发布到 GitHub Pages 后，本页将自动弹出升级横幅。";
+        watchSub.textContent = "当云端专属会话完成改版并发布到 GitHub Pages 后，本页将自动弹出升级横幅。";
       }
 
       if (postSubmitWatchTimer) clearInterval(postSubmitWatchTimer);
@@ -2649,7 +2733,6 @@
         if (liveVer && baselineVersionAtSubmit && liveVer !== baselineVersionAtSubmit) {
           clearInterval(postSubmitWatchTimer);
           postSubmitWatchTimer = null;
-          // Clear SW cache in background so reload is guaranteed fresh
           if ("caches" in window) {
             caches.keys().then(keys => keys.forEach(k => caches.delete(k))).catch(() => {});
           }
@@ -2660,7 +2743,7 @@
           const topBanner = document.getElementById("vibeNewReleaseBanner");
           const topBannerText = document.getElementById("vibeNewReleaseBannerText");
           if (topBannerText) {
-            topBannerText.textContent = `🎉 新版本 ${latest.version} 已根据你的 Vibe 自动编译上线！(${latest.latest_summary || '点击右侧按钮立即刷新'})`;
+            topBannerText.textContent = `🎉 新版本 ${latest.version} 已上线！(${latest.latest_summary || '点击立即刷新'})`;
           }
           if (topBanner) topBanner.classList.remove("hidden");
         }
@@ -2717,7 +2800,6 @@
       }
 
       try {
-        // Simple CORS POST (text/plain avoids preflight OPTIONS blocking in China mobile webviews)
         const resp = await fetch(VIBE_NTFY_URL, {
           method: "POST",
           body: JSON.stringify(payload)
@@ -2733,12 +2815,12 @@
 
         if (statusEl) {
           statusEl.className = "text-xs font-bold text-emerald-500";
-          statusEl.textContent = "✅ 已送达 Cloudtop！AI 正在自动改版并更新版本记录，下方已开启每 8 秒新版本自动检测！";
+          statusEl.textContent = "✅ 已送达 Cloudtop！AI 正在自动改版，下方已开启每 8 秒新版本检测！";
         }
       } catch (err) {
         if (statusEl) {
           statusEl.className = "text-xs font-bold text-rose-500";
-          statusEl.textContent = "⚠️ 当前处于高原弱网区，已为你复制反馈口令，可直接粘贴至微信/Chat！";
+          statusEl.textContent = "⚠️ 当前处于弱网区，已复制反馈口令，可直接粘贴至微信/Chat！";
         }
         copyVibeCommandBackup();
       } finally {
@@ -2760,7 +2842,7 @@
       }
     };
 
-    // ==================== 12. EVENT BINDINGS & INITIALIZATION ====================
+    // ==================== 12. EVENT BINDINGS, MOBILE VIEW SWITCHING & INITIALIZATION ====================
     function switchSubTab(tab) {
       ["list", "photos", "gear", "ai"].forEach(t => {
         const pane = document.getElementById(`${t}SubPane`);
@@ -2769,19 +2851,42 @@
       document.querySelectorAll(".subtab-btn").forEach(btn => {
         const active = btn.getAttribute("data-subtab") === tab;
         btn.className = active
-          ? "subtab-btn py-2 px-2 rounded-xl text-xs font-extrabold bg-[var(--card)] text-[var(--foreground)] shadow-2xs transition cursor-pointer flex items-center justify-center gap-1"
-          : "subtab-btn py-2 px-2 rounded-xl text-xs font-semibold text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition cursor-pointer flex items-center justify-center gap-1";
+          ? "subtab-btn py-2 px-1.5 rounded-xl text-xs font-extrabold bg-[var(--card)] text-[var(--foreground)] shadow-2xs transition cursor-pointer flex items-center justify-center gap-1"
+          : "subtab-btn py-2 px-1.5 rounded-xl text-xs font-semibold text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition cursor-pointer flex items-center justify-center gap-1";
       });
     }
 
-    window.switchMobilePane = function(target) {
-      if (target === "map") {
+    window.setMobileView = function(mview) {
+      const mapCol = document.getElementById("mapPaneCol");
+      const rightCol = document.getElementById("rightPaneCol");
+      document.querySelectorAll(".mob-nav-btn").forEach(btn => {
+        const isAct = btn.getAttribute("data-mview") === mview;
+        btn.className = isAct
+          ? "mob-nav-btn flex flex-col items-center justify-center py-1 rounded-xl text-[10px] font-extrabold text-amber-500 bg-amber-500/10 cursor-pointer"
+          : "mob-nav-btn flex flex-col items-center justify-center py-1 rounded-xl text-[10px] font-semibold text-[var(--muted-foreground)] cursor-pointer";
+      });
+
+      if (mview === "explore") {
+        mapCol?.classList.remove("hidden");
+        rightCol?.classList.add("hidden");
         window.scrollTo({ top: 0, behavior: "smooth" });
+        setTimeout(() => { if (lfMap) lfMap.invalidateSize(); }, 120);
+      } else if (mview === "elev") {
+        mapCol?.classList.remove("hidden");
+        rightCol?.classList.add("hidden");
+        document.getElementById("elevationSection")?.scrollIntoView({ behavior: "smooth", block: "start" });
       } else {
-        switchSubTab(target);
-        document.getElementById("rightPaneCol")?.scrollIntoView({ behavior: "smooth" });
+        if (window.innerWidth < 1024) {
+          mapCol?.classList.add("hidden");
+        }
+        rightCol?.classList.remove("hidden");
+        rightCol?.classList.add("flex");
+        switchSubTab(mview === "list" ? "list" : mview === "photos" ? "photos" : "ai");
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }
     };
+
+    window.switchMobilePane = window.setMobileView;
 
     document.addEventListener("DOMContentLoaded", () => {
       // Layer tabs
@@ -2791,8 +2896,8 @@
           document.querySelectorAll(".layer-btn").forEach(b => {
             const isAct = b === btn;
             b.className = isAct
-              ? "layer-btn shrink-0 px-2.5 py-1 rounded-xl text-xs font-extrabold bg-[var(--primary)] text-[var(--primary-foreground)] transition cursor-pointer flex items-center gap-1"
-              : "layer-btn shrink-0 px-2.5 py-1 rounded-xl text-xs font-semibold bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] transition cursor-pointer flex items-center gap-1";
+              ? "layer-btn shrink-0 px-2.5 py-1 rounded-full text-[11px] font-extrabold bg-[var(--primary)] text-[var(--primary-foreground)] transition cursor-pointer flex items-center gap-1"
+              : "layer-btn shrink-0 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] transition cursor-pointer flex items-center gap-1";
           });
           const filtered = getFilteredPlaces();
           if (filtered.length > 0 && !filtered.some(p => p.id === selectedPlaceId)) {
@@ -2804,15 +2909,15 @@
         });
       });
 
-      // Map mode switcher
+      // Map mode switcher (Floating Glass Pill inside Map)
       document.querySelectorAll(".map-mode-btn").forEach(btn => {
         btn.addEventListener("click", () => {
           activeMapMode = btn.getAttribute("data-map-mode") || "amap_road";
           document.querySelectorAll(".map-mode-btn").forEach(b => {
             const isAct = b === btn;
             b.className = isAct
-              ? "map-mode-btn px-2.5 py-1 rounded-lg text-xs font-extrabold bg-[var(--primary)] text-[var(--primary-foreground)] transition cursor-pointer"
-              : "map-mode-btn px-2.5 py-1 rounded-lg text-xs font-semibold bg-[var(--card)] text-[var(--foreground)] border border-[var(--border)] transition cursor-pointer";
+              ? "map-mode-btn px-2 py-1 rounded-lg text-[11px] font-extrabold bg-[var(--primary)] text-[var(--primary-foreground)] transition cursor-pointer"
+              : "map-mode-btn px-2 py-1 rounded-lg text-[11px] font-semibold text-slate-200 hover:text-white transition cursor-pointer";
           });
           if (activeMapMode !== "vector") applyLeafletTiles(activeMapMode);
           renderMap(false);
@@ -2826,8 +2931,8 @@
           document.querySelectorAll(".cat-btn").forEach(b => {
             const isAct = b === btn;
             b.className = isAct
-              ? "cat-btn px-2 py-1 rounded-lg text-[11px] font-extrabold bg-amber-500/20 text-amber-600 dark:text-amber-400 border border-amber-500/30 cursor-pointer"
-              : "cat-btn px-2 py-1 rounded-lg text-[11px] font-semibold bg-[var(--card)] text-[var(--muted-foreground)] border border-[var(--border)] cursor-pointer";
+              ? "cat-btn px-2 py-1 rounded-lg text-[10px] font-extrabold bg-amber-500 text-slate-950 cursor-pointer"
+              : "cat-btn px-2 py-1 rounded-lg text-[10px] font-semibold text-slate-200 cursor-pointer";
           });
           renderPlaceList();
           renderMap(true);
@@ -2885,10 +2990,10 @@
           if (!tag) return;
           if (selectedVibeTags.has(tag)) {
             selectedVibeTags.delete(tag);
-            btn.className = "vibe-tag-btn px-2.5 py-1.5 rounded-xl bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] font-bold cursor-pointer transition";
+            btn.className = "vibe-tag-btn px-2 py-1 rounded-lg bg-[var(--content)] text-[var(--foreground)] border border-[var(--border)] text-[11px] font-bold cursor-pointer transition";
           } else {
             selectedVibeTags.add(tag);
-            btn.className = "vibe-tag-btn px-2.5 py-1.5 rounded-xl bg-amber-500 text-slate-950 border border-amber-500 font-black cursor-pointer transition";
+            btn.className = "vibe-tag-btn px-2 py-1 rounded-lg bg-amber-500 text-slate-950 border border-amber-500 text-[11px] font-black cursor-pointer transition";
           }
         });
       });
@@ -2921,7 +3026,7 @@
         });
       }
 
-      // Check URL ?vibe=1 or #vibe or ?changelog=1 or ?guide=1 or first-visit auto-popup
+      // Check URL ?vibe=1 or #vibe or ?changelog=1 or ?guide=1 (No intrusive auto-popup on initial load!)
       const urlParams = new URLSearchParams(window.location.search);
       if (urlParams.get("vibe") === "1" || window.location.hash === "#vibe") {
         unlockAndOpenVibeModal();
@@ -2929,10 +3034,6 @@
         openVersionHistoryModal();
       } else if (urlParams.get("guide") === "1" || window.location.hash === "#guide") {
         openUserGuideModal();
-      } else if (localStorage.getItem("yunnan2026_guide_seen_v14") !== "1") {
-        setTimeout(() => {
-          openUserGuideModal();
-        }, 600);
       }
 
       if (localStorage.getItem("yn2026_vibe_unlocked") === "1") {
@@ -2944,7 +3045,7 @@
       renderElevationChart();
       renderDetailCard();
       renderPlaceList();
-      renderMap(true);
+      renderMap(true, urlParams.get("popup") === "1");
       loadAndRenderPhotos();
       renderGearChecklist();
       refreshVibeStatusJson();
