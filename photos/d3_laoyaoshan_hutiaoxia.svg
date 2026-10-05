@@ -1,40 +1,84 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675">
   <defs>
-    <linearGradient id="sky" x1="0%" y1="0%" x2="0%" y2="100%">
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000" flood-opacity="0.45"/>
+    </filter>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+  
+  <defs>
+    <linearGradient id="sky3" x1="0" y1="0" x2="0" y2="100%">
       <stop offset="0%" stop-color="#1e1b4b"/>
-      <stop offset="55%" stop-color="#312e81"/>
-      <stop offset="100%" stop-color="#f97316"/>
+      <stop offset="45%" stop-color="#312e81"/>
+      <stop offset="75%" stop-color="#ea580c"/>
+      <stop offset="100%" stop-color="#fef08a"/>
     </linearGradient>
-    <linearGradient id="goldGlow" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#ffedd5" stop-opacity="0.95"/>
-      <stop offset="50%" stop-color="#f97316" stop-opacity="0.75"/>
-      <stop offset="100%" stop-color="#312e81" stop-opacity="0.9"/>
-    </linearGradient>
-    <linearGradient id="lake" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#312e81" stop-opacity="0.88"/>
-      <stop offset="100%" stop-color="#1e1b4b" stop-opacity="0.98"/>
+    <linearGradient id="rapids" x1="0" y1="0" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#b45309"/>
+      <stop offset="50%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#d97706"/>
     </linearGradient>
   </defs>
-  <rect width="1200" height="675" fill="url(#sky)"/>
-  <circle cx="920" cy="170" r="88" fill="#ffedd5" opacity="0.22"/>
-  <circle cx="920" cy="170" r="46" fill="#ffedd5" opacity="0.55"/>
-  <!-- Distant sacred snow peaks -->
-  <polygon points="0,470 180,260 340,390 540,165 730,350 910,195 1090,340 1200,250 1200,500 0,500" fill="url(#goldGlow)"/>
-  <polygon points="540,165 615,280 485,310" fill="#ffffff" opacity="0.92"/>
-  <polygon points="910,195 975,290 855,315" fill="#ffffff" opacity="0.88"/>
-  <polygon points="180,260 235,340 130,355" fill="#ffffff" opacity="0.82"/>
-  <!-- Foreground alpine ridge -->
-  <polygon points="0,485 260,370 490,445 780,355 1040,435 1200,380 1200,520 0,520" fill="#1e1b4b" opacity="0.72"/>
-  <!-- Alpine glacial lake reflection -->
-  <rect x="0" y="485" width="1200" height="190" fill="url(#lake)"/>
-  <path d="M 120 530 Q 420 515 720 535 T 1120 525" stroke="#ffedd5" stroke-width="2" fill="none" opacity="0.35"/>
-  <path d="M 220 570 Q 520 558 840 575 T 1080 565" stroke="#ffedd5" stroke-width="1.5" fill="none" opacity="0.25"/>
-  <!-- Top badge -->
-  <rect x="44" y="38" width="420" height="44" rx="22" fill="#090d16" fill-opacity="0.68" stroke="#ffedd5" stroke-opacity="0.4"/>
-  <text x="68" y="66" fill="#ffedd5" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="20" font-weight="bold">🏔️ 滇西北·雪山秘境奢野环线 · 3,820m 老药山 → 1,980m 虎跳峡</text>
-  <!-- Bottom editorial overlay -->
-  <rect x="0" y="490" width="1200" height="185" fill="#090d16" fill-opacity="0.62"/>
-  <text x="48" y="548" fill="#ffffff" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="34" font-weight="900">老药山云海草甸轻徒步 & 虎跳峡新茶马雪景美宿</text>
-  <text x="48" y="590" fill="#ffedd5" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="22" font-weight="600">D3 · 10/06 · 日间 3,820m / 睡眠 1,980m · 黄金高爬低睡</text>
-  <text x="48" y="632" fill="#cbd5e1" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="19">📷 新茶马全景落地窗 / 老药山 3800m 高山杜鹃草甸</text>
+  <rect width="1200" height="675" fill="url(#sky3)"/>
+  <!-- Sunset Rays Piercing Canyon -->
+  <polygon points="600,200 450,450 750,450" fill="#fde047" opacity="0.25"/>
+  <!-- Towering Vertical Cliffs of Tiger Leaping Gorge (两岸千仞绝壁) -->
+  <polygon points="0,0 260,0 380,320 220,440 0,460" fill="#1e293b"/>
+  <polygon points="1200,0 940,0 820,300 960,440 1200,460" fill="#1e293b"/>
+  <!-- Layered Cliff Facets -->
+  <polygon points="260,0 200,280 340,340 380,320" fill="#334155" opacity="0.7"/>
+  <polygon points="940,0 1000,260 860,320 820,300" fill="#334155" opacity="0.7"/>
+  <!-- Raging Jinsha River Surging Rapids (金沙江咆哮狂澜) -->
+  <rect x="0" y="440" width="1200" height="80" fill="url(#rapids)"/>
+  <path d="M 0 460 Q 200 430 400 470 T 800 450 T 1200 465" stroke="#ffffff" stroke-width="8" fill="none" opacity="0.85"/>
+  <path d="M 50 490 Q 300 465 550 500 T 950 480 T 1200 495" stroke="#ffffff" stroke-width="6" fill="none" opacity="0.8"/>
+  <path d="M 120 445 Q 350 420 600 455 T 1080 440" stroke="#fef08a" stroke-width="4" fill="none" opacity="0.9"/>
+  <!-- Iconic Tiger Leaping Stone in river (虎跳石) -->
+  <path d="M 520 490 L 550 430 Q 600 410 650 430 L 680 490 Z" fill="#0f172a" stroke="#475569" stroke-width="3"/>
+  <!-- Majestic Golden Leaping Tiger Silhouette (猛虎越涧) -->
+  <g transform="translate(510, 290) scale(0.95)" filter="url(#glow)">
+    <!-- Tiger body leaping arc -->
+    <path d="M 30 75 Q 80 40 140 50 Q 180 30 210 50 Q 190 70 150 85 Q 90 95 30 75 Z" fill="#f59e0b" stroke="#d97706" stroke-width="2"/>
+    <!-- Tiger head & open roaring jaws -->
+    <path d="M 195 45 L 225 35 L 235 50 L 220 58 L 210 52 Z" fill="#f59e0b"/>
+    <circle cx="215" cy="42" r="2.5" fill="#000000"/>
+    <!-- Ears -->
+    <polygon points="205,38 212,25 218,36" fill="#f59e0b"/>
+    <!-- Powerful front legs reaching forward -->
+    <path d="M 175 65 L 230 85 L 225 95 L 165 75 Z" fill="#f59e0b"/>
+    <path d="M 160 70 L 210 95 L 205 105 L 150 80 Z" fill="#d97706"/>
+    <!-- Back legs kicking back -->
+    <path d="M 45 75 L 0 100 L -5 90 L 35 65 Z" fill="#f59e0b"/>
+    <path d="M 55 80 L 15 110 L 8 102 L 48 72 Z" fill="#d97706"/>
+    <!-- Long curved tail -->
+    <path d="M 30 75 Q -10 60 -15 35 Q -8 30 0 45" stroke="#f59e0b" stroke-width="5" fill="none"/>
+    <!-- Tiger stripes -->
+    <path d="M 75 58 L 78 72 M 100 55 L 105 75 M 125 58 L 130 76 M 150 62 L 153 78" stroke="#78350f" stroke-width="3" stroke-linecap="round"/>
+  </g>
+  <!-- New Tea-Horse Inn Balcony & Mountain Tea (新茶马观景露台) -->
+  <g transform="translate(60, 370)">
+    <rect x="0" y="40" width="160" height="40" fill="#0f172a" rx="4" stroke="#475569" stroke-width="2"/>
+    <line x1="0" y1="40" x2="160" y2="40" stroke="#f59e0b" stroke-width="3"/>
+    <text x="12" y="65" fill="#fef08a" font-size="14" font-weight="bold">☕ 新茶马雪景茶台</text>
+  </g>
+
+  <!-- Top Badges -->
+  <g filter="url(#shadow)">
+    <rect x="40" y="32" width="460" height="42" rx="21" fill="#090d16" fill-opacity="0.75" stroke="#f59e0b" stroke-width="1.5" stroke-opacity="0.6"/>
+    <text x="64" y="59" fill="#fef08a" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'PingFang SC', sans-serif" font-size="19" font-weight="800">🐯 金沙狂澜 · 猛虎越涧与新茶马</text>
+    
+    <rect x="1000" y="32" width="160" height="42" rx="21" fill="#090d16" fill-opacity="0.75" stroke="#38bdf8" stroke-width="1.5" stroke-opacity="0.5"/>
+    <text x="1080" y="59" text-anchor="middle" fill="#7dd3fc" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'PingFang SC', sans-serif" font-size="17" font-weight="700">3,820m 老药山</text>
+  </g>
+  <!-- Bottom Glassmorphism Editorial Info Card -->
+  <g filter="url(#shadow)">
+    <rect x="28" y="492" width="1144" height="155" rx="24" fill="#090d16" fill-opacity="0.82" stroke="#334155" stroke-width="1.5"/>
+    <rect x="28" y="492" width="1144" height="6" rx="3" fill="#f59e0b"/>
+    <text x="56" y="542" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'PingFang SC', sans-serif" font-size="30" font-weight="900">老药山云海草甸轻徒步 &amp; 虎跳峡新茶马雪景美宿</text>
+    <text x="56" y="582" fill="#fbbf24" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'PingFang SC', sans-serif" font-size="20" font-weight="700">D3 · 10/06 · 日间 3,820m / 睡眠 1,980m · 黄金高爬低睡</text>
+    <text x="56" y="620" fill="#cbd5e1" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'PingFang SC', sans-serif" font-size="18">🐯 虎跳石怒涛狂澜 · 猛虎腾跃 · 新茶马客栈落地窗直面玉龙背坡</text>
+  </g>
 </svg>
