@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-  <title>2026 滇西北秘境巅峰穿越 11 日随行伴侣 · 探险复盘与开支审计 | Travel Studio Telemetry</title>
+  <title>2026 滇西北秘境巅峰穿越 11 日随行伴侣 · 旅途复盘与开支审计 | Travel Studio Telemetry</title>
   
   <!-- Modern Tailwind CSS via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -11,7 +11,7 @@
   <!-- Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=JetBrains+Mono:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Serif+SC:wght@600;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Serif+SC:wght@600;700;900&display=swap" rel="stylesheet">
 
   <style>
     body {
@@ -22,10 +22,13 @@
     .font-serif-title { font-family: 'Cormorant Garamond', 'Noto Serif SC', serif; }
     .font-mono-code { font-family: 'JetBrains Mono', monospace; }
     .glass-nav {
-      background: rgba(250, 248, 245, 0.88);
+      background: rgba(250, 248, 245, 0.90);
       backdrop-filter: blur(16px);
       border-bottom: 1px solid rgba(0, 0, 0, 0.07);
     }
+    /* Custom scrollbar */
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
 <body class="selection:bg-amber-200 selection:text-amber-950">
@@ -45,7 +48,7 @@
           <span>📖</span>
           <span>行后画报</span>
         </a>
-        <a href="index.html" class="px-3 py-1.5 rounded-full text-xs font-bold bg-stone-900 text-stone-50 shadow-xs flex items-center gap-1.5 shrink-0" title="当前：探险里程、海拔与开支复盘">
+        <a href="index.html" class="px-3 py-1.5 rounded-full text-xs font-bold bg-stone-900 text-stone-50 shadow-xs flex items-center gap-1.5 shrink-0" title="当前：旅途里程、轨迹剖面与开支审计">
           <span>📊</span>
           <span>旅途复盘</span>
         </a>
@@ -65,164 +68,796 @@
     </div>
   </header>
 
-  <!-- ==================== HEADER ==================== -->
-  <section class="py-12 sm:py-16 px-6 sm:px-12 max-w-5xl mx-auto space-y-4">
+  <!-- ==================== HEADER SECTION ==================== -->
+  <section class="py-10 sm:py-14 px-6 sm:px-12 max-w-5xl mx-auto space-y-4">
     <div class="flex items-center gap-2 text-xs font-bold text-amber-700 font-mono-code uppercase tracking-wider">
-      <span>EXPEDITION TELEMETRY & FINANCIAL DEBRIEF</span>
+      <span>POST-TRIP TELEMETRY & FINANCIAL AUDIT</span>
     </div>
     <h1 class="font-serif-title text-3xl sm:text-5xl font-bold text-stone-900 leading-tight">
-      南美 15 日远征数据复盘与财务审计
+      2026 滇西北秘境巅峰穿越 11 日随行伴侣 · 旅途复盘与审计
     </h1>
-    <p class="text-stone-600 text-sm sm:text-base leading-relaxed font-sans max-w-2xl">
-      从横跨大洋的飞行轨道，到冰川与雨林间的徒步跋涉；从行前预算估算，到实际决算的逐笔分类归档。这是一份完全公开透明的远征真实报告。
+    <p class="text-stone-600 text-sm sm:text-base leading-relaxed font-sans max-w-3xl">
+      真实数据驱动的行后复盘套件：涵盖规划行程理论跨距测算、户外运动手表/两步路 GPX 轨迹实时高程剖面解析、多币种交互式开支审计账本，以及旅行决策与装备利用率反思。
     </p>
   </section>
 
-  <!-- ==================== 4 METRIC TILES ==================== -->
+  <!-- ==================== DYNAMIC VERIFIED METRIC TILES ==================== -->
   <section class="max-w-5xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-4">
     <div class="p-5 rounded-3xl bg-white border border-stone-200/80 shadow-xs space-y-1">
-      <span class="text-stone-400 font-mono-code text-[11px] block uppercase">总位移里程</span>
-      <div class="font-mono-code text-2xl sm:text-3xl font-bold text-stone-900">29,850<span class="text-xs text-stone-500 font-normal"> km</span></div>
-      <p class="text-[11px] text-stone-500">含国际长航线与内陆支线</p>
+      <span class="text-stone-400 font-mono-code text-[11px] block uppercase">行程时间跨度</span>
+      <div class="font-mono-code text-2xl sm:text-3xl font-bold text-stone-900">11<span class="text-xs text-stone-500 font-normal"> 天</span></div>
+      <p class="text-[11px] text-stone-500 font-mono-code">2026-10-04 ~ 2026-10-14</p>
     </div>
 
     <div class="p-5 rounded-3xl bg-white border border-stone-200/80 shadow-xs space-y-1">
-      <span class="text-stone-400 font-mono-code text-[11px] block uppercase">荒野徒步距离</span>
-      <div class="font-mono-code text-2xl sm:text-3xl font-bold text-emerald-600">146.8<span class="text-xs text-stone-500 font-normal"> km</span></div>
-      <p class="text-[11px] text-stone-500">冰川冰上徒步与原生雨林</p>
+      <span class="text-stone-400 font-mono-code text-[11px] block uppercase">途经站点节点</span>
+      <div class="font-mono-code text-2xl sm:text-3xl font-bold text-emerald-600">17<span class="text-xs text-stone-500 font-normal"> 站</span></div>
+      <p class="text-[11px] text-stone-500">涵盖 6 大阶段与地标大区</p>
     </div>
 
     <div class="p-5 rounded-3xl bg-white border border-stone-200/80 shadow-xs space-y-1">
-      <span class="text-stone-400 font-mono-code text-[11px] block uppercase">累计高差爬升</span>
-      <div class="font-mono-code text-2xl sm:text-3xl font-bold text-sky-600">4,820<span class="text-xs text-stone-500 font-normal"> m</span></div>
-      <p class="text-[11px] text-stone-500">安第斯山麓与菲茨罗伊山谷</p>
+      <span class="text-stone-400 font-mono-code text-[11px] block uppercase">规划理论直线跨度</span>
+      <div class="font-mono-code text-2xl sm:text-3xl font-bold text-sky-600">~430<span class="text-xs text-stone-500 font-normal"> km</span></div>
+      <p class="text-[11px] text-stone-500">依据所有停留点坐标实时测算</p>
     </div>
 
     <div class="p-5 rounded-3xl bg-white border border-stone-200/80 shadow-xs space-y-1">
-      <span class="text-stone-400 font-mono-code text-[11px] block uppercase">极端实测温差</span>
-      <div class="font-mono-code text-2xl sm:text-3xl font-bold text-amber-600">36.1<span class="text-xs text-stone-500 font-normal"> °C</span></div>
-      <p class="text-[11px] text-stone-500">-2.0°C (冰川) ~ 34.1°C (赤道)</p>
+      <span class="text-stone-400 font-mono-code text-[11px] block uppercase">实际户外运动轨迹</span>
+      <div id="trackedMetricVal" class="font-mono-code text-2xl sm:text-3xl font-bold text-amber-600">待导入<span class="text-xs text-stone-500 font-normal"></span></div>
+      <p id="trackedMetricSub" class="text-[11px] text-stone-500">拖入 GPX/KML 即可计算</p>
     </div>
   </section>
 
-  <!-- ==================== EXPLORER BADGES ==================== -->
-  <section class="max-w-5xl mx-auto px-6 py-12 space-y-6">
-    <h3 class="font-serif-title text-2xl font-bold text-stone-900">
-      数字探索荣誉勋章 (Explorer Badges)
-    </h3>
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-      <div class="p-5 rounded-3xl bg-gradient-to-br from-sky-950 via-slate-900 to-stone-950 text-white border border-sky-500/30 space-y-2">
-        <span class="text-3xl">🧊</span>
-        <h4 class="font-serif-title text-lg font-bold text-sky-300">破冰行者 · Ice Pioneer</h4>
-        <p class="text-xs text-stone-300 leading-relaxed font-sans">
-          手执专业冰镐，穿戴钢齿冰爪踏足佩里托莫雷诺冰裂缝深渊，在三万年老冰上完成 4 小时深度冰川穿越。
-        </p>
-      </div>
-
-      <div class="p-5 rounded-3xl bg-gradient-to-br from-amber-950 via-stone-900 to-stone-950 text-white border border-amber-500/30 space-y-2">
-        <span class="text-3xl">🥃</span>
-        <h4 class="font-serif-title text-lg font-bold text-amber-300">万年冰上祝酒客 · Glacialist</h4>
-        <p class="text-xs text-stone-300 leading-relaxed font-sans">
-          在冰川最幽深避风港，凿取三万年前未受人类工业文明污染的远古冰块，斟入苏格兰单一麦芽威士忌。
-        </p>
-      </div>
-
-      <div class="p-5 rounded-3xl bg-gradient-to-br from-emerald-950 via-stone-900 to-stone-950 text-white border border-emerald-500/30 space-y-2">
-        <span class="text-3xl">🦅</span>
-        <h4 class="font-serif-title text-lg font-bold text-emerald-300">世界尽头追风人 · Windchaser</h4>
-        <p class="text-xs text-stone-300 leading-relaxed font-sans">
-          顶住巴塔哥尼亚 8 级咆哮西风，在阿根廷湖与麦哲伦荒漠边缘完成大陆尺度的跨越南美大地漫游。
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ==================== FINANCIAL AUDIT ==================== -->
+  <!-- ==================== SECTION 1: OUTDOOR TRACK & ELEVATION TELEMETRY ==================== -->
   <section class="max-w-5xl mx-auto px-6 py-8 space-y-6">
-    <div class="border-b border-stone-200 pb-3 flex items-baseline justify-between">
-      <h3 class="font-serif-title text-2xl font-bold text-stone-900">
-        财务复盘与开支审计 (Financial Breakdown)
-      </h3>
-      <span class="text-xs font-mono-code text-stone-500">双人 15 日决算审计</span>
+    <div class="border-b border-stone-200 pb-3 flex items-baseline justify-between flex-wrap gap-2">
+      <div>
+        <span class="text-xs font-bold text-amber-700 font-mono-code uppercase">TELEMETRY ENGINE</span>
+        <h3 class="font-serif-title text-2xl font-bold text-stone-900">
+          户外运动轨迹与高程剖面解析
+        </h3>
+      </div>
+      <span class="text-xs font-mono-code text-stone-500">支持 Garmin / Apple Watch / 两步路 / AllTrails</span>
+    </div>
+
+    <!-- Dropzone & Track Stats Container -->
+    <div class="bg-white rounded-3xl p-6 border border-stone-200/80 shadow-xs space-y-6">
+      
+      <!-- Upload / Drop Box -->
+      <div id="trackDropzone" class="border-2 border-dashed border-stone-300 hover:border-amber-500 rounded-2xl p-6 text-center transition cursor-pointer bg-stone-50/50">
+        <input type="file" id="trackFileInput" accept=".gpx,.kml" class="hidden">
+        <div class="space-y-2">
+          <span class="text-3xl">🧭</span>
+          <p class="text-sm font-bold text-stone-800">
+            拖拽或点击载入户外轨迹文件 (<span class="font-mono-code text-amber-600">.gpx</span> / <span class="font-mono-code text-amber-600">.kml</span>)
+          </p>
+          <p class="text-xs text-stone-500 max-w-md mx-auto leading-relaxed">
+            在浏览器本地端即时解析航点、累计里程、爬升高差与海拔曲线，数据仅保存在您的本地浏览器，不上传任何服务器。
+          </p>
+        </div>
+      </div>
+
+      <!-- Parsed Track Stats (Initially Hidden) -->
+      <div id="trackResultPanel" class="hidden space-y-6">
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+          <div class="p-3 bg-stone-50 rounded-xl border border-stone-200/60">
+            <span class="text-[11px] text-stone-500 font-mono-code block">轨迹总距离</span>
+            <span id="resTrackDist" class="text-xl font-bold font-mono-code text-stone-900">0.0 km</span>
+          </div>
+          <div class="p-3 bg-stone-50 rounded-xl border border-stone-200/60">
+            <span class="text-[11px] text-stone-500 font-mono-code block">累计高差爬升</span>
+            <span id="resTrackGain" class="text-xl font-bold font-mono-code text-emerald-600">+0 m</span>
+          </div>
+          <div class="p-3 bg-stone-50 rounded-xl border border-stone-200/60">
+            <span class="text-[11px] text-stone-500 font-mono-code block">最高 / 最低海拔</span>
+            <span id="resTrackElevation" class="text-xl font-bold font-mono-code text-sky-600">0m / 0m</span>
+          </div>
+          <div class="p-3 bg-stone-50 rounded-xl border border-stone-200/60">
+            <span class="text-[11px] text-stone-500 font-mono-code block">轨迹采样点数</span>
+            <span id="resTrackPoints" class="text-xl font-bold font-mono-code text-stone-700">0 pts</span>
+          </div>
+        </div>
+
+        <!-- Canvas Elevation Profile -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between text-xs text-stone-500 font-mono-code">
+            <span>海拔剖面曲线 (Elevation Profile)</span>
+            <span id="trackFileName" class="text-stone-400"></span>
+          </div>
+          <div class="h-48 w-full bg-stone-900 rounded-xl p-3 flex items-center justify-center relative overflow-hidden">
+            <canvas id="elevationCanvas" class="w-full h-full"></canvas>
+          </div>
+        </div>
+
+        <div class="flex justify-end">
+          <button onclick="clearTrackData()" class="px-3 py-1 text-xs rounded-full text-stone-500 hover:text-rose-600 border border-stone-200 hover:border-rose-300 transition">
+            ✕ 清除轨迹数据
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 2: INTERACTIVE EXPENSE LEDGER & AUDIT ==================== -->
+  <section class="max-w-5xl mx-auto px-6 py-8 space-y-6">
+    <div class="border-b border-stone-200 pb-3 flex items-baseline justify-between flex-wrap gap-2">
+      <div>
+        <span class="text-xs font-bold text-emerald-700 font-mono-code uppercase">FINANCIAL AUDIT & LEDGER</span>
+        <h3 class="font-serif-title text-2xl font-bold text-stone-900">
+          全功能交互式开支记账与审计
+        </h3>
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="openAddExpenseModal()" class="px-3 py-1.5 rounded-full text-xs font-bold bg-stone-900 hover:bg-stone-800 text-white shadow-xs transition flex items-center gap-1">
+          <span>+</span>
+          <span>记录新支出</span>
+        </button>
+        <button onclick="exportExpensesCSV()" class="px-3 py-1.5 rounded-full text-xs font-semibold bg-stone-100 hover:bg-stone-200 text-stone-700 border border-stone-200 transition">
+          📤 导出 CSV
+        </button>
+      </div>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div class="bg-white rounded-3xl p-5 border border-stone-200/80 shadow-xs space-y-1">
+        <span class="text-[11px] font-mono-code uppercase text-stone-400">总决算支出 (折算 CNY)</span>
+        <div id="ledgerTotalCny" class="font-mono-code text-2xl font-bold text-stone-900">¥ 0.00</div>
+        <p class="text-[11px] text-stone-500" id="ledgerItemCount">共计 0 笔实际消费</p>
+      </div>
+
+      <div class="bg-white rounded-3xl p-5 border border-stone-200/80 shadow-xs space-y-1">
+        <span class="text-[11px] font-mono-code uppercase text-stone-400">最大单项开支类别</span>
+        <div id="ledgerTopCategory" class="font-mono-code text-2xl font-bold text-emerald-600">-</div>
+        <p class="text-[11px] text-stone-500" id="ledgerTopCategoryAmount">待记录</p>
+      </div>
+
+      <div class="bg-white rounded-3xl p-5 border border-stone-200/80 shadow-xs space-y-1">
+        <span class="text-[11px] font-mono-code uppercase text-stone-400">汇率折算基准</span>
+        <div class="font-mono-code text-xs text-stone-700 pt-1 space-y-0.5">
+          <div>1 USD ≈ 7.20 CNY</div>
+          <div>100 ARS ≈ 0.70 CNY · 1 BRL ≈ 1.30 CNY</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Category Progress Breakdown -->
+    <div class="bg-white rounded-3xl p-6 border border-stone-200/80 shadow-xs space-y-4">
+      <h4 class="text-xs font-bold text-stone-800 font-mono-code uppercase">各分类开支占比统计</h4>
+      <div id="categoryBars" class="space-y-3 font-mono-code text-xs">
+        <p class="text-stone-400 text-xs font-sans">暂无开支记录。点击「记录新支出」录入旅途中的机票、酒店或门票开支。</p>
+      </div>
+    </div>
+
+    <!-- Expenses Table -->
+    <div class="bg-white rounded-3xl border border-stone-200/80 shadow-xs overflow-hidden">
+      <div class="p-4 border-b border-stone-100 flex items-center justify-between gap-3 flex-wrap">
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-bold text-stone-800 font-mono-code">明细记录表</span>
+          <span class="text-[11px] text-stone-400" id="tableRecordHint">本地安全存储</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <select id="filterCategory" onchange="renderExpenseTable()" class="text-xs bg-stone-50 border border-stone-200 rounded-lg px-2.5 py-1 text-stone-700">
+            <option value="all">全部分类</option>
+            <option value="transport">✈️ 大交通与机票</option>
+            <option value="hotel">🏨 酒店与住宿</option>
+            <option value="guide">🧭 门票与专业向导</option>
+            <option value="food">🥩 餐饮与特色美酒</option>
+            <option value="gear">🛡️ 装备保险与电信</option>
+            <option value="other">📦 其他杂项消费</option>
+          </select>
+          <button onclick="clearAllExpenses()" class="text-xs text-stone-400 hover:text-rose-600 transition px-2 py-1">
+            清空账本
+          </button>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs font-sans">
+          <thead class="bg-stone-50 border-b border-stone-200/80 font-mono-code text-stone-500">
+            <tr>
+              <th class="p-3 pl-4">日期</th>
+              <th class="p-3">分类</th>
+              <th class="p-3">消费项目</th>
+              <th class="p-3">原始金额</th>
+              <th class="p-3">折合人民币</th>
+              <th class="p-3">备注</th>
+              <th class="p-3 text-right pr-4">操作</th>
+            </tr>
+          </thead>
+          <tbody id="expenseTableBody" class="divide-y divide-stone-100 font-mono-code">
+            <!-- Dynamically populated -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 3: TRIP DECISIONS & LESSONS LEARNED ==================== -->
+  <section class="max-w-5xl mx-auto px-6 py-8 space-y-6">
+    <div class="border-b border-stone-200 pb-3 flex items-baseline justify-between flex-wrap gap-2">
+      <div>
+        <span class="text-xs font-bold text-sky-700 font-mono-code uppercase">FIELD LESSONS & RETROSPECTIVE</span>
+        <h3 class="font-serif-title text-2xl font-bold text-stone-900">
+          实战决策复盘与装备利用率审计
+        </h3>
+      </div>
+      <button onclick="saveRetroNotes()" class="px-3 py-1 rounded-full text-xs font-bold bg-stone-900 text-white hover:bg-stone-800 transition">
+        💾 保存复盘心得
+      </button>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <!-- Breakdown Table -->
-      <div class="bg-white rounded-3xl p-6 border border-stone-200/80 shadow-xs space-y-4">
-        <div class="flex justify-between items-center pb-3 border-b border-stone-100">
-          <span class="font-bold text-stone-800">总决算支出</span>
-          <span class="font-mono-code text-xl font-bold text-stone-900">¥ 118,500 <span class="text-xs text-emerald-600 font-normal">(-8.2% 优于预算)</span></span>
-        </div>
-        <div class="space-y-3 font-mono-code text-xs">
-          <div class="flex justify-between text-stone-600">
-            <span>✈️ 洲际及内陆大交通 (8飞)</span>
-            <span class="font-semibold text-stone-900">¥ 48,200 (40.7%)</span>
-          </div>
-          <div class="flex justify-between text-stone-600">
-            <span>🏨 野奢/五星酒店 (14晚)</span>
-            <span class="font-semibold text-stone-900">¥ 38,600 (32.6%)</span>
-          </div>
-          <div class="flex justify-between text-stone-600">
-            <span>🧭 深度探险与国家公园向导</span>
-            <span class="font-semibold text-stone-900">¥ 16,800 (14.2%)</span>
-          </div>
-          <div class="flex justify-between text-stone-600">
-            <span>🥩 餐饮、葡萄酒与特色体验</span>
-            <span class="font-semibold text-stone-900">¥ 11,400 (9.6%)</span>
-          </div>
-          <div class="flex justify-between text-stone-600">
-            <span>🛡️ 全险、签证与卫星通讯</span>
-            <span class="font-semibold text-stone-900">¥ 3,500 (2.9%)</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Decision Retrospective -->
+      
+      <!-- Card A: Successful Decisions -->
       <div class="bg-white rounded-3xl p-6 border border-stone-200/80 shadow-xs space-y-3">
-        <h4 class="font-serif-title text-lg font-bold text-stone-900">实战决策复盘 (Plan A vs Plan B)</h4>
-        <div class="space-y-3 text-xs text-stone-600 leading-relaxed font-sans">
-          <div class="p-3 rounded-2xl bg-stone-50 border border-stone-200">
-            <strong class="text-stone-900 font-bold block mb-1">✅ 成功决策 1：佩里托莫雷诺大冰川 Big Ice 深度穿</strong>
-            虽然比 Mini-Trekking 贵且体力消耗更大，但深入冰裂缝腹地并品尝威士忌带来的记忆厚度，是普通观景台完全无法比拟的。
+        <h4 class="font-serif-title text-lg font-bold text-emerald-800 flex items-center gap-2">
+          <span>✅</span>
+          <span>高价值与成功决策 (Plan A vs Plan B)</span>
+        </h4>
+        <p class="text-xs text-stone-500 leading-relaxed">
+          记录在行程中最有价值的决策、值得推荐的游览次序或体验安排：
+        </p>
+        <textarea id="retroGood" rows="5" class="w-full text-xs text-stone-800 p-3 rounded-2xl bg-stone-50 border border-stone-200 focus:outline-none focus:ring-1 focus:ring-emerald-500 font-sans leading-relaxed" placeholder="例如：预留充足时间给冰川深度徒步；提前办理入境电子登记节约排队时间..."></textarea>
+      </div>
+
+      <!-- Card B: Pitfalls & Improvement Points -->
+      <div class="bg-white rounded-3xl p-6 border border-stone-200/80 shadow-xs space-y-3">
+        <h4 class="font-serif-title text-lg font-bold text-amber-800 flex items-center gap-2">
+          <span>⚠️</span>
+          <span>踩坑提示与节奏改进建议</span>
+        </h4>
+        <p class="text-xs text-stone-500 leading-relaxed">
+          记录需要避坑的段落、换乘衔接注意点或下一次同类行程的优化方向：
+        </p>
+        <textarea id="retroBad" rows="5" class="w-full text-xs text-stone-800 p-3 rounded-2xl bg-stone-50 border border-stone-200 focus:outline-none focus:ring-1 focus:ring-amber-500 font-sans leading-relaxed" placeholder="例如：某段内陆航班托运额度较严；极端大风天气需备齐防风系带..."></textarea>
+      </div>
+
+      <!-- Card C: Gear Utilization Audit -->
+      <div class="bg-white rounded-3xl p-6 border border-stone-200/80 shadow-xs space-y-3 md:col-span-2">
+        <h4 class="font-serif-title text-lg font-bold text-stone-900 flex items-center gap-2">
+          <span>🎒</span>
+          <span>装备利用率反思 (MVP 神器 vs 冗余负重)</span>
+        </h4>
+        <p class="text-xs text-stone-500 leading-relaxed">
+          总结哪些装备使用频率极高，哪些物品全程未用可以断舍离：
+        </p>
+        <textarea id="retroGear" rows="4" class="w-full text-xs text-stone-800 p-3 rounded-2xl bg-stone-50 border border-stone-200 focus:outline-none focus:ring-1 focus:ring-stone-500 font-sans leading-relaxed" placeholder="例如：超轻防风冲锋衣利用率 100%；重型脚架在大风中极少使用，下回可选择轻便八爪鱼支架..."></textarea>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== MODAL: ADD EXPENSE ==================== -->
+  <div id="addExpenseModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl space-y-4">
+      <div class="flex items-center justify-between pb-2 border-b border-stone-100">
+        <h3 class="font-serif-title text-xl font-bold text-stone-900">记录新支出</h3>
+        <button onclick="closeAddExpenseModal()" class="text-stone-400 hover:text-stone-800 text-lg">✕</button>
+      </div>
+      
+      <form id="expenseForm" onsubmit="handleSaveExpense(event)" class="space-y-3 text-xs">
+        <div>
+          <label class="block text-stone-600 font-bold mb-1">日期</label>
+          <input type="date" id="expDate" required class="w-full p-2.5 rounded-xl border border-stone-200 bg-stone-50 font-mono-code">
+        </div>
+
+        <div>
+          <label class="block text-stone-600 font-bold mb-1">支出分类</label>
+          <select id="expCategory" required class="w-full p-2.5 rounded-xl border border-stone-200 bg-stone-50 font-sans">
+            <option value="transport">✈️ 大交通与机票</option>
+            <option value="hotel">🏨 酒店与住宿</option>
+            <option value="guide">🧭 门票与专业向导</option>
+            <option value="food">🥩 餐饮与特色美酒</option>
+            <option value="gear">🛡️ 装备保险与电信</option>
+            <option value="other">📦 其他杂项消费</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-stone-600 font-bold mb-1">消费项目名称</label>
+          <input type="text" id="expTitle" placeholder="如：国内往返机票 / 冰川公园门票" required class="w-full p-2.5 rounded-xl border border-stone-200 bg-stone-50 font-sans">
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-stone-600 font-bold mb-1">币种</label>
+            <select id="expCurrency" class="w-full p-2.5 rounded-xl border border-stone-200 bg-stone-50 font-mono-code">
+              <option value="CNY">CNY (人民币 ¥)</option>
+              <option value="USD">USD (美元 $)</option>
+              <option value="ARS">ARS (阿根廷比索)</option>
+              <option value="BRL">BRL (巴西雷亚尔 R$)</option>
+            </select>
           </div>
-          <div class="p-3 rounded-2xl bg-stone-50 border border-stone-200">
-            <strong class="text-stone-900 font-bold block mb-1">✅ 成功决策 2：轻装包扎深入雨林，大行李寄存市区</strong>
-            玛瑙斯美居酒店成功寄存 28 寸大行李箱，仅携带防水双肩包进入生态水寨，让水陆快艇换乘与独木舟穿梭极其轻盈敏捷。
+          <div>
+            <label class="block text-stone-600 font-bold mb-1">金额</label>
+            <input type="number" step="0.01" id="expAmount" placeholder="0.00" required class="w-full p-2.5 rounded-xl border border-stone-200 bg-stone-50 font-mono-code">
           </div>
         </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- ==================== PACKING RETROSPECTIVE ==================== -->
-  <section class="max-w-5xl mx-auto px-6 py-8 pb-20 space-y-6">
-    <h3 class="font-serif-title text-2xl font-bold text-stone-900">
-      装备利用率审计 (Packing Retrospective)
-    </h3>
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-sans">
-      <div class="p-5 rounded-3xl bg-emerald-500/10 border border-emerald-500/25 space-y-2 text-stone-800">
-        <span class="font-bold text-emerald-800 uppercase font-mono-code block">MVP 神器 · 利用率 100%</span>
-        <ul class="space-y-1 list-disc list-inside">
-          <li><strong>Gore-Tex 高保暖硬壳冲锋衣</strong>：抵御巴塔哥尼亚 8 级咆哮寒风唯一护甲。</li>
-          <li><strong>折叠登山杖与抓地高帮徒步鞋</strong>：碎石坡与泥泞冰川不可或缺的防扭伤支点。</li>
-          <li><strong>双口 100W 氮化镓充电头 + 大容量移动电源</strong>：寒冷高反下手机与相机保命供电。</li>
-        </ul>
-      </div>
+        <div>
+          <label class="block text-stone-600 font-bold mb-1">备注说明 (可选)</label>
+          <input type="text" id="expNote" placeholder="如：含 2 件托运行李" class="w-full p-2.5 rounded-xl border border-stone-200 bg-stone-50 font-sans">
+        </div>
 
-      <div class="p-5 rounded-3xl bg-rose-500/10 border border-rose-500/25 space-y-2 text-stone-800">
-        <span class="font-bold text-rose-800 uppercase font-mono-code block">冗余反思 · 下次果断断舍离</span>
-        <ul class="space-y-1 list-disc list-inside">
-          <li><strong>重型全尺寸三脚架</strong>：大风下极易共振倾覆，大光圈手持或石头配平更实用。</li>
-          <li><strong>过多厚棉衣物</strong>：速干抓绒 + 超轻羽绒分层组合远比沉重单件灵活保暖。</li>
-        </ul>
-      </div>
+        <div class="pt-3 flex gap-2 justify-end">
+          <button type="button" onclick="closeAddExpenseModal()" class="px-4 py-2 rounded-xl text-stone-600 hover:bg-stone-100 transition">取消</button>
+          <button type="submit" class="px-5 py-2 rounded-xl bg-stone-900 text-white font-bold hover:bg-stone-800 transition">保存记录</button>
+        </div>
+      </form>
     </div>
-  </section>
+  </div>
 
   <!-- ==================== FOOTER ==================== -->
   <footer class="py-12 border-t border-stone-200 text-center text-xs text-stone-500 font-mono-code">
-    <p>Travel Studio · Expedition Telemetry & Debrief Suite · 2026</p>
+    <p>Travel Studio · Telemetry & Ledger Engine · 2026</p>
   </footer>
 
+  <!-- ==================== LOGIC ENGINE SCRIPT ==================== -->
+  <script>
+    const TRIP_ID = "yunnan-2026";
+    const EXPENSES_KEY = "travel_studio_expenses_" + TRIP_ID;
+    const RETRO_KEY = "travel_studio_retro_" + TRIP_ID;
+    const TRACK_KEY = "travel_studio_track_" + TRIP_ID;
+
+    // Exchange Rates against CNY (Base currency)
+    const RATES = {
+      CNY: 1.0,
+      USD: 7.20,
+      ARS: 0.007,
+      BRL: 1.30
+    };
+
+    const CATEGORY_NAMES = {
+      transport: "✈️ 大交通与机票",
+      hotel: "🏨 酒店与住宿",
+      guide: "🧭 门票与专业向导",
+      food: "🥩 餐饮与特色美酒",
+      gear: "🛡️ 装备保险与电信",
+      other: "📦 其他杂项消费"
+    };
+
+    // State
+    let expenses = [];
+    let currentTrack = null;
+
+    // Load persisted state on startup
+    window.addEventListener("DOMContentLoaded", () => {
+      loadExpenses();
+      loadRetroNotes();
+      loadCachedTrack();
+      initDropzone();
+      
+      // Default date in modal to today
+      const todayStr = new Date().toISOString().split("T")[0];
+      const dateInput = document.getElementById("expDate");
+      if (dateInput) dateInput.value = todayStr;
+    });
+
+    // ----------------- EXPENSE MANAGER -----------------
+    function loadExpenses() {
+      try {
+        const stored = localStorage.getItem(EXPENSES_KEY);
+        if (stored) {
+          expenses = JSON.parse(stored);
+        } else {
+          expenses = [];
+        }
+      } catch (e) {
+        expenses = [];
+      }
+      renderExpenseTable();
+    }
+
+    function saveExpenses() {
+      try {
+        localStorage.setItem(EXPENSES_KEY, JSON.stringify(expenses));
+      } catch (e) {
+        console.error("Failed to save expenses to localStorage", e);
+      }
+      renderExpenseTable();
+    }
+
+    function openAddExpenseModal() {
+      document.getElementById("addExpenseModal").classList.remove("hidden");
+    }
+
+    function closeAddExpenseModal() {
+      document.getElementById("addExpenseModal").classList.add("hidden");
+    }
+
+    function handleSaveExpense(e) {
+      e.preventDefault();
+      const date = document.getElementById("expDate").value;
+      const category = document.getElementById("expCategory").value;
+      const title = document.getElementById("expTitle").value.trim();
+      const currency = document.getElementById("expCurrency").value;
+      const amount = parseFloat(document.getElementById("expAmount").value) || 0;
+      const note = document.getElementById("expNote").value.trim();
+
+      if (!title || amount <= 0) return;
+
+      const rate = RATES[currency] || 1.0;
+      const cnyEquivalent = amount * rate;
+
+      const newRecord = {
+        id: "exp_" + Date.now(),
+        date,
+        category,
+        title,
+        currency,
+        amount,
+        cnyEquivalent,
+        note
+      };
+
+      expenses.push(newRecord);
+      saveExpenses();
+      closeAddExpenseModal();
+      document.getElementById("expenseForm").reset();
+    }
+
+    function deleteExpense(id) {
+      if (!confirm("确定删除该笔支出记录吗？")) return;
+      expenses = expenses.filter(x => x.id !== id);
+      saveExpenses();
+    }
+
+    function clearAllExpenses() {
+      if (!confirm("确定清空全部开支记录吗？此操作不可恢复。")) return;
+      expenses = [];
+      saveExpenses();
+    }
+
+    function renderExpenseTable() {
+      const tbody = document.getElementById("expenseTableBody");
+      const filterCat = document.getElementById("filterCategory").value;
+      
+      const filtered = (filterCat === "all") 
+        ? expenses 
+        : expenses.filter(x => x.category === filterCat);
+
+      // Sort by date desc
+      filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+      // Calculate totals
+      let totalCny = 0;
+      const catTotals = {
+        transport: 0,
+        hotel: 0,
+        guide: 0,
+        food: 0,
+        gear: 0,
+        other: 0
+      };
+
+      expenses.forEach(x => {
+        totalCny += (x.cnyEquivalent || 0);
+        if (catTotals[x.category] !== undefined) {
+          catTotals[x.category] += (x.cnyEquivalent || 0);
+        } else {
+          catTotals.other += (x.cnyEquivalent || 0);
+        }
+      });
+
+      // Update Summary Cards
+      document.getElementById("ledgerTotalCny").textContent = "¥ " + totalCny.toLocaleString("zh-CN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      document.getElementById("ledgerItemCount").textContent = `共计 ${expenses.length} 笔实际记录`;
+
+      let topCat = "-";
+      let topCatAmount = 0;
+      for (const [k, v] of Object.entries(catTotals)) {
+        if (v > topCatAmount) {
+          topCatAmount = v;
+          topCat = CATEGORY_NAMES[k];
+        }
+      }
+      document.getElementById("ledgerTopCategory").textContent = topCat;
+      document.getElementById("ledgerTopCategoryAmount").textContent = topCatAmount > 0 
+        ? `¥ ${topCatAmount.toLocaleString("zh-CN", { minimumFractionDigits: 2 })} (${((topCatAmount / (totalCny || 1)) * 100).toFixed(1)}%)`
+        : "待记录";
+
+      // Render Category Progress Bars
+      const barsContainer = document.getElementById("categoryBars");
+      if (expenses.length === 0) {
+        barsContainer.innerHTML = `<p class="text-stone-400 text-xs font-sans">暂无开支记录。点击「+ 记录新支出」录入旅途中的机票、酒店或门票开支。</p>`;
+      } else {
+        barsContainer.innerHTML = Object.entries(catTotals).map(([catKey, sum]) => {
+          const pct = totalCny > 0 ? ((sum / totalCny) * 100).toFixed(1) : 0;
+          return `
+            <div>
+              <div class="flex justify-between items-center mb-1 text-stone-700">
+                <span>${CATEGORY_NAMES[catKey]}</span>
+                <span class="font-bold">¥ ${sum.toLocaleString("zh-CN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} (${pct}%)</span>
+              </div>
+              <div class="w-full bg-stone-100 rounded-full h-2 overflow-hidden">
+                <div class="bg-amber-600 h-2 rounded-full transition-all duration-300" style="width: ${pct}%"></div>
+              </div>
+            </div>
+          `;
+        }).join("");
+      }
+
+      // Render Table Rows
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" class="p-8 text-center text-stone-400 font-sans">
+              ${expenses.length === 0 ? "暂无开支明细。点击右上角「+ 记录新支出」添加首笔记录。" : "无匹配分类的数据。"}
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(x => `
+        <tr class="hover:bg-stone-50/80 transition">
+          <td class="p-3 pl-4 text-stone-600">${x.date}</td>
+          <td class="p-3 font-sans font-semibold text-stone-800">${CATEGORY_NAMES[x.category] || x.category}</td>
+          <td class="p-3 font-sans font-medium text-stone-900">${x.title}</td>
+          <td class="p-3 text-stone-600">${x.currency} ${x.amount.toLocaleString("en-US", { minimumFractionDigits: 2 })}</td>
+          <td class="p-3 font-bold text-stone-900">¥ ${(x.cnyEquivalent || 0).toLocaleString("zh-CN", { minimumFractionDigits: 2 })}</td>
+          <td class="p-3 font-sans text-stone-500 max-w-xs truncate">${x.note || "-"}</td>
+          <td class="p-3 text-right pr-4">
+            <button onclick="deleteExpense('${x.id}')" class="text-rose-500 hover:text-rose-700 transition" title="删除">✕</button>
+          </td>
+        </tr>
+      `).join("");
+    }
+
+    function exportExpensesCSV() {
+      if (expenses.length === 0) {
+        alert("当前没有可导出的开支记录。");
+        return;
+      }
+      let csv = "\uFEFF日期,分类,消费项目,币种,原币金额,折合人民币,备注\n";
+      expenses.forEach(x => {
+        csv += `"${x.date}","${CATEGORY_NAMES[x.category] || x.category}","${x.title.replace(/"/g, '""')}","${x.currency}",${x.amount},${x.cnyEquivalent.toFixed(2)},"${(x.note || "").replace(/"/g, '""')}"\n`;
+      });
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${TRIP_ID}_expenses_audit.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    // ----------------- FIELD RETROSPECTIVE NOTES -----------------
+    function loadRetroNotes() {
+      try {
+        const stored = localStorage.getItem(RETRO_KEY);
+        if (stored) {
+          const data = JSON.parse(stored);
+          if (data.good) document.getElementById("retroGood").value = data.good;
+          if (data.bad) document.getElementById("retroBad").value = data.bad;
+          if (data.gear) document.getElementById("retroGear").value = data.gear;
+        }
+      } catch (e) {}
+    }
+
+    function saveRetroNotes() {
+      const data = {
+        good: document.getElementById("retroGood").value,
+        bad: document.getElementById("retroBad").value,
+        gear: document.getElementById("retroGear").value,
+        updatedAt: new Date().toISOString()
+      };
+      localStorage.setItem(RETRO_KEY, JSON.stringify(data));
+      alert("复盘心得已成功保存至本地！");
+    }
+
+    // ----------------- OUTDOOR TRACK (GPX/KML) PARSER -----------------
+    function initDropzone() {
+      const dropzone = document.getElementById("trackDropzone");
+      const fileInput = document.getElementById("trackFileInput");
+
+      dropzone.addEventListener("click", () => fileInput.click());
+
+      dropzone.addEventListener("dragover", e => {
+        e.preventDefault();
+        dropzone.classList.add("border-amber-500", "bg-amber-50/30");
+      });
+
+      dropzone.addEventListener("dragleave", () => {
+        dropzone.classList.remove("border-amber-500", "bg-amber-50/30");
+      });
+
+      dropzone.addEventListener("drop", e => {
+        e.preventDefault();
+        dropzone.classList.remove("border-amber-500", "bg-amber-50/30");
+        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+          processTrackFile(e.dataTransfer.files[0]);
+        }
+      });
+
+      fileInput.addEventListener("change", e => {
+        if (e.target.files && e.target.files[0]) {
+          processTrackFile(e.target.files[0]);
+        }
+      });
+    }
+
+    function loadCachedTrack() {
+      try {
+        const cached = localStorage.getItem(TRACK_KEY);
+        if (cached) {
+          const trackData = JSON.parse(cached);
+          displayTrackResults(trackData);
+        }
+      } catch (e) {}
+    }
+
+    function processTrackFile(file) {
+      const reader = new FileReader();
+      reader.onload = e => {
+        const text = e.target.result;
+        try {
+          const trackData = parseGpxOrKml(text, file.name);
+          if (trackData && trackData.points.length > 1) {
+            localStorage.setItem(TRACK_KEY, JSON.stringify(trackData));
+            displayTrackResults(trackData);
+          } else {
+            alert("未能从该文件中提取到有效的轨迹采样点，请确认是否为包含 GPS 点的 GPX/KML 格式。");
+          }
+        } catch (err) {
+          alert("解析文件失败: " + err.message);
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function parseGpxOrKml(text, filename) {
+      const parser = new DOMParser();
+      const xmlDoc = parser.parseFromString(text, "text/xml");
+      const points = [];
+
+      // Check for GPX <trkpt>
+      const trkpts = xmlDoc.getElementsByTagName("trkpt");
+      if (trkpts.length > 0) {
+        for (let i = 0; i < trkpts.length; i++) {
+          const p = trkpts[i];
+          const lat = parseFloat(p.getAttribute("lat"));
+          const lon = parseFloat(p.getAttribute("lon"));
+          const eleNode = p.getElementsByTagName("ele")[0];
+          const ele = eleNode ? parseFloat(eleNode.textContent) : 0;
+          if (!isNaN(lat) && !isNaN(lon)) {
+            points.push({ lat, lon, ele });
+          }
+        }
+      } else {
+        // Check for KML <coordinates>
+        const coords = xmlDoc.getElementsByTagName("coordinates");
+        for (let i = 0; i < coords.length; i++) {
+          const lines = coords[i].textContent.trim().split(/\s+/);
+          lines.forEach(line => {
+            const parts = line.split(",");
+            if (parts.length >= 2) {
+              const lon = parseFloat(parts[0]);
+              const lat = parseFloat(parts[1]);
+              const ele = parts.length > 2 ? parseFloat(parts[2]) : 0;
+              if (!isNaN(lat) && !isNaN(lon)) {
+                points.push({ lat, lon, ele });
+              }
+            }
+          });
+        }
+      }
+
+      if (points.length < 2) return null;
+
+      // Calculate distance and elevation gain
+      let totalDistM = 0;
+      let gainM = 0;
+      let minEle = points[0].ele || 0;
+      let maxEle = points[0].ele || 0;
+
+      for (let i = 1; i < points.length; i++) {
+        const p1 = points[i - 1];
+        const p2 = points[i];
+        const d = haversineM(p1.lat, p1.lon, p2.lat, p2.lon);
+        totalDistM += d;
+        if (p2.ele > p1.ele) {
+          gainM += (p2.ele - p1.ele);
+        }
+        if (p2.ele < minEle) minEle = p2.ele;
+        if (p2.ele > maxEle) maxEle = p2.ele;
+      }
+
+      return {
+        fileName: filename,
+        pointCount: points.length,
+        distanceKm: (totalDistM / 1000).toFixed(2),
+        elevationGainM: Math.round(gainM),
+        minElevation: Math.round(minEle),
+        maxElevation: Math.round(maxEle),
+        points: points.filter((_, idx) => idx % Math.max(1, Math.floor(points.length / 200)) === 0) // downsample for chart
+      };
+    }
+
+    function haversineM(lat1, lon1, lat2, lon2) {
+      const R = 6371000;
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLon = (lon2 - lon1) * Math.PI / 180;
+      const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLon/2) * Math.sin(dLon/2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      return R * c;
+    }
+
+    function displayTrackResults(data) {
+      document.getElementById("trackResultPanel").classList.remove("hidden");
+      document.getElementById("resTrackDist").textContent = data.distanceKm + " km";
+      document.getElementById("resTrackGain").textContent = "+" + data.elevationGainM + " m";
+      document.getElementById("resTrackElevation").textContent = data.maxElevation + "m / " + data.minElevation + "m";
+      document.getElementById("resTrackPoints").textContent = data.pointCount + " 点";
+      document.getElementById("trackFileName").textContent = data.fileName || "运动轨迹";
+
+      // Update hero metric tile
+      document.getElementById("trackedMetricVal").innerHTML = `${data.distanceKm}<span class="text-xs text-stone-500 font-normal"> km</span>`;
+      document.getElementById("trackedMetricSub").textContent = `累计爬升 +${data.elevationGainM}m`;
+
+      drawElevationChart(data.points);
+    }
+
+    function drawElevationChart(points) {
+      const canvas = document.getElementById("elevationCanvas");
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      canvas.width = canvas.parentElement.clientWidth * window.devicePixelRatio;
+      canvas.height = canvas.parentElement.clientHeight * window.devicePixelRatio;
+      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+
+      const w = canvas.parentElement.clientWidth;
+      const h = canvas.parentElement.clientHeight;
+      ctx.clearRect(0, 0, w, h);
+
+      if (!points || points.length === 0) return;
+
+      const eles = points.map(p => p.ele);
+      const minE = Math.min(...eles);
+      const maxE = Math.max(...eles);
+      const range = (maxE - minE) || 1;
+
+      // Draw gradient fill
+      const grad = ctx.createLinearGradient(0, 0, 0, h);
+      grad.addColorStop(0, "rgba(217, 119, 6, 0.45)");
+      grad.addColorStop(1, "rgba(217, 119, 6, 0.0)");
+
+      ctx.beginPath();
+      ctx.moveTo(0, h);
+      points.forEach((p, idx) => {
+        const x = (idx / (points.length - 1)) * w;
+        const y = h - ((p.ele - minE) / range) * (h - 30) - 15;
+        if (idx === 0) ctx.lineTo(x, y);
+        else ctx.lineTo(x, y);
+      });
+      ctx.lineTo(w, h);
+      ctx.closePath();
+      ctx.fillStyle = grad;
+      ctx.fill();
+
+      // Draw stroke
+      ctx.beginPath();
+      points.forEach((p, idx) => {
+        const x = (idx / (points.length - 1)) * w;
+        const y = h - ((p.ele - minE) / range) * (h - 30) - 15;
+        if (idx === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      });
+      ctx.strokeStyle = "#f59e0b";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    }
+
+    function clearTrackData() {
+      localStorage.removeItem(TRACK_KEY);
+      document.getElementById("trackResultPanel").classList.add("hidden");
+      document.getElementById("trackedMetricVal").innerHTML = `待导入<span class="text-xs text-stone-500 font-normal"></span>`;
+      document.getElementById("trackedMetricSub").textContent = "拖入 GPX/KML 即可计算";
+    }
+  </script>
 </body>
 </html>

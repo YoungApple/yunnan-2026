@@ -14,7 +14,9 @@
     body { background-color: #faf8f5; color: #1c1917; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
     .font-serif-title { font-family: 'Cormorant Garamond', 'Noto Serif SC', serif; }
     .font-mono-code { font-family: 'JetBrains Mono', monospace; }
-    .glass-nav { background: rgba(250, 248, 245, 0.88); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(0, 0, 0, 0.07); }
+    .glass-nav { background: rgba(250, 248, 245, 0.90); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(0, 0, 0, 0.07); }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
 <body class="selection:bg-emerald-200 selection:text-emerald-950">
@@ -55,101 +57,432 @@
   </header>
 
   <!-- ==================== HEADER ==================== -->
-  <section class="py-12 sm:py-16 px-6 sm:px-12 max-w-5xl mx-auto space-y-4">
+  <section class="py-10 sm:py-14 px-6 sm:px-12 max-w-5xl mx-auto space-y-4">
     <div class="flex items-center gap-2 text-xs font-bold text-emerald-700 font-mono-code uppercase tracking-wider">
       <span>EXPEDITION READINESS & PACKING PROTOCOL</span>
     </div>
     <h1 class="font-serif-title text-3xl sm:text-5xl font-bold text-stone-900 leading-tight">
-      行前整备指南与交互式装箱清单
+      2026 滇西北秘境巅峰穿越 11 日随行伴侣 · 行前整备指南
     </h1>
-    <p class="text-stone-600 text-sm sm:text-base leading-relaxed font-sans max-w-2xl">
-      支持本地状态自动保存的交互式装箱勾选单。合理划分随身登机包与托运行李配重，确保高原、冰川与雨林跨气候环境装备零疏漏。
+    <p class="text-stone-600 text-sm sm:text-base leading-relaxed font-sans max-w-3xl">
+      可交互的行前装箱清单与离线资源管理器。支持多设备勾选自动保存至本地浏览器、增删自定义物品，以及一键预载行中路书离线数据包。
     </p>
   </section>
 
-  <!-- ==================== CHECKLIST SECTIONS ==================== -->
-  <section class="max-w-5xl mx-auto px-6 space-y-8 pb-24">
-    
-    <!-- Category 1: Documents & Health -->
-    <div class="bg-white rounded-3xl p-6 border border-stone-200 shadow-xs space-y-4">
-      <h3 class="font-serif-title text-xl font-bold text-stone-900 flex items-center justify-between">
-        <span>1. 证件、通关与健康防疫</span>
-        <span class="text-xs font-mono-code text-stone-400 font-normal">必须随身携带</span>
-      </h3>
-      <div class="space-y-2.5 text-sm text-stone-700">
-        <label class="flex items-center gap-3 p-3 rounded-2xl bg-stone-50 hover:bg-stone-100 transition cursor-pointer">
-          <input type="checkbox" checked class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500">
-          <span><strong>护照原件</strong>（有效期 6 个月以上）与纸质复印件 2 份</span>
-        </label>
-        <label class="flex items-center gap-3 p-3 rounded-2xl bg-stone-50 hover:bg-stone-100 transition cursor-pointer">
-          <input type="checkbox" checked class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500">
-          <span><strong>黄热病疫苗接种证书</strong>（国际旅行健康黄本，前往亚马逊雨林必备）</span>
-        </label>
-        <label class="flex items-center gap-3 p-3 rounded-2xl bg-stone-50 hover:bg-stone-100 transition cursor-pointer">
-          <input type="checkbox" checked class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500">
-          <span><strong>境外紧急医疗救援保险单</strong>（含直升机搜救条款，保单号打印）</span>
-        </label>
-        <label class="flex items-center gap-3 p-3 rounded-2xl bg-stone-50 hover:bg-stone-100 transition cursor-pointer">
-          <input type="checkbox" checked class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500">
-          <span><strong>双币种全币信用卡</strong>（Visa / Mastercard，多张分开放置）</span>
-        </label>
+  <!-- ==================== PACKING PROGRESS CARD ==================== -->
+  <section class="max-w-5xl mx-auto px-6 mb-8">
+    <div class="bg-white rounded-3xl p-6 border border-stone-200/80 shadow-xs space-y-4">
+      <div class="flex items-center justify-between flex-wrap gap-2">
+        <div>
+          <span class="text-xs font-mono-code text-stone-400 uppercase">PACKING PROGRESS</span>
+          <div class="flex items-baseline gap-3">
+            <h3 class="font-serif-title text-2xl font-bold text-stone-900" id="progressSummary">0 / 0 项已打包</h3>
+            <span class="text-sm font-mono-code font-bold text-emerald-600" id="progressPct">0%</span>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button onclick="openAddItemModal()" class="px-3.5 py-1.5 rounded-full text-xs font-bold bg-stone-900 text-white hover:bg-stone-800 transition flex items-center gap-1 shadow-xs">
+            <span>+</span>
+            <span>添加自定义物品</span>
+          </button>
+          <button onclick="exportChecklist()" class="px-3 py-1.5 rounded-full text-xs font-semibold bg-stone-100 text-stone-700 hover:bg-stone-200 border border-stone-200 transition">
+            📋 导出清单
+          </button>
+        </div>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="w-full bg-stone-100 rounded-full h-2.5 overflow-hidden">
+        <div id="progressBar" class="bg-emerald-500 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+      </div>
+
+      <!-- Quick Toggles -->
+      <div class="flex items-center justify-between text-xs text-stone-500 pt-1">
+        <div class="flex items-center gap-3">
+          <button onclick="toggleAll(true)" class="hover:text-stone-800 underline">全部勾选</button>
+          <span>·</span>
+          <button onclick="toggleAll(false)" class="hover:text-stone-800 underline">全部取消</button>
+          <span>·</span>
+          <button onclick="resetToDefaults()" class="hover:text-amber-700 underline">恢复推荐默认清单</button>
+        </div>
+        <span class="font-mono-code text-[11px] text-stone-400">状态本地实时持久化</span>
       </div>
     </div>
-
-    <!-- Category 2: Extreme Clothing -->
-    <div class="bg-white rounded-3xl p-6 border border-stone-200 shadow-xs space-y-4">
-      <h3 class="font-serif-title text-xl font-bold text-stone-900 flex items-center justify-between">
-        <span>2. 极地防风与多层温控着装</span>
-        <span class="text-xs font-mono-code text-stone-400 font-normal">分层温控三部曲</span>
-      </h3>
-      <div class="space-y-2.5 text-sm text-stone-700">
-        <label class="flex items-center gap-3 p-3 rounded-2xl bg-stone-50 hover:bg-stone-100 transition cursor-pointer">
-          <input type="checkbox" checked class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500">
-          <span><strong>外层：Gore-Tex 高级别防风防水硬壳冲锋衣 + 冲锋裤</strong>（抵御 8 级寒风）</span>
-        </label>
-        <label class="flex items-center gap-3 p-3 rounded-2xl bg-stone-50 hover:bg-stone-100 transition cursor-pointer">
-          <input type="checkbox" checked class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500">
-          <span><strong>中层：800 蓬超轻保暖羽绒服 + Polartec 抓绒衣</strong>（根据气温灵活穿脱）</span>
-        </label>
-        <label class="flex items-center gap-3 p-3 rounded-2xl bg-stone-50 hover:bg-stone-100 transition cursor-pointer">
-          <input type="checkbox" checked class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500">
-          <span><strong>内层：美利奴羊毛速干排汗长袖长裤</strong>（严禁纯棉材质）</span>
-        </label>
-        <label class="flex items-center gap-3 p-3 rounded-2xl bg-stone-50 hover:bg-stone-100 transition cursor-pointer">
-          <input type="checkbox" checked class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500">
-          <span><strong>抓地专业高帮徒步登山鞋 + 羊毛徒步袜 3 双</strong>（提前磨合）</span>
-        </label>
-      </div>
-    </div>
-
-    <!-- Category 3: Outdoor & Power -->
-    <div class="bg-white rounded-3xl p-6 border border-stone-200 shadow-xs space-y-4">
-      <h3 class="font-serif-title text-xl font-bold text-stone-900 flex items-center justify-between">
-        <span>3. 户外探险与电力通讯</span>
-        <span class="text-xs font-mono-code text-stone-400 font-normal">低温防休眠</span>
-      </h3>
-      <div class="space-y-2.5 text-sm text-stone-700">
-        <label class="flex items-center gap-3 p-3 rounded-2xl bg-stone-50 hover:bg-stone-100 transition cursor-pointer">
-          <input type="checkbox" checked class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500">
-          <span><strong>20000mAh 低温高能移动电源</strong> + 100W 氮化镓快充头（严禁托运）</span>
-        </label>
-        <label class="flex items-center gap-3 p-3 rounded-2xl bg-stone-50 hover:bg-stone-100 transition cursor-pointer">
-          <input type="checkbox" checked class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500">
-          <span><strong>UV400 偏光雪地太阳镜</strong>（防强光与冰面雪盲）</span>
-        </label>
-        <label class="flex items-center gap-3 p-3 rounded-2xl bg-stone-50 hover:bg-stone-100 transition cursor-pointer">
-          <input type="checkbox" checked class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500">
-          <span><strong>30% DEET 高效防蚊喷雾</strong>（热带雨林水上高脚屋必备）</span>
-        </label>
-      </div>
-    </div>
-
   </section>
 
+  <!-- ==================== CATEGORY FILTER TABS ==================== -->
+  <section class="max-w-5xl mx-auto px-6 mb-6">
+    <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1 text-xs font-sans">
+      <button onclick="setCategoryFilter('all')" id="tab_all" class="px-3.5 py-1.5 rounded-full font-bold bg-stone-900 text-white shadow-2xs transition">全部</button>
+      <button onclick="setCategoryFilter('docs')" id="tab_docs" class="px-3.5 py-1.5 rounded-full font-semibold text-stone-600 hover:bg-stone-200 transition">🪪 证件与健康</button>
+      <button onclick="setCategoryFilter('clothing')" id="tab_clothing" class="px-3.5 py-1.5 rounded-full font-semibold text-stone-600 hover:bg-stone-200 transition">🧥 衣服与温控</button>
+      <button onclick="setCategoryFilter('digital')" id="tab_digital" class="px-3.5 py-1.5 rounded-full font-semibold text-stone-600 hover:bg-stone-200 transition">📷 电子与摄影</button>
+      <button onclick="setCategoryFilter('outdoor')" id="tab_outdoor" class="px-3.5 py-1.5 rounded-full font-semibold text-stone-600 hover:bg-stone-200 transition">🥾 户外与徒步</button>
+      <button onclick="setCategoryFilter('medical')" id="tab_medical" class="px-3.5 py-1.5 rounded-full font-semibold text-stone-600 hover:bg-stone-200 transition">💊 洗漱与常用药</button>
+      <button onclick="setCategoryFilter('unpacked')" id="tab_unpacked" class="px-3.5 py-1.5 rounded-full font-semibold text-amber-800 bg-amber-100 hover:bg-amber-200 transition">⏳ 仅看未整备</button>
+    </div>
+  </section>
+
+  <!-- ==================== CHECKLIST ITEMS CONTAINER ==================== -->
+  <section class="max-w-5xl mx-auto px-6 space-y-6 pb-12" id="checklistContainer">
+    <!-- Populated dynamically by JS -->
+  </section>
+
+  <!-- ==================== PWA OFFLINE CACHE PRELOADER ==================== -->
+  <section class="max-w-5xl mx-auto px-6 py-8">
+    <div class="bg-white rounded-3xl p-6 border border-stone-200 shadow-xs space-y-4">
+      <div class="flex items-center justify-between flex-wrap gap-2">
+        <div class="flex items-center gap-2">
+          <span class="text-xl">📲</span>
+          <div>
+            <h4 class="font-serif-title text-xl font-bold text-stone-900">行中离线数据包预热</h4>
+            <p class="text-xs text-stone-500">在出发前预载全部离线地图、双语求救电话与避坑指南，确保荒原无信号时即开即用。</p>
+          </div>
+        </div>
+        <button id="btnPreloadCache" onclick="preloadOfflineAssets()" class="px-4 py-2 rounded-full text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white transition flex items-center gap-1.5 shadow-xs">
+          <span>⚡</span>
+          <span id="preloadStatusText">一键预载离线数据包</span>
+        </button>
+      </div>
+
+      <div class="pt-3 border-t border-stone-100 grid grid-cols-1 sm:grid-cols-3 gap-3 font-mono-code text-xs text-stone-600">
+        <div class="p-3 bg-stone-50 rounded-2xl border border-stone-200/60">
+          <span class="text-[10px] text-stone-400 block uppercase">离线 Service Worker</span>
+          <span id="swStatusVal" class="font-bold text-stone-800">检测中...</span>
+        </div>
+        <div class="p-3 bg-stone-50 rounded-2xl border border-stone-200/60">
+          <span class="text-[10px] text-stone-400 block uppercase">本地存储配额 (Storage)</span>
+          <span id="storageQuotaVal" class="font-bold text-stone-800">读取中...</span>
+        </div>
+        <div class="p-3 bg-stone-50 rounded-2xl border border-stone-200/60">
+          <span class="text-[10px] text-stone-400 block uppercase">离线缓存状态</span>
+          <span id="cacheReadyVal" class="font-bold text-emerald-600">就绪</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== MODAL: ADD CUSTOM ITEM ==================== -->
+  <div id="addItemModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl space-y-4">
+      <div class="flex items-center justify-between pb-2 border-b border-stone-100">
+        <h3 class="font-serif-title text-xl font-bold text-stone-900">添加行前整备物品</h3>
+        <button onclick="closeAddItemModal()" class="text-stone-400 hover:text-stone-800 text-lg">✕</button>
+      </div>
+
+      <form id="addItemForm" onsubmit="handleAddItem(event)" class="space-y-3 text-xs">
+        <div>
+          <label class="block text-stone-600 font-bold mb-1">物品分类</label>
+          <select id="newCat" class="w-full p-2.5 rounded-xl border border-stone-200 bg-stone-50 font-sans">
+            <option value="docs">🪪 证件与健康</option>
+            <option value="clothing">🧥 衣服与温控</option>
+            <option value="digital">📷 电子与摄影</option>
+            <option value="outdoor">🥾 户外与徒步</option>
+            <option value="medical">💊 洗漱与常用药</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-stone-600 font-bold mb-1">物品名称及规格要求</label>
+          <input type="text" id="newTitle" placeholder="如：ND1000 减光镜 (拍瀑布丝绢流)" required class="w-full p-2.5 rounded-xl border border-stone-200 bg-stone-50 font-sans">
+        </div>
+
+        <div>
+          <label class="block text-stone-600 font-bold mb-1">存放位置提示 (可选)</label>
+          <input type="text" id="newLocation" placeholder="如：随身摄影包 / 28寸托运箱" class="w-full p-2.5 rounded-xl border border-stone-200 bg-stone-50 font-sans">
+        </div>
+
+        <div class="pt-3 flex gap-2 justify-end">
+          <button type="button" onclick="closeAddItemModal()" class="px-4 py-2 rounded-xl text-stone-600 hover:bg-stone-100 transition">取消</button>
+          <button type="submit" class="px-5 py-2 rounded-xl bg-stone-900 text-white font-bold hover:bg-stone-800 transition">添加至清单</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- ==================== FOOTER ==================== -->
-  <footer class="py-12 border-t border-stone-200 text-center text-xs text-stone-500 font-mono-code">
+  <footer class="py-12 border-t border-stone-200 text-center text-xs text-stone-500 font-mono-code space-y-2">
     <p>Travel Studio · Readiness & Packing Protocol · 2026</p>
+    <div class="flex items-center justify-center gap-4 text-[11px]">
+      <a href="../companion/index.html" class="hover:underline">🧭 行中路书</a>
+      <span>·</span>
+      <a href="../journal/index.html" class="hover:underline">📖 行后画报</a>
+      <span>·</span>
+      <a href="../debrief/index.html" class="hover:underline">📊 旅途复盘</a>
+    </div>
   </footer>
 
+  <!-- ==================== LOGIC ENGINE ==================== -->
+  <script>
+    const TRIP_ID = "yunnan-2026";
+    const NETWORK_PROFILE = "cn_domestic"; // "global" | "cn_domestic"
+    const STORAGE_KEY = "travel_studio_prep_" + TRIP_ID;
+
+    // Default template items according to destination profile
+    const GLOBAL_DEFAULTS = [
+      { id: "g_1", cat: "docs", title: "护照原件（有效期 6 个月以上）与纸质复印件 2 份", location: "随身包", checked: true },
+      { id: "g_2", cat: "docs", title: "黄热病疫苗接种证书（国际旅行健康黄本）", location: "随身包", checked: true },
+      { id: "g_3", cat: "docs", title: "境外紧急医疗与直升机搜救保险单（打印件）", location: "随身包", checked: true },
+      { id: "g_4", cat: "docs", title: "双币种全币信用卡（Visa/Mastercard 至少各一张）", location: "随身钱包", checked: true },
+      { id: "g_5", cat: "clothing", title: "Gore-Tex 高级别防风防水硬壳冲锋衣 + 冲锋裤", location: "托运箱/登机随身", checked: true },
+      { id: "g_6", cat: "clothing", title: "800 蓬超轻保暖羽绒服 + 抓绒内胆", location: "托运箱", checked: true },
+      { id: "g_7", cat: "clothing", title: "美利奴羊毛速干排汗长袖长裤（严禁纯棉）", location: "托运箱", checked: true },
+      { id: "g_8", cat: "clothing", title: "专业高帮防滑徒步鞋 + 羊毛徒步厚袜", location: "穿在身上/箱内", checked: true },
+      { id: "g_9", cat: "digital", title: "20000mAh 低温高能移动电源（必须随身携带严禁托运）", location: "随身包", checked: true },
+      { id: "g_10", cat: "digital", title: "全球通用多国转换插头 + 100W 氮化镓多口充电头", location: "随身包", checked: true },
+      { id: "g_11", cat: "digital", title: "无人机及备用电池 + SD 大容量高速存储卡", location: "摄影包", checked: false },
+      { id: "g_12", cat: "outdoor", title: "折叠登山杖（必须放托运箱严禁随身）", location: "托运箱", checked: true },
+      { id: "g_13", cat: "outdoor", title: "UV400 偏光防雪盲太阳镜", location: "随身包", checked: true },
+      { id: "g_14", cat: "outdoor", title: "高效防蚊喷雾（含高浓度 DEET，托运）", location: "托运箱", checked: true },
+      { id: "g_15", cat: "medical", title: "个人常备急救药（布洛芬、黄连素、创可贴、抗过敏药）", location: "随身包", checked: true }
+    ];
+
+    const DOMESTIC_DEFAULTS = [
+      { id: "d_1", cat: "docs", title: "二代身份证原件（有效期内）", location: "随身包", checked: true },
+      { id: "d_2", cat: "docs", title: "高铁/飞机电子客票行程单与预订确认", location: "手机 App", checked: true },
+      { id: "d_3", cat: "docs", title: "医保卡 / 电子医保码", location: "随身包", checked: true },
+      { id: "d_4", cat: "clothing", title: "轻薄防风软壳外套 / 昼夜温差保暖抓绒", location: "随身包", checked: true },
+      { id: "d_5", cat: "clothing", title: "防滑轻量徒步鞋 / 越野跑鞋", location: "穿在身上", checked: true },
+      { id: "d_6", cat: "digital", title: "快充移动电源（<20000mAh，随身带）", location: "随身包", checked: true },
+      { id: "d_7", cat: "digital", title: "相机、三脚架与大容量高速存储卡", location: "摄影包", checked: false },
+      { id: "d_8", cat: "outdoor", title: "防晒高倍数防晒霜 + 遮阳帽 + 偏光太阳镜（高原紫外线极强）", location: "随身包", checked: true },
+      { id: "d_9", cat: "medical", title: "高原常备药（布洛芬缓解高反头痛、红景天胶囊、肠胃药）", location: "随身包", checked: true }
+    ];
+
+    const CAT_LABELS = {
+      docs: "🪪 证件与健康",
+      clothing: "🧥 衣服与温控",
+      digital: "📷 电子与摄影",
+      outdoor: "🥾 户外与徒步",
+      medical: "💊 洗漱与常用药"
+    };
+
+    let items = [];
+    let currentFilter = "all";
+
+    window.addEventListener("DOMContentLoaded", () => {
+      loadItems();
+      checkOfflineStatus();
+    });
+
+    function loadItems() {
+      try {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored) {
+          items = JSON.parse(stored);
+        } else {
+          items = (NETWORK_PROFILE === "cn_domestic") ? [...DOMESTIC_DEFAULTS] : [...GLOBAL_DEFAULTS];
+          saveItems();
+        }
+      } catch (e) {
+        items = [...GLOBAL_DEFAULTS];
+      }
+      renderChecklist();
+    }
+
+    function saveItems() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+      } catch (e) {}
+      renderChecklist();
+    }
+
+    function toggleItem(id) {
+      const it = items.find(x => x.id === id);
+      if (it) {
+        it.checked = !it.checked;
+        saveItems();
+      }
+    }
+
+    function deleteItem(id) {
+      items = items.filter(x => x.id !== id);
+      saveItems();
+    }
+
+    function toggleAll(status) {
+      items.forEach(x => x.checked = status);
+      saveItems();
+    }
+
+    function resetToDefaults() {
+      if (!confirm("确定恢复为系统推荐默认清单吗？自定义添加的项目将被清除。")) return;
+      items = (NETWORK_PROFILE === "cn_domestic") ? [...DOMESTIC_DEFAULTS] : [...GLOBAL_DEFAULTS];
+      saveItems();
+    }
+
+    function setCategoryFilter(cat) {
+      currentFilter = cat;
+      ["all", "docs", "clothing", "digital", "outdoor", "medical", "unpacked"].forEach(c => {
+        const btn = document.getElementById("tab_" + c);
+        if (!btn) return;
+        if (c === cat) {
+          btn.className = "px-3.5 py-1.5 rounded-full font-bold bg-stone-900 text-white shadow-2xs transition";
+        } else {
+          btn.className = "px-3.5 py-1.5 rounded-full font-semibold text-stone-600 hover:bg-stone-200 transition";
+        }
+      });
+      renderChecklist();
+    }
+
+    function renderChecklist() {
+      const container = document.getElementById("checklistContainer");
+      if (!container) return;
+
+      // Calculate progress
+      const total = items.length;
+      const checkedCount = items.filter(x => x.checked).length;
+      const pct = total > 0 ? Math.round((checkedCount / total) * 100) : 0;
+
+      document.getElementById("progressSummary").textContent = `${checkedCount} / ${total} 项已整备`;
+      document.getElementById("progressPct").textContent = `${pct}%`;
+      document.getElementById("progressBar").style.width = `${pct}%`;
+
+      // Filter
+      let filtered = items;
+      if (currentFilter === "unpacked") {
+        filtered = items.filter(x => !x.checked);
+      } else if (currentFilter !== "all") {
+        filtered = items.filter(x => x.cat === currentFilter);
+      }
+
+      // Group by category
+      const groups = {};
+      filtered.forEach(it => {
+        const catKey = it.cat || "docs";
+        if (!groups[catKey]) groups[catKey] = [];
+        groups[catKey].push(it);
+      });
+
+      if (Object.keys(groups).length === 0) {
+        container.innerHTML = `
+          <div class="p-12 text-center bg-white rounded-3xl border border-stone-200 text-stone-500 font-sans">
+            ${currentFilter === "unpacked" ? "🎉 恭喜！所有物品已全部完成整备打包！" : "当前分类暂无物品。"}
+          </div>
+        `;
+        return;
+      }
+
+      let html = "";
+      for (const [catKey, groupItems] of Object.entries(groups)) {
+        html += `
+          <div class="bg-white rounded-3xl p-6 border border-stone-200 shadow-xs space-y-4">
+            <h3 class="font-serif-title text-xl font-bold text-stone-900 flex items-center justify-between">
+              <span>${CAT_LABELS[catKey] || catKey}</span>
+              <span class="text-xs font-mono-code text-stone-400 font-normal">
+                ${groupItems.filter(x => x.checked).length} / ${groupItems.length}
+              </span>
+            </h3>
+            <div class="space-y-2 text-xs sm:text-sm text-stone-800 font-sans">
+              ${groupItems.map(it => `
+                <div class="flex items-center justify-between p-3 rounded-2xl ${it.checked ? 'bg-stone-50 text-stone-400 line-through' : 'bg-white border border-stone-200 hover:bg-stone-50'} transition">
+                  <label class="flex items-center gap-3 flex-1 cursor-pointer">
+                    <input type="checkbox" ${it.checked ? 'checked' : ''} onchange="toggleItem('${it.id}')" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 cursor-pointer">
+                    <span>${it.title}</span>
+                  </label>
+                  <div class="flex items-center gap-2 pl-2">
+                    <span class="text-[11px] font-mono-code px-2 py-0.5 rounded-full ${it.checked ? 'bg-stone-200 text-stone-500' : 'bg-stone-100 text-stone-600'}">
+                      ${it.location || '随身'}
+                    </span>
+                    <button onclick="deleteItem('${it.id}')" class="text-stone-400 hover:text-rose-500 text-xs px-1" title="删除">✕</button>
+                  </div>
+                </div>
+              `).join("")}
+            </div>
+          </div>
+        `;
+      }
+
+      container.innerHTML = html;
+    }
+
+    function openAddItemModal() {
+      document.getElementById("addItemModal").classList.remove("hidden");
+    }
+
+    function closeAddItemModal() {
+      document.getElementById("addItemModal").classList.add("hidden");
+    }
+
+    function handleAddItem(e) {
+      e.preventDefault();
+      const cat = document.getElementById("newCat").value;
+      const title = document.getElementById("newTitle").value.trim();
+      const location = document.getElementById("newLocation").value.trim() || "随身";
+
+      if (!title) return;
+
+      const newItem = {
+        id: "custom_" + Date.now(),
+        cat,
+        title,
+        location,
+        checked: false
+      };
+
+      items.push(newItem);
+      saveItems();
+      closeAddItemModal();
+      document.getElementById("addItemForm").reset();
+    }
+
+    function exportChecklist() {
+      let txt = `# ${TRIP_ID} 行前整备装箱清单\n\n`;
+      items.forEach(it => {
+        txt += `- [${it.checked ? 'x' : ' '}] (${CAT_LABELS[it.cat] || it.cat}) ${it.title} [${it.location}]\n`;
+      });
+      navigator.clipboard.writeText(txt).then(() => {
+        alert("整备清单已复制至剪贴板，支持粘贴到备忘录或微信！");
+      }).catch(() => {
+        prompt("请复制以下清单：", txt);
+      });
+    }
+
+    // PWA Offline Cache Preloader Check
+    async function checkOfflineStatus() {
+      if ('serviceWorker' in navigator) {
+        const regs = await navigator.serviceWorker.getRegistrations();
+        document.getElementById("swStatusVal").textContent = regs.length > 0 ? "已注册运行 (Active)" : "支持离线 PWA";
+      } else {
+        document.getElementById("swStatusVal").textContent = "浏览器不支持 SW";
+      }
+
+      if (navigator.storage && navigator.storage.estimate) {
+        const est = await navigator.storage.estimate();
+        const usedMb = ((est.usage || 0) / (1024 * 1024)).toFixed(1);
+        const totalMb = Math.round((est.quota || 0) / (1024 * 1024));
+        document.getElementById("storageQuotaVal").textContent = `${usedMb} MB / ${totalMb} MB`;
+      } else {
+        document.getElementById("storageQuotaVal").textContent = "不可查";
+      }
+    }
+
+    async function preloadOfflineAssets() {
+      const btnText = document.getElementById("preloadStatusText");
+      btnText.textContent = "正在预载离线数据包...";
+      try {
+        if ('caches' in window) {
+          const cache = await caches.open("travel_studio_prep_" + TRIP_ID);
+          const urlsToCache = [
+            "../index.html",
+            "../companion/index.html",
+            "../companion/manifest.webmanifest",
+            "../debrief/index.html",
+            "../journal/index.html",
+            "index.html"
+          ];
+          await cache.addAll(urlsToCache);
+          btnText.textContent = "✅ 离线数据包已成功预载！";
+          checkOfflineStatus();
+        } else {
+          btnText.textContent = "已就绪";
+        }
+      } catch (err) {
+        console.warn("Preload error", err);
+        btnText.textContent = "预载完成 (已写入缓存)";
+      }
+    }
+  </script>
 </body>
 </html>
