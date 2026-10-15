@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <title>2026 滇西北秘境巅峰穿越 11 日随行伴侣 · 极简画报与时空长卷 | Travel Studio Memory Vault</title>
+  <meta name="description" content="2026 滇西北秘境巅峰穿越 11 日随行伴侣 官方行后沉淀画报：国家地理/Kinfolk 杂志美学排版，双重视角真实影像馆，时空足迹重温。">
+  
+  <!-- Modern Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Leaflet CSS & JS for Minimalist Memory Map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+
+  <!-- Typography: Classical Serif + Modern Clean Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Noto+Serif+SC:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-journal: #faf8f5;
+      --bg-surface: #ffffff;
+      --text-main: #1c1917;
+      --text-muted: #78716c;
+      --text-subtle: #a8a29e;
+      --border-soft: rgba(0, 0, 0, 0.07);
+      --accent-glacier: #0284c7;
+      --accent-glacier-deep: #0369a1;
+      --accent-ochre: #d97706;
+      --accent-forest: #059669;
+      --font-serif: 'Cormorant Garamond', 'Noto Serif SC', serif;
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    body {
+      background-color: var(--bg-journal);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    .font-serif-title {
+      font-family: var(--font-serif);
+    }
+
+    .font-mono-code {
+      font-family: var(--font-mono);
+    }
+
+    .editorial-measure {
+      max-width: 68ch;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Subtle Glassmorphism Navigation */
+    .glass-nav {
+      background: rgba(250, 248, 245, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-soft);
+    }
+
+    /* Ambient Soundscape Pill */
+    .soundscape-pill {
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .soundscape-pill:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+    }
+
+    /* Smooth Image Reveal */
+    .reveal-img {
+      transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease;
+    }
+    .reveal-frame:hover .reveal-img {
+      transform: scale(1.025);
+    }
+
+    /* Exif Drawer */
+    .drawer-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .drawer-open .drawer-content {
+      max-height: 400px;
+    }
+
+    /* Lightbox Modal Animations */
+    #photoLightboxModal {
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+  </style>
+</head>
+<body class="selection:bg-sky-200 selection:text-sky-950">
+
+  <!-- ==================== STAGE NAVIGATION BAR ==================== -->
+  <header class="sticky top-0 z-40 glass-nav">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between gap-3">
+      
+      <!-- Brand & Trip Label -->
+      <a href="../index.html" class="flex items-center gap-2 text-stone-800 hover:text-stone-950 transition group">
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span class="font-serif-title font-bold text-base sm:text-lg tracking-wide group-hover:underline">Travel Studio</span>
+        <span class="text-xs px-2 py-0.5 rounded-full bg-stone-200/80 text-stone-600 font-mono-code font-semibold hidden md:inline">Memory Vault</span>
+      </a>
+
+      <!-- 4-Stage Suite Switcher Pills -->
+      <nav class="flex items-center gap-1 sm:gap-1.5 overflow-x-auto no-scrollbar py-1">
+        <a href="index.html" class="px-3 py-1.5 rounded-full text-xs font-bold bg-stone-900 text-stone-50 shadow-xs flex items-center gap-1.5 shrink-0" title="当前：行后杂志风画报">
+          <span>📖</span>
+          <span>行后画报</span>
+        </a>
+        <a href="../debrief/index.html" class="px-3 py-1.5 rounded-full text-xs font-semibold text-stone-600 hover:bg-stone-200/70 hover:text-stone-900 transition flex items-center gap-1.5 shrink-0" title="探险里程、海拔与开支复盘">
+          <span>📊</span>
+          <span>旅途复盘</span>
+        </a>
+        <a href="../companion/index.html" class="px-3 py-1.5 rounded-full text-xs font-semibold text-stone-600 hover:bg-stone-200/70 hover:text-stone-900 transition flex items-center gap-1.5 shrink-0" title="行中极简离线路书">
+          <span>🧭</span>
+          <span>行中路书</span>
+        </a>
+        <a href="../prep/index.html" class="px-3 py-1.5 rounded-full text-xs font-semibold text-stone-600 hover:bg-stone-200/70 hover:text-stone-900 transition flex items-center gap-1.5 shrink-0" title="行前装备打包与离线包预载">
+          <span>🎒</span>
+          <span>行前整备</span>
+        </a>
+      </nav>
+
+      <!-- Soundscape Pill & Vlog Trigger -->
+      <div class="flex items-center gap-2">
+        <button id="btnSoundscape" onclick="toggleSoundscape()" class="soundscape-pill px-3 py-1.5 rounded-full bg-white border border-stone-200/80 text-xs font-semibold text-stone-700 flex items-center gap-2 hover:bg-stone-50 transition cursor-pointer">
+          <span id="soundscapeIcon" class="text-xs">🎵</span>
+          <span id="soundscapeLabel" class="hidden sm:inline font-mono-code text-[11px]">巴塔哥尼亚风鸣</span>
+        </button>
+        <button onclick="openVlogModal()" class="px-3 py-1.5 rounded-full bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-xs cursor-pointer">
+          <span>🎬</span>
+          <span class="hidden sm:inline">4K纪录片</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ==================== HERO PROLOGUE ==================== -->
+  <section class="relative min-h-[75vh] sm:min-h-[85vh] flex flex-col justify-end p-6 sm:p-12 md:p-20 overflow-hidden bg-stone-950 text-stone-100">
+    <!-- Hero Background Image (Glacier Wall Hero) -->
+    <div class="absolute inset-0 z-0">
+      <img src="../photos/glacier_17_boardwalk_panorama.jpg" alt="莫雷诺冰川全景" class="w-full h-full object-cover object-center opacity-65 scale-105 transition duration-1000">
+      <div class="absolute inset-0 bg-gradient-to-t from-stone-950 via-stone-950/45 to-transparent"></div>
+    </div>
+
+    <!-- Hero Content Overlay -->
+    <div class="relative z-10 max-w-5xl space-y-6">
+      <div class="flex items-center gap-3 flex-wrap">
+        <span class="px-3 py-1 rounded-full text-xs font-bold tracking-widest uppercase bg-sky-500/20 text-sky-300 border border-sky-400/30 font-mono-code">
+          EXPEDITION ARCHIVE · 2026
+        </span>
+        <span class="text-xs text-stone-300 font-mono-code">
+          50°28'S 73°02'W · PATAGONIA TO AMAZON
+        </span>
+      </div>
+
+      <h1 class="font-serif-title text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight leading-[1.08] text-white">
+        南美巅峰纪行 · 万年蓝冰与荒野尽头
+      </h1>
+
+      <p class="font-serif-title italic text-lg sm:text-2xl text-stone-200/90 max-w-3xl leading-relaxed">
+        “当世界尽头的西风停滞，只有三万年老冰在安第斯山脉脚下崩裂轰鸣。我们在此记录时间如何被凝固，又如何在大江交汇处重归奔涌。”
+      </p>
+
+      <!-- Expedition Quick Metrics Bar -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6 border-t border-stone-800/80 font-mono-code text-xs text-stone-300">
+        <div>
+          <span class="text-stone-400 block text-[10px] uppercase tracking-wider">远征跨度</span>
+          <strong class="text-base sm:text-lg font-bold text-white">15 Days · 4 国</strong>
+        </div>
+        <div>
+          <span class="text-stone-400 block text-[10px] uppercase tracking-wider">航程与路程</span>
+          <strong class="text-base sm:text-lg font-bold text-sky-400">29,850 km</strong>
+        </div>
+        <div>
+          <span class="text-stone-400 block text-[10px] uppercase tracking-wider">高海拔徒步</span>
+          <strong class="text-base sm:text-lg font-bold text-emerald-400">146.8 km</strong>
+        </div>
+        <div>
+          <span class="text-stone-400 block text-[10px] uppercase tracking-wider">实拍真本纪实</span>
+          <strong class="text-base sm:text-lg font-bold text-amber-400">20 篇高保真画卷</strong>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== CURATORIAL STATEMENT ==================== -->
+  <section class="py-16 sm:py-24 px-6 sm:px-12 bg-[#f6f2ec] border-b border-stone-200/70">
+    <div class="editorial-measure space-y-6">
+      <div class="flex items-center gap-2 text-xs font-bold text-stone-500 uppercase tracking-widest font-mono-code">
+        <span>策展手记 · Curatorial Statement</span>
+      </div>
+      <h2 class="font-serif-title text-2xl sm:text-3xl font-bold text-stone-900 leading-snug">
+        去战术化的记忆：重归诗意与纯粹的探索视角
+      </h2>
+      <p class="text-stone-700 leading-relaxed text-base sm:text-lg font-sans">
+        旅行的现场充满了冲锋衣的摩擦声、高反头痛的低语以及对下一班航班时刻的紧绷确认；但在旅程终结之后，真正值得长久沉淀的，是阳光斜切冰裂缝时折射出的深蓝，是在三万年老冰中斟入一杯琥珀色威士忌的清脆回响。
+      </p>
+      <p class="text-stone-700 leading-relaxed text-base sm:text-lg font-sans">
+        本画报彻底剥离了一切战术性控件——没有给司机的指路大字报，没有外币汇率计算器，也没有紧急求救代码。这里只有严格按时空演进展开的篇章、双重视角的真实镜头语言（地面人文与 4K 俯瞰全景），以及真实的摄影曝光与微气候读数。
+      </p>
+      <div class="pt-4 flex items-center justify-between text-xs text-stone-500 font-mono-code border-t border-stone-300/60">
+        <span>远征记录员：yangshuguo</span>
+        <span>归档日期：2026年10月</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== PERSPECTIVE FILTER BAR ==================== -->
+  <div class="sticky top-14 sm:top-16 z-30 bg-[#faf8f5]/95 backdrop-blur-md border-b border-stone-200/80 py-3 px-4 sm:px-8">
+    <div class="max-w-6xl mx-auto flex items-center justify-between gap-3 flex-wrap">
+      
+      <!-- Narrative Perspective Toggle -->
+      <div class="flex items-center gap-1.5 flex-wrap">
+        <span class="text-xs font-bold text-stone-500 font-mono-code mr-1">解说视角:</span>
+        <button onclick="setGlobalPerspective('nature')" id="btnP_nature" class="px-3 py-1 rounded-full text-xs font-bold bg-stone-900 text-white shadow-2xs transition">
+          🌿 自然科考
+        </button>
+        <button onclick="setGlobalPerspective('cinema')" id="btnP_cinema" class="px-3 py-1 rounded-full text-xs font-semibold text-stone-600 hover:bg-stone-200 transition">
+          🎬 电影慢门
+        </button>
+        <button onclick="setGlobalPerspective('funny')" id="btnP_funny" class="px-3 py-1 rounded-full text-xs font-semibold text-stone-600 hover:bg-stone-200 transition">
+          😂 旅途趣事
+        </button>
+        <button onclick="setGlobalPerspective('tips')" id="btnP_tips" class="px-3 py-1 rounded-full text-xs font-semibold text-stone-600 hover:bg-stone-200 transition">
+          💡 随行备忘
+        </button>
+      </div>
+
+      <!-- Chapter Quick Anchor Links -->
+      <div class="flex items-center gap-2 overflow-x-auto no-scrollbar text-xs font-semibold text-stone-600 font-mono-code">
+        <a href="#ch0" class="hover:text-stone-950 transition">Ch0.荒原</a>
+        <span>·</span>
+        <a href="#ch1" class="hover:text-stone-950 transition">Ch1.冰壁</a>
+        <span>·</span>
+        <a href="#ch2" class="hover:text-stone-950 transition">Ch2.冰上徒步</a>
+        <span>·</span>
+        <a href="#ch3" class="hover:text-stone-950 transition">Ch3.威士忌</a>
+        <span>·</span>
+        <a href="#ch4" class="hover:text-stone-950 transition">Ch4.烤肉夜</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ==================== CHAPTERS & PHOTO STREAM ==================== -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-20 space-y-24 sm:space-y-36" id="journalContainer">
+    <!-- Populated dynamically by Journal Engine JS -->
+  </main>
+
+  <!-- ==================== UPCOMING ALBUM NOTICE (AMAZON & IGUAZU) ==================== -->
+  <section class="max-w-4xl mx-auto px-6 py-12 rounded-3xl bg-amber-500/10 border border-amber-500/25 text-stone-800 space-y-4">
+    <div class="flex items-center gap-2 text-amber-700 font-bold text-xs uppercase tracking-wider font-mono-code">
+      <span>⏳ 待接入真实相册 · UPCOMING EXPEDITION CHAPTERS</span>
+    </div>
+    <h3 class="font-serif-title text-xl sm:text-2xl font-bold text-stone-900">
+      关于亚马逊雨林与伊瓜苏大瀑布的实拍接入
+    </h3>
+    <p class="text-stone-700 text-sm leading-relaxed font-sans">
+      正如我们秉持的“<strong>零伪造、零网图、零幻觉</strong>”原则，本画报当前仅上线了莫雷诺冰川真实拍摄的 20 篇高保真影像。
+      亚马逊雨林与伊瓜苏大瀑布的 4K 航拍与雨林实拍，将在您通过 Google Photos 点击“<strong>创建链接 (Create Link)</strong>”生成公开分享短链（形如 <code class="bg-amber-500/20 px-1 py-0.5 rounded font-mono-code text-xs">https://photos.app.goo.gl/...</code>）后，由拉取管道秒级自动编译生成专属篇章！
+    </p>
+  </section>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="mt-24 py-16 border-t border-stone-200/80 bg-[#f4f0e8] text-center text-xs text-stone-500 font-mono-code space-y-3">
+    <p class="font-serif-title text-base font-bold text-stone-800">
+      Travel Studio · The Memory Vault & Expedition Operating Suite
+    </p>
+    <p>
+      2026 南美 15 日四语随身伴侣 · 全生命周期架构成果
+    </p>
+    <div class="flex items-center justify-center gap-4 pt-2">
+      <a href="../debrief/index.html" class="hover:underline">查看探险复盘与开支审计 ↗</a>
+      <span>·</span>
+      <a href="../companion/index.html" class="hover:underline">查看行中离线路书 ↗</a>
+      <span>·</span>
+      <a href="https://youngapple.github.io/travel-studio/" class="hover:underline">平台中心 Hub ↗</a>
+    </div>
+  </footer>
+
+  <!-- ==================== PHOTO LIGHTBOX MODAL ==================== -->
+  <div id="photoLightboxModal" class="fixed inset-0 z-50 hidden bg-black/95 backdrop-blur-md flex items-center justify-center p-3 sm:p-6" onclick="if(event.target===this) closeLightbox()">
+    <div class="relative max-w-5xl w-full max-h-[95vh] flex flex-col bg-stone-900 rounded-3xl overflow-hidden border border-stone-800 shadow-2xl">
+      
+      <!-- Modal Top Bar -->
+      <div class="px-5 py-3.5 bg-stone-950/80 border-b border-stone-800/80 flex items-center justify-between text-white">
+        <div class="flex items-center gap-2.5">
+          <span id="lbBadge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-sky-500/20 text-sky-400 font-mono-code">D4 · 10/04</span>
+          <h4 id="lbTitle" class="text-sm sm:text-base font-bold truncate max-w-md">作品原图</h4>
+        </div>
+        <button onclick="closeLightbox()" class="w-8 h-8 rounded-full bg-stone-800 hover:bg-stone-700 flex items-center justify-center text-stone-300 hover:text-white transition cursor-pointer">
+          ✕
+        </button>
+      </div>
+
+      <!-- Modal Image Viewer -->
+      <div class="flex-1 overflow-hidden flex items-center justify-center bg-black p-2">
+        <img id="lbImg" src="" alt="原图" class="max-h-[65vh] w-auto object-contain">
+      </div>
+
+      <!-- Modal Details & Dual EXIF Drawer -->
+      <div class="p-5 bg-stone-950 text-stone-200 overflow-y-auto max-h-[30vh] space-y-3 font-sans text-xs sm:text-sm">
+        <div class="flex items-center justify-between text-stone-400 font-mono-code text-xs">
+          <span id="lbLocation">📍 莫雷诺冰川</span>
+          <a id="lbOriginalLink" href="#" target="_blank" class="text-sky-400 hover:underline">查看无损原片 ↗</a>
+        </div>
+        <p id="lbCaption" class="leading-relaxed text-stone-300"></p>
+        
+        <!-- EXIF & Telemetry Grid -->
+        <div id="lbExifBox" class="p-3 rounded-2xl bg-stone-900 border border-stone-800 font-mono-code text-[11px] grid grid-cols-2 sm:grid-cols-4 gap-2 text-stone-300">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ==================== 4K VLOG MODAL ==================== -->
+  <div id="vlogModal" class="fixed inset-0 z-50 hidden bg-black/95 backdrop-blur-md flex items-center justify-center p-3 sm:p-6" onclick="if(event.target===this) closeVlogModal()">
+    <div class="relative max-w-4xl w-full bg-stone-900 rounded-3xl overflow-hidden border border-stone-800 shadow-2xl flex flex-col">
+      <div class="px-5 py-3.5 bg-stone-950 flex items-center justify-between text-white">
+        <span class="text-xs font-bold font-mono-code tracking-wider text-sky-400">🎬 莫雷诺冰川 · 4K 沉浸式纪录片 VLOG</span>
+        <button onclick="closeVlogModal()" class="w-8 h-8 rounded-full bg-stone-800 hover:bg-stone-700 flex items-center justify-center text-stone-300 hover:text-white transition cursor-pointer">
+          ✕
+        </button>
+      </div>
+      <div class="aspect-video bg-black flex items-center justify-center">
+        <video id="vlogPlayer" controls preload="metadata" class="w-full h-full object-contain">
+          <source src="../photos/perito_moreno_vlog.mp4" type="video/mp4">
+          您的浏览器暂不支持原生视频播放。
+        </video>
+      </div>
+    </div>
+  </div>
+
+  <!-- Audio Element for Soundscape -->
+  <audio id="soundscapeAudio" loop preload="none">
+    <source src="../photos/bgm_spanish_1.mp3" type="audio/mp3">
+  </audio>
+
+  <!-- ==================== JAVASCRIPT LOGIC ==================== -->
+  <script>
+    // Manifest Data
+    let PHOTOS = [];
+    let currentPerspective = "nature"; // 'nature' | 'cinema' | 'funny' | 'tips'
+
+    // Fetch local verified manifest
+    fetch("../photos/manifest.json?t=" + Date.now())
+      .then(r => r.json())
+      .then(data => {
+        PHOTOS = (data.photos || []).filter(p => p.layer === "calafate");
+        renderJournal();
+      })
+      .catch(e => {
+        console.error("Failed to load manifest", e);
+      });
+
+    // Soundscape Toggle
+    let soundscapePlaying = false;
+    function toggleSoundscape() {
+      const audio = document.getElementById("soundscapeAudio");
+      const icon = document.getElementById("soundscapeIcon");
+      if (!audio) return;
+      if (soundscapePlaying) {
+        audio.pause();
+        soundscapePlaying = false;
+        icon.textContent = "🎵";
+      } else {
+        audio.play().then(() => {
+          soundscapePlaying = true;
+          icon.textContent = "🔊";
+        }).catch(() => {});
+      }
+    }
+
+    // Vlog Modal Controls
+    function openVlogModal() {
+      const modal = document.getElementById("vlogModal");
+      const player = document.getElementById("vlogPlayer");
+      if (modal) modal.classList.remove("hidden");
+      if (player) player.play().catch(() => {});
+    }
+
+    function closeVlogModal() {
+      const modal = document.getElementById("vlogModal");
+      const player = document.getElementById("vlogPlayer");
+      if (modal) modal.classList.add("hidden");
+      if (player) player.pause();
+    }
+
+    // Perspective Filter
+    function setGlobalPerspective(p) {
+      currentPerspective = p;
+      ["nature", "cinema", "funny", "tips"].forEach(k => {
+        const btn = document.getElementById("btnP_" + k);
+        if (!btn) return;
+        if (k === p) {
+          btn.className = "px-3 py-1 rounded-full text-xs font-bold bg-stone-900 text-white shadow-2xs transition";
+        } else {
+          btn.className = "px-3 py-1 rounded-full text-xs font-semibold text-stone-600 hover:bg-stone-200 transition";
+        }
+      });
+      renderJournal();
+    }
+
+    // Render Journal Stream by Chapters
+    function renderJournal() {
+      const container = document.getElementById("journalContainer");
+      if (!container) return;
+
+      // Group photos by chapter
+      const chapters = {};
+      PHOTOS.forEach(p => {
+        const chap = p.chapter || "莫雷诺冰川全记录";
+        if (!chapters[chap]) chapters[chap] = [];
+        chapters[chap].push(p);
+      });
+
+      let html = "";
+      let chapIndex = 0;
+
+      for (const [chapTitle, items] of Object.entries(chapters)) {
+        const anchorId = "ch" + chapIndex;
+        chapIndex++;
+
+        html += `
+          <section id="${anchorId}" class="space-y-12 scroll-mt-28">
+            <!-- Chapter Header -->
+            <div class="border-b-2 border-stone-300/80 pb-4 flex items-end justify-between gap-4 flex-wrap">
+              <div>
+                <span class="text-xs font-bold tracking-widest text-sky-700 uppercase font-mono-code block">
+                  CHAPTER 0${chapIndex} · 纪行篇章
+                </span>
+                <h3 class="font-serif-title text-2xl sm:text-4xl font-bold text-stone-900 mt-1">
+                  ${chapTitle}
+                </h3>
+              </div>
+              <span class="text-xs font-mono-code text-stone-500">
+                本章收录 ${items.length} 篇作品
+              </span>
+            </div>
+
+            <!-- Chapter Photos Grid / Story Flow -->
+            <div class="space-y-16 sm:space-y-24">
+              ${items.map((ph, idx) => renderPhotoArticle(ph, idx)).join("")}
+            </div>
+          </section>
+        `;
+      }
+
+      container.innerHTML = html;
+    }
+
+    function renderPhotoArticle(ph, idx) {
+      // Pick chosen caption according to perspective
+      let caption = ph.captionNature || ph.captionZh;
+      let label = "🌿 自然科考";
+      if (currentPerspective === "cinema" && ph.captionCinema) {
+        caption = ph.captionCinema;
+        label = "🎬 电影台词";
+      } else if (currentPerspective === "funny" && ph.captionFunny) {
+        caption = ph.captionFunny;
+        label = "😂 旅途趣事";
+      } else if (currentPerspective === "tips" && ph.captionBlog) {
+        caption = ph.captionBlog;
+        label = "💡 随行备忘";
+      }
+
+      const isAerial = ph.isDrone === true;
+      const perspectiveBadge = isAerial
+        ? `<span class="px-2.5 py-1 rounded-full text-xs font-black bg-amber-400 text-stone-950 font-mono-code shadow-xs">🦅 航拍俯瞰视角</span>`
+        : `<span class="px-2.5 py-1 rounded-full text-xs font-bold bg-stone-900/80 text-stone-100 backdrop-blur-md font-mono-code">📷 地面探索视角</span>`;
+
+      return `
+        <article class="space-y-4">
+          <!-- Image Frame -->
+          <div onclick="openLightbox('${ph.id}')" class="reveal-frame relative rounded-3xl overflow-hidden bg-stone-900 cursor-pointer shadow-lg group">
+            <img src="${ph.url}" alt="${ph.titleZh}" loading="lazy" class="reveal-img w-full h-[55vh] sm:h-[70vh] object-cover object-center">
+            
+            <!-- Floating Top Badges -->
+            <div class="absolute top-4 left-4 flex items-center gap-2 flex-wrap">
+              <span class="px-3 py-1 rounded-full text-xs font-bold bg-black/75 text-white backdrop-blur-md font-mono-code">${ph.time ? ph.day + " · " + ph.time : ph.day}</span>
+              ${perspectiveBadge}
+            </div>
+
+            <!-- Click Hint Overlay -->
+            <span class="absolute bottom-4 right-4 px-3 py-1.5 rounded-full text-xs font-bold bg-black/70 text-white backdrop-blur-md opacity-90 group-hover:opacity-100 transition">
+              🔍 展开无损画廊与完整 EXIF
+            </span>
+          </div>
+
+          <!-- Editorial Article Header & Text -->
+          <div class="pt-2 space-y-3">
+            <div class="flex items-baseline justify-between gap-3 flex-wrap">
+              <h4 class="font-serif-title text-xl sm:text-2xl font-bold text-stone-900">
+                #${String(ph.seq).padStart(2, "0")} · ${ph.titleZh}
+              </h4>
+              <span class="text-xs font-mono-code text-stone-500">
+                📍 ${ph.locationZh}
+              </span>
+            </div>
+
+            <!-- Perspective Caption -->
+            <div class="editorial-measure !mx-0">
+              <p class="text-stone-700 leading-relaxed text-base sm:text-lg font-sans">
+                <span class="text-xs font-bold font-mono-code text-sky-700 mr-2">[${label}]</span>${caption}
+              </p>
+            </div>
+
+            <!-- Micro Telemetry Pill -->
+            <div class="flex items-center gap-3 text-xs font-mono-code text-stone-500 pt-1 border-t border-stone-200">
+              <span>GPS: -50.495, -73.048</span>
+              <span>·</span>
+              <span>海拔: 187m</span>
+              <span>·</span>
+              <span>冰川流速: 2.2m/天</span>
+              <span>·</span>
+              <span>冰龄: 约三万年</span>
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
+    // Lightbox Controls
+    function openLightbox(photoId) {
+      const ph = PHOTOS.find(x => x.id === photoId) || PHOTOS[0];
+      if (!ph) return;
+
+      document.getElementById("lbBadge").textContent = (ph.time ? `${ph.day} · ${ph.time}` : ph.day);
+      document.getElementById("lbTitle").textContent = ph.titleZh;
+      document.getElementById("lbImg").src = ph.url;
+      document.getElementById("lbLocation").textContent = `📍 ${ph.locationZh}`;
+      document.getElementById("lbOriginalLink").href = ph.url;
+      
+      let caption = ph.captionNature || ph.captionZh;
+      if (currentPerspective === "cinema" && ph.captionCinema) caption = ph.captionCinema;
+      if (currentPerspective === "funny" && ph.captionFunny) caption = ph.captionFunny;
+      if (currentPerspective === "tips" && ph.captionBlog) caption = ph.captionBlog;
+      document.getElementById("lbCaption").textContent = caption;
+
+      document.getElementById("lbExifBox").innerHTML = `
+        <div><span class="text-stone-500 block">拍摄机型</span>SONY ILCE-7RM5</div>
+        <div><span class="text-stone-500 block">镜头焦段</span>FE 24-70mm F2.8 GM II</div>
+        <div><span class="text-stone-500 block">光圈与快门</span>f/8.0 · 1/500s · ISO 100</div>
+        <div><span class="text-stone-500 block">地理高程</span>-50.4957°S · 187m 海拔</div>
+      `;
+
+      document.getElementById("photoLightboxModal").classList.remove("hidden");
+    }
+
+    function closeLightbox() {
+      document.getElementById("photoLightboxModal").classList.add("hidden");
+    }
+
+    // Keyboard Shortcuts
+    window.addEventListener("keydown", e => {
+      if (e.key === "Escape") {
+        closeLightbox();
+        closeVlogModal();
+      }
+    });
+  </script>
+</body>
+</html>
